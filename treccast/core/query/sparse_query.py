@@ -1,4 +1,4 @@
-"""Represents a sparse query, which is a sequence of terms."""
+"""Represents a sparse query as a sequence of terms."""
 
 from typing import List
 
@@ -16,9 +16,10 @@ class SparseQuery(Query):
         """Initializes a sparse query from a question string.
 
         Args:
+            query_id (int): Query ID.
             question (str): Question (raw user utterance).
         """
-        super().__init__(query_id)
+        super().__init__(query_id, question)
         # TODO: Consider using an ElasticSearch Analyzer instead.
         # See https://github.com/iai-group/trec-cast-2021/issues/11
         self._terms = self._preprocess_question(question)
