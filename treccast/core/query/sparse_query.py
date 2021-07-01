@@ -12,12 +12,13 @@ STOPWORDS = stopwords.words("english")
 
 
 class SparseQuery(Query):
-    def __init__(self, question: str) -> None:
+    def __init__(self, query_id: str, question: str) -> None:
         """Initializes a sparse query from a question string.
 
         Args:
             question (str): Question (raw user utterance).
         """
+        super().__init__(query_id)
         # TODO: Consider using an ElasticSearch Analyzer instead.
         # See https://github.com/iai-group/trec-cast-2021/issues/11
         self._terms = self._preprocess_question(question)
@@ -42,3 +43,9 @@ class SparseQuery(Query):
     @property
     def terms(self) -> List[str]:
         return self._terms
+
+    @property
+    def query_text(self) -> str:
+        # TODO: This should be changed to avoid splitting and re-joining.
+        # See https://github.com/iai-group/trec-cast-2021/issues/11
+        return " ".join(self._terms)
