@@ -9,8 +9,8 @@ from treccast.core.ranking import Ranking
 
 class Reranker(ABC):
     def __init__(self, rankings: List[Ranking], queries: List[Query]) -> None:
-        self.__rankings = rankings
-        self.__queries = queries
+        self._rankings = rankings
+        self._queries = queries
 
     def rerank(self) -> List[Ranking]:
         """Performs reranking.

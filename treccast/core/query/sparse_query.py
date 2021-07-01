@@ -20,9 +20,9 @@ class SparseQuery(Query):
         """
         # TODO: Consider using an ElasticSearch Analyzer instead.
         # See https://github.com/iai-group/trec-cast-2021/issues/11
-        self.__terms = self.__preprocess_question(question)
+        self._terms = self._preprocess_question(question)
 
-    def __preprocess_question(self, question: str) -> List[str]:
+    def _preprocess_question(self, question: str) -> List[str]:
         """Preprocesses a question by removing punctuation, lowercasing, and
         stopwords removal.
 
@@ -41,4 +41,4 @@ class SparseQuery(Query):
 
     @property
     def terms(self) -> List[str]:
-        return self.__terms
+        return self._terms

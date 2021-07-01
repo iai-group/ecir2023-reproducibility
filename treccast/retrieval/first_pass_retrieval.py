@@ -9,7 +9,7 @@ from treccast.core.ranking import Ranking
 
 class FirstPassRetrieval:
     def __init__(self, collection: Collection) -> None:
-        self.__collection = collection
+        self._collection = collection
 
     def retrieve(self, query: Query) -> Ranking:
         pass

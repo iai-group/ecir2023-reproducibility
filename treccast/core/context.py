@@ -11,4 +11,4 @@ Turn = NamedTuple("Turn", [("user_utterance", str), ("system_utterance", str)])
 
 class Context:
     def __init__(self) -> None:
-        self.__turns = []
+        self._turns = []
