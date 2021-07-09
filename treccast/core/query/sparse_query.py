@@ -3,11 +3,13 @@
 from typing import List
 
 from nltk.corpus import stopwords
-
+import nltk
 from treccast.core.query.query import Query
 
 
 PUNCTUATION = "!#$%&()*+,./:;<=>?{|}~"
+# Stop words need to be downloaded if they are not already.
+nltk.download("stopwords")
 STOPWORDS = stopwords.words("english")
 
 
