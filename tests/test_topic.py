@@ -61,6 +61,7 @@ def test_get_question_and_context_first_turn(topics):
 def test_get_question_and_context_second_turn(topics):
     question, context = topics[0].get_question_and_context(2)
     assert question == "Now it\u0027s stopped working. Why?"
+    assert question == "Now it's stopped working. Why?"
     assert len(context) == 1
     assert (
         context[0].raw_utterance
