@@ -7,7 +7,7 @@
 ### Y2
 
   * [MS MARCO Passage Ranking collection](https://github.com/microsoft/MSMARCO-Passage-Ranking) => `$COLLECTIONS/msmarco-passage/collection.tar.gz` (988M)  
-  * [TREC CAR paragraph collection v2.0](http://trec-car.cs.unh.edu/datareleases/) => `$COLLECTIONS/trec-car/paragraphCorpus.v2.0.tar.xz`
+  * [TREC CAR paragraph collection v2.0](http://trec-car.cs.unh.edu/datareleases/) => `$COLLECTIONS/trec-car/paragraphCorpus.v2.0.tar.gz` (6.9G)
 
 ### Y3
 
