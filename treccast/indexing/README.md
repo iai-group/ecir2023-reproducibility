@@ -1,0 +1,1 @@
+To index the TREC CAR dataset we use [trec_car_tools](https://github.com/TREMA-UNH/trec-car-tools). 

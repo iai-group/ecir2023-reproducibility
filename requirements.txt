@@ -2,4 +2,6 @@ black
 flake8
 pre-commit
 pytest
-nltk
+nltk==3.6.2
+elasticsearch==7.13.3
+cbor==1.0.0

@@ -73,10 +73,7 @@ def retrieval(
                             [
                                 query_id,
                                 "Q0",
-                                # TODO: Remove (documents are supposed to be
-                                # indexed with prefix as part of doc_id)
-                                # See: https://github.com/iai-group/trec-cast-2021/issues/23
-                                f"MARCO_{doc_id}",
+                                doc_id,
                                 str(rank + 1),
                                 str(score),
                                 "BM25",
@@ -142,7 +139,7 @@ if __name__ == "__main__":
         rewrite(args.topics, args.rewrite_output)
     if args.retrieval:
         first_pass_retrieval = _get_first_pass_retrieval(
-            "ms_marco", host_name="localhost:9204"
+            "marco_car_base", host_name="gustav1.ux.uis.no:9204"
         )
         retrieval(
             args.topics,
