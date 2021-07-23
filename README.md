@@ -11,7 +11,7 @@ This repository contains the IAI group's participation at the TREC 2021 Conversa
 
 Evaluation scores are generated using trec_eval:
 ```
-$ {TREC_EVAL_PATH}/trec_eval -m all_trec data/2020qrels.txt data/runs-2020/{RUNID}.trec
+$ {TREC_EVAL_PATH}/trec_eval -m all_trec data/qrels/2020.txt data/runs-2020/{RUNID}.trec
 ```
 
   * It assumes that [trec_eval](https://github.com/usnistgov/trec_eval) is installed locally under `{TREC_EVAL_PATH}`.
