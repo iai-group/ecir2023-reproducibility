@@ -26,11 +26,11 @@ def _get_first_pass_retrieval(
     """Runs first pass retrieval.
 
     Args:
-        index_name (str): Name of the Elasticsearch index.
-        host_name (str): Host name for Elasticsearch process.
+        index_name: Name of the Elasticsearch index.
+        host_name: Host name for Elasticsearch process.
 
     Returns:
-        FirstPassRetrieval: The constructed class for first-pass retrieval.
+        The constructed class for first-pass retrieval.
             Currently only supports BM25.
     """
     # Can be expanded with more arguments
@@ -47,11 +47,11 @@ def retrieval(
     """Performs retrieval and saves the results to a TREC runfile.
 
     Args:
-        topics_path (str): Path to topic input file.
-        output_path (str): Path to output TREC runfile.
-        first_pass_retrieval (FirstPassRetrieval, optional): First-pass
+        topics_path: Path to topic input file.
+        output_path: Path to output TREC runfile.
+        first_pass_retrieval: First-pass
             retrieval model. Defaults to None.
-        reranker (Reranker, optional): Reranker model. Defaults to None.
+        reranker: Reranker model. Defaults to None.
     """
     topics = construct_topics_from_file(topics_path)
     with open(output_path, "w") as f_out:
@@ -87,7 +87,7 @@ def parse_args() -> argparse.Namespace:
     """Defines accepted arguments and returns the parsed values.
 
     Returns:
-        argparse.Namespace: Object with a property for each argument.
+        Object with a property for each argument.
     """
     parser = argparse.ArgumentParser(prog="main.py")
     parser.add_argument(

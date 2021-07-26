@@ -8,8 +8,8 @@ class Query(ABC):
         """Abstract interface for a query.
 
         Args:
-            query_id (int): Query ID.
-            question (str): Question (raw user utterance).
+            query_id: Query ID.
+            question: Question (raw user utterance).
         """
         self._query_id = query_id
         self._question = question

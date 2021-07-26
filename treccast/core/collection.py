@@ -11,7 +11,7 @@ class Collection(ABC):
         """Initializes collection (abstract) superclass.
 
         Args:
-            index_name (str): Index name.
+            index_name: Index name.
         """
         self._index_name = index_name
 
@@ -27,8 +27,8 @@ class ElasticSearchIndex(Collection):
         """Initializes an Elasticsearch instance on a given host.
 
         Args:
-            index_name (str): Index name.
-            hostname (str, optional): Host name and port (defaults to
+            index_name: Index name.
+            hostname: Host name and port (defaults to
                 "localhost:9200").
         """
         super().__init__(index_name)
@@ -59,6 +59,6 @@ class ElasticSearchIndex(Collection):
         properties if needed.
 
         Returns:
-            Dict[str, Union[str, Dict]]: Dictionary with index properties.
+            Dictionary with index properties.
         """
         return {}

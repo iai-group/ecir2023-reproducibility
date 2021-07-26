@@ -97,7 +97,7 @@ class Indexing(ElasticSearchIndex):
         """Bulk index a dataset in parallel.
 
         Args:
-            data_generator (Iterator[dict]): Data generator. Should yield index
+            data_generator: Data generator. Should yield index
                 name, id and contents to index.
         """
         for success, info in parallel_bulk(
@@ -116,7 +116,7 @@ def parse_cmdline_arguments() -> argparse.Namespace:
     """Defines accepted arguments and returns the parsed values.
 
     Returns:
-        argparse.Namespace: Object with a property for each argument.
+        Object with a property for each argument.
     """
     parser = argparse.ArgumentParser(prog="indexing.py")
     parser.add_argument(

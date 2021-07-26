@@ -11,7 +11,7 @@ class BM25Retrieval(FirstPassRetrieval):
         """Initializes BM25 retrieval model based on Elasticsearch.
 
         Args:
-            es_collection (ElasticSearchIndex): ElasticSearch collection.
+            es_collection: ElasticSearch collection.
         """
         super().__init__(es_collection)
         self._es = es_collection.es
@@ -21,12 +21,12 @@ class BM25Retrieval(FirstPassRetrieval):
         """Performs retrieval.
 
         Args:
-            query (SparseQuery): Sparse query instance.
-            num_results (int, optional): Number of documents to return (defaults
+            query: Sparse query instance.
+            num_results: Number of documents to return (defaults
                 to 1000).
 
         Returns:
-            Ranking: Document ranking.
+            Document ranking.
         """
         res = self._es.search(
             index=self._index_name,

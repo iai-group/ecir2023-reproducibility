@@ -15,11 +15,11 @@ class QueryRewriter(ABC):
         """Rewrites a query based on context.
 
         Args:
-            query (Query): Unanswered query (last user utterance) to be
+            query: Unanswered query (last user utterance) to be
                 rewritten.
-            context (Context): Conversation context up to the unanswered query.
+            context: Conversation context up to the unanswered query.
 
         Returns:
-            Query: Rewritten query.
+            Rewritten query.
         """
         raise NotImplementedError

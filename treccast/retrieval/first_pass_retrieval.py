@@ -13,7 +13,7 @@ class FirstPassRetrieval(ABC):
         """Abstract class for first-pass retrieval.
 
         Args:
-            collection (Collection): Document collection.
+            collection: Document collection.
         """
         self._collection = collection
 
@@ -22,15 +22,15 @@ class FirstPassRetrieval(ABC):
         """Interface for first-pass retrieval that needs to be implemented.
 
         Args:
-            query (Query): Query instance.
-            num_results (int, optional): Number of results to return (defaults
+            query: Query instance.
+            num_results: Number of results to return (defaults
                 to 1000).
 
         Raises:
             NotImplementedError: Raised if the method is not overwritten.
 
         Returns:
-            Ranking: Ranking of documents.
+            Ranking of documents.
         """
         raise NotImplementedError
 
@@ -38,10 +38,9 @@ class FirstPassRetrieval(ABC):
         """Performs batch retrieval for a list of queries.
 
         Args:
-            queries (List[Query]): List of input queries.
+            queries: List of input queries.
 
         Returns:
-            List[Ranking]: List of rankings corresponding to the list of
-                input queries.
+            List of rankings corresponding to the list of input queries.
         """
         return [self.retrieve(query) for query in queries]

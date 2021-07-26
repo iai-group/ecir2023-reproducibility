@@ -11,8 +11,8 @@ class Ranking:
             score dictionary.
 
         Args:
-            query_id (str): Unique id for the query.
-            scored_docs (Dict[str, float]): List of tuples of doc
+            query_id: Unique id for the query.
+            scored_docs: List of tuples of doc
                 ids and score pairs.
         """
         self._query_id = query_id
@@ -23,7 +23,7 @@ class Ranking:
             It updates existing entries.
 
         Args:
-            scored_docs_list (List[Tuple[str, float]]): List of doc_id,
+            scored_docs_list: List of doc_id,
                 score tuples.
         """
         self._scored_docs.update(dict(scored_docs_list))
@@ -32,8 +32,8 @@ class Ranking:
         """Adds a new or updates an existing score of a doc, given the doc_id.
 
         Args:
-            doc_id (str): Unique id for the doc.
-            score (float): The relevance score of the doc.
+            doc_id: Unique id for the doc.
+            score: The relevance score of the doc.
         """
         self._scored_docs[doc_id] = score
 
@@ -41,10 +41,10 @@ class Ranking:
         """Returns the score of the given doc id.
 
         Args:
-            doc_id (str): Unique id for the doc.
+            doc_id: Unique id for the doc.
 
         Returns:
-            float: The relevance score of the doc.
+            The relevance score of the doc.
         """
         return (
             self._scored_docs[doc_id] if doc_id in self._scored_docs else None
@@ -56,10 +56,10 @@ class Ranking:
             returns all elements in the list in sorted order.
 
         Args:
-            k (int): Number of docs to fetch.
+            k: Number of docs to fetch.
 
         Returns:
-            List[Tuple[str, float]]: Ordered list of doc_id, score tuples.
+            Ordered list of doc_id, score tuples.
         """
         return sorted(
             self._scored_docs.items(), key=lambda x: x[1], reverse=True

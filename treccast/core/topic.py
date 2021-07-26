@@ -20,12 +20,12 @@ class Turn:
         """Create a Turn object with Args as Attributes.
 
         Args:
-            result_turn_dependence (int): [description]
-            canonical_result_id (str): [description]
-            turn_id (int): [description]
-            manual_rewritten_utterance (str): [description]
-            query_turn_dependence (list): [description]
-            raw_utterance (str): [description]
+            result_turn_dependence: [description]
+            canonical_result_id: [description]
+            turn_id: [description]
+            manual_rewritten_utterance: [description]
+            query_turn_dependence: [description]
+            raw_utterance: [description]
         """
         self._result_turn_dependence = result_turn_dependence
         self._canonical_result_id = canonical_result_id
@@ -52,10 +52,10 @@ class Topic:
         """Initializes a topic.
 
         Args:
-            topic_id (int): Topic ID (as provided by TREC).
-            description (str): Topic description.
-            title (str): Topic title.
-            turns (List[Turn]): List of conversation turns.
+            topic_id: Topic ID (as provided by TREC).
+            description: Topic description.
+            title: Topic title.
+            turns: List of conversation turns.
         """
         self._topic_id = topic_id
         self._description = description
@@ -82,13 +82,13 @@ class Topic:
         """Returns a given topic turn.
 
         Args:
-            turn_id (int): Turn ID.
+            turn_id: Turn ID.
 
         Raises:
             IndexError: When turn ID is out of bounds.
 
         Returns:
-            Turn: Turn instance.
+            Turn instance.
         """
         if len(self._turns) < turn_id:
             raise IndexError(f"Invalid turn_id: {turn_id}")
@@ -98,10 +98,10 @@ class Topic:
         """Returns the question and context for a given topic turn.
 
         Args:
-            turn_id (int): Turn ID.
+            turn_id: Turn ID.
 
         Returns:
-            str, List[Turn]: Question (str) and list of Turns.
+            Question (str) and list of Turns.
         """
         return self.get_turn(turn_id).raw_utterance, self._turns[: turn_id - 1]
 
@@ -110,10 +110,10 @@ def construct_topics_from_file(filepath: str) -> List[Topic]:
     """Creates a list of Topic objects from JSON file.
 
     Args:
-        filepath (str): Path to JSON file with topics.
+        filepath: Path to JSON file with topics.
 
     Returns:
-        [type]: Extracted Topics.
+        Extracted Topics.
     """
     topics = []
     with open(filepath, "r", encoding="utf8") as f_in:

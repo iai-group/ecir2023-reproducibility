@@ -18,8 +18,8 @@ class SparseQuery(Query):
         """Initializes a sparse query from a question string.
 
         Args:
-            query_id (int): Query ID.
-            question (str): Question (raw user utterance).
+            query_id: Query ID.
+            question: Question (raw user utterance).
         """
         super().__init__(query_id, question)
         # TODO: Consider using an ElasticSearch Analyzer instead.
@@ -31,10 +31,10 @@ class SparseQuery(Query):
         stopwords removal.
 
         Args:
-            question (str): Question (user utterance).
+            question: Question (user utterance).
 
         Returns:
-            str: Sequence of keywords.
+            Sequence of keywords.
         """
         # Remove punctunation.
         question = question.translate(str.maketrans("", "", PUNCTUATION))
