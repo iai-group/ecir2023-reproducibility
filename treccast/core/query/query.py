@@ -17,3 +17,7 @@ class Query(ABC):
     @property
     def query_id(self) -> str:
         return self._query_id
+
+    @property
+    def question(self) -> str:
+        return self._question

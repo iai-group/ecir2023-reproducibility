@@ -36,7 +36,7 @@ class BM25Retrieval(FirstPassRetrieval):
         )
         ranking = Ranking(query.query_id)
         for hit in res["hits"]["hits"]:
-            ranking.set_doc_score(hit["_id"], hit["_score"])
+            ranking.add_doc(hit["_id"], None, hit["_score"])
         return ranking
 
 

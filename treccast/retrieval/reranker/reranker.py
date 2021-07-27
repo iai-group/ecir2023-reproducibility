@@ -9,6 +9,12 @@ from treccast.core.ranking import Ranking
 
 class Reranker(ABC):
     def __init__(self, rankings: List[Ranking], queries: List[Query]) -> None:
+        """Interface for a reranker.
+
+        Args:
+            rankings: List of lists of rankings to be reranked
+            queries: List of queries
+        """
         self._rankings = rankings
         self._queries = queries
 
@@ -18,4 +24,4 @@ class Reranker(ABC):
         Returns:
             List of Ranking instances.
         """
-        pass
+        raise NotImplementedError

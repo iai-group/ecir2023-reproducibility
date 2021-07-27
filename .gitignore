@@ -130,3 +130,9 @@ dmypy.json
 
 # vscode
 .vscode
+
+# pytorch lightning
+out/
+
+# MacOS
+.DS_Store

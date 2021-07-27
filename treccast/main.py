@@ -4,7 +4,7 @@ import argparse
 
 from treccast.retrieval.first_pass_retrieval import FirstPassRetrieval
 from treccast.retrieval.bm25_retrieval import BM25Retrieval
-from treccast.retrieval.reranker import Reranker
+from treccast.retrieval.reranker.reranker import Reranker
 from treccast.core.topic import construct_topics_from_file
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.sparse_query import SparseQuery
@@ -75,7 +75,7 @@ def retrieval(
                                 "Q0",
                                 doc_id,
                                 str(rank + 1),
-                                str(score),
+                                str(score[1]),
                                 "BM25",
                             ]
                         )
@@ -127,7 +127,7 @@ def parse_args() -> argparse.Namespace:
         type=str,
         nargs="?",
         const=DEFAULT_TOPIC_INPUT_PATH,
-        help="Performs retrieval on using the specified path",
+        help="Performs retrieval using the specified path",
     )
     return parser.parse_args()
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
         rewrite(args.topics, args.rewrite_output)
     if args.retrieval:
         first_pass_retrieval = _get_first_pass_retrieval(
-            "marco_car_base", host_name="gustav1.ux.uis.no:9204"
+            "ms_marco_trec_car", host_name="gustav1.ux.uis.no:9204"
         )
         retrieval(
             args.topics,
