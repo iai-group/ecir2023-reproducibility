@@ -6,7 +6,7 @@ Usage:
 
     $ python indexing.py --ms_marco --trec_car --reset
     
-    Indexing only MS MARCO with a custom path to the dataset without reseting
+    Indexing only MS MARCO with a custom path to the dataset without resetting
     the index.
     
     $ python indexing.py --ms_marco path/to/collection
@@ -135,8 +135,7 @@ def parse_cmdline_arguments() -> argparse.Namespace:
     parser.add_argument(
         "-r",
         "--reset",
-        type=bool,
-        default=False,
+        action="store_true",
         help="Reset index",
     )
     parser.add_argument(
@@ -163,9 +162,9 @@ if __name__ == "__main__":
     indexing = Indexing(args.index, args.host)
     if args.reset:
         indexing.reset_index()
-    if args.marco:
-        data_generator = indexing.generate_data_marco(args.marco)
+    if args.ms_marco:
+        data_generator = indexing.generate_data_marco(args.ms_marco)
         indexing.batch_index(data_generator)
-    if args.car:
-        data_generator = indexing.generate_data_car(args.car)
+    if args.trec_car:
+        data_generator = indexing.generate_data_car(args.trec_car)
         indexing.batch_index(data_generator)

@@ -214,7 +214,7 @@ class BERTReranker(Reranker, LightningModule):
             ap,
             deterministic=True,
             replace_sampler_ddp=False,
-            default_root_dir="out",
+            default_root_dir="data/local/out",
         )
         return trainer
 
@@ -334,7 +334,7 @@ class BERTReranker(Reranker, LightningModule):
         )
         ap.add_argument(
             "--save_dir",
-            default="out",
+            default="data/local/out",
             help="Directory for logs, checkpoints and predictions",
         )
         ap.add_argument(

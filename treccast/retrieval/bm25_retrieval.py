@@ -7,15 +7,23 @@ from treccast.retrieval.first_pass_retrieval import FirstPassRetrieval
 
 
 class BM25Retrieval(FirstPassRetrieval):
-    def __init__(self, es_collection: ElasticSearchIndex) -> None:
+    def __init__(
+        self,
+        es_collection: ElasticSearchIndex,
+        k1: float = 1.2,
+        b: float = 0.75,
+    ) -> None:
         """Initializes BM25 retrieval model based on Elasticsearch.
 
         Args:
             es_collection: ElasticSearch collection.
+            k1: BM25 parameter (defaults to 1.2).
+            b: BM25 parameter (defaults to 0.75).
         """
         super().__init__(es_collection)
         self._es = es_collection.es
         self._index_name = es_collection.index_name
+        es_collection.update_similarity_parameters(k1=k1, b=b)
 
     def retrieve(self, query: SparseQuery, num_results: int = 1000) -> Ranking:
         """Performs retrieval.

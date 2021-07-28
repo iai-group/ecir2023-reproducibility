@@ -16,16 +16,15 @@ $ {TREC_EVAL_PATH}/trec_eval -m all_trec data/qrels/2020.txt data/runs-2020/{RUN
 
   * It assumes that [trec_eval](https://github.com/usnistgov/trec_eval) is installed locally under `{TREC_EVAL_PATH}`.
 
-| *Method* | *Script* | *MAP* | *MRR* | *NDCG* | *NDCG@5* |
+| *Method* | *Script* | *Index* | *MAP* | *MRR* | *NDCG* | *NDCG@5* | *recall@1000* |
 | -- | -- | -- | -- | -- | -- |
-| BM25 ES MS-MARCO only | `scripts/cast_bm25.sh` | 0.0228 | 0.1572 | 0.0718 | 0.0532 |
-| *Reference* |||||
-| Best @TREC2020 || 0.302 | 0.593 | 0.526 | |
-| TREC Organzers' auto baseline || 0.134 | 0.408 | 0.284 | |
+| BM25 (default parameters) | `scripts/cast_bm25_default.sh` | `ms_marco_trec_car` | 0.0409 | 0.1780 | 0.1247 | 0.0614 ||
+| BM25 (k1=4.46, b=0.82) | `scripts/cast_bm25_optimized.sh` | `ms_marco_trec_car` | 0.0229 | 0.1259 | 0.0870 | 0.0373 ||
+| *Reference* ||||||
+| Best @TREC2020 || 0.302 | 0.593 | 0.526 | ||
+| TREC Organzers' auto baseline || 0.134 | 0.408 | 0.284 | ||
 
 Running first-pass BM25 ranker on 2020 data:
 ```
-  scripts/$ sh 
+  scripts/cast_bm25.sh 
 ```
-
-

@@ -21,7 +21,7 @@ def rewrite(topics_path: str, output_path: str) -> None:
 
 
 def _get_first_pass_retrieval(
-    index_name: str, host_name: str
+    index_name: str, host_name: str, **kwargs
 ) -> FirstPassRetrieval:
     """Runs first pass retrieval.
 
@@ -35,7 +35,7 @@ def _get_first_pass_retrieval(
     """
     # Can be expanded with more arguments
     esi = ElasticSearchIndex(index_name, hostname=host_name)
-    return BM25Retrieval(esi)
+    return BM25Retrieval(esi, **kwargs)
 
 
 def retrieval(
@@ -129,17 +129,35 @@ def parse_args() -> argparse.Namespace:
         const=DEFAULT_TOPIC_INPUT_PATH,
         help="Performs retrieval using the specified path",
     )
+    parser.add_argument(
+        "--es.k1",
+        metavar="k1",
+        dest="es_k1",
+        default=1.2,
+        help="Elasticsearch BM25 k1 parameter",
+    )
+    parser.add_argument(
+        "--es.b",
+        metavar="b",
+        dest="es_b",
+        default=0.75,
+        help="Elasticsearch BM25 b parameter",
+    )
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
+    print(args)
 
     if args.rewrite:
         rewrite(args.topics, args.rewrite_output)
     if args.retrieval:
         first_pass_retrieval = _get_first_pass_retrieval(
-            "ms_marco_trec_car", host_name="gustav1.ux.uis.no:9204"
+            "ms_marco_trec_car",
+            host_name="gustav1.ux.uis.no:9204",
+            k1=args.es_k1,
+            b=args.es_b,
         )
         retrieval(
             args.topics,

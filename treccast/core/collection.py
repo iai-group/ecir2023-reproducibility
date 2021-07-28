@@ -42,7 +42,9 @@ class ElasticSearchIndex(Collection):
     def create_index(self) -> None:
         """Create new index if it does not exist."""
         if not self._es.indices.exists(self._index_name):
-            self._es.indices.create(self._index_name, self.get_index_settings())
+            self._es.indices.create(
+                self._index_name, {"settings": self._get_default_settings()}
+            )
 
     def delete_index(self) -> None:
         """Delete index if exists."""
@@ -51,14 +53,41 @@ class ElasticSearchIndex(Collection):
 
     def reset_index(self) -> None:
         """Deletes index if exists and creates a new one."""
+        print(f"Resetting the index: {self.index_name}")
         self.delete_index()
         self.create_index()
 
-    def get_index_settings(self) -> Dict[str, Union[str, Dict]]:
+    def update_similarity_parameters(self, **kwargs) -> None:
+        """Updates similarity metric for an existing index with a custom
+        configuration. Currently only works with BM25.
+        """
+        self._es.indices.close(self.index_name)
+        self._es.indices.put_settings(
+            {"index": self._get_BM25_similarity(**kwargs)}
+        )
+        self._es.indices.open(self.index_name)
+
+    def _get_default_settings(self) -> Dict[str, Union[str, Dict]]:
         """Returns default index properties. This can be overridden with custom
         properties if needed.
 
         Returns:
             Dictionary with index properties.
         """
-        return {}
+        return {"index": self._get_BM25_similarity()}
+
+    def _get_BM25_similarity(
+        self, b: float = 0.75, k1: float = 1.2
+    ) -> Dict[str, Union[str, Dict]]:
+        """Get dictionary containing settings for the default similarity with
+        custom configuration.
+
+        Args:
+            b (optional): b parameter for BM25. Defaults to 0.75.
+            k1 (optional): k1 parameter for BM25. Defaults to 1.2.
+
+        Returns:
+            Dictionary with index settings with BM25 similarity using custom
+            parameters.
+        """
+        return {"similarity": {"default": {"type": "BM25", "b": b, "k1": k1}}}
