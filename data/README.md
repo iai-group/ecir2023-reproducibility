@@ -20,6 +20,14 @@
     - MS MARCO `msmarco-docs.trecweb` (21G)
     - WaPo `TREC_Washington_Post_collection.v4.trecweb` (3.4G)
 
+## Indices
+
+Elasticsearch server in use is `gustav1.ux.uis.no:9204`
+
+### Y2
+
+  * `ms_marco_trec_car` => Basic inverted index for Y2 without any preprocessing.
+
 ## Qrels
 
   * `qrels/2019.txt`
