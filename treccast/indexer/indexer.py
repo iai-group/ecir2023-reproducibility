@@ -1,16 +1,15 @@
 """Implements abstract class with interfaces of bulk indexing data collections.
 
 Usage:
-    Reseting the default index and indexing MS MARCO and TREC CAST datasets 
+    Reseting the default index and indexing MS MARCO and TREC CAST datasets
     using default paths.
 
-    $ python indexing.py --ms_marco --trec_car --reset
-    
+    $ python indexer.py --ms_marco --trec_car --reset
+
     Indexing only MS MARCO with a custom path to the dataset without resetting
     the index.
-    
-    $ python indexing.py --ms_marco path/to/collection
 
+    $ python indexer.py --ms_marco path/to/collection
 """
 import argparse
 from typing import Dict, Iterator, Union
@@ -29,7 +28,7 @@ DEFAULT_INDEX_NAME = "ms_marco_trec_car"
 DEFAULT_HOST_NAME = "localhost:9204"
 
 
-class Indexing(ElasticSearchIndex):
+class Indexer(ElasticSearchIndex):
     def __init__(
         self, index_name: str, hostname: str = "localhost:9200"
     ) -> None:
@@ -159,7 +158,7 @@ def parse_cmdline_arguments() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_cmdline_arguments()
-    indexing = Indexing(args.index, args.host)
+    indexing = Indexer(args.index, args.host)
     if args.reset:
         indexing.reset_index()
     if args.ms_marco:

@@ -13,10 +13,10 @@ from transformers import (
 import sys
 import os
 
-from treccast.retrieval.reranker.reranker import Reranker
+from treccast.reranker.reranker import Reranker
 from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
-from treccast.retrieval.reranker.pytorch_dataset import (
+from treccast.reranker.pytorch_dataset import (
     PointWiseDataset,
     Batch,
     TrainBatch,

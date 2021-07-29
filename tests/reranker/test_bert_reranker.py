@@ -1,7 +1,7 @@
 import pytest
 
 from treccast.core.ranking import Ranking
-from treccast.retrieval.reranker.bert_reranker import BERTReranker
+from treccast.reranker.bert_reranker import BERTReranker
 from treccast.core.query.query import Query
 
 

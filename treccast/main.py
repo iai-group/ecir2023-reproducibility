@@ -2,9 +2,9 @@
 
 import argparse
 
-from treccast.retrieval.first_pass_retrieval import FirstPassRetrieval
-from treccast.retrieval.bm25_retrieval import BM25Retrieval
-from treccast.retrieval.reranker.reranker import Reranker
+from treccast.retriever.retriever import Retriever
+from treccast.retriever.bm25_retriever import BM25Retriever
+from treccast.reranker.reranker import Reranker
 from treccast.core.topic import construct_topics_from_file
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.sparse_query import SparseQuery
@@ -20,10 +20,8 @@ def rewrite(topics_path: str, output_path: str) -> None:
     pass
 
 
-def _get_first_pass_retrieval(
-    index_name: str, host_name: str, **kwargs
-) -> FirstPassRetrieval:
-    """Runs first pass retrieval.
+def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
+    """Returns (first-pass) retriever instance.
 
     Args:
         index_name: Name of the Elasticsearch index.
@@ -35,22 +33,21 @@ def _get_first_pass_retrieval(
     """
     # Can be expanded with more arguments
     esi = ElasticSearchIndex(index_name, hostname=host_name)
-    return BM25Retrieval(esi, **kwargs)
+    return BM25Retriever(esi, **kwargs)
 
 
-def retrieval(
+def retrieve(
     topics_path: str,
     output_path: str,
-    first_pass_retrieval: FirstPassRetrieval = None,
+    retriever: Retriever = None,
     reranker: Reranker = None,
 ) -> None:
-    """Performs retrieval and saves the results to a TREC runfile.
+    """Performs (first-pass) retrieval and saves the results to a TREC runfile.
 
     Args:
         topics_path: Path to topic input file.
         output_path: Path to output TREC runfile.
-        first_pass_retrieval: First-pass
-            retrieval model. Defaults to None.
+        retriever: First-pass retrieval model. Defaults to None.
         reranker: Reranker model. Defaults to None.
     """
     topics = construct_topics_from_file(topics_path)
@@ -64,7 +61,7 @@ def retrieval(
                 # Context is currently not used.
                 question, _ = topic.get_question_and_context(turn.turn_id)
                 query = SparseQuery(query_id, question)
-                ranking = first_pass_retrieval.retrieve(query)
+                ranking = retriever.retrieve(query)
                 for rank, (doc_id, score) in enumerate(
                     ranking.fetch_topk_docs(1000)
                 ):
@@ -153,15 +150,15 @@ if __name__ == "__main__":
     if args.rewrite:
         rewrite(args.topics, args.rewrite_output)
     if args.retrieval:
-        first_pass_retrieval = _get_first_pass_retrieval(
+        retriever = _get_retriever(
             "ms_marco_trec_car",
             host_name="gustav1.ux.uis.no:9204",
             k1=args.es_k1,
             b=args.es_b,
         )
-        retrieval(
+        retrieve(
             args.topics,
             args.output,
-            first_pass_retrieval=first_pass_retrieval,
+            retriever=retriever,
             reranker=None,
         )

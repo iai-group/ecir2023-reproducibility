@@ -8,7 +8,7 @@ from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
 
 
-class FirstPassRetrieval(ABC):
+class Retriever(ABC):
     def __init__(self, collection: Collection) -> None:
         """Abstract class for first-pass retrieval.
 

@@ -6,7 +6,7 @@ from treccast.core.query import Query
 from treccast.core.context import Context
 
 
-class QueryRewriter(ABC):
+class Rewriter(ABC):
     def __init__(self) -> None:
         pass
 

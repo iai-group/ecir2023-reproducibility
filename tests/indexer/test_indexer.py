@@ -1,5 +1,5 @@
 import pytest
-from treccast.indexing.indexing import Indexing
+from treccast.indexer.indexer import Indexer
 
 MS_MARCO_PASSAGE_DATASET = "tests/data/ms_marco_passage_sample.tsv"
 TREC_CAR_PARAGRAPH_DATASET = "tests/data/trec_car_paragraph_sample.cbor"
@@ -7,12 +7,12 @@ INDEX_NAME = "test_ms_marco_trec_car"
 
 
 @pytest.fixture
-def indexing():
-    return Indexing(INDEX_NAME)
+def indexer():
+    return Indexer(INDEX_NAME)
 
 
-def test_generate_data_marco_first_entry(indexing):
-    generator = indexing.generate_data_marco(MS_MARCO_PASSAGE_DATASET)
+def test_generate_data_marco_first_entry(indexer):
+    generator = indexer.generate_data_marco(MS_MARCO_PASSAGE_DATASET)
     result = next(generator)
 
     assert result["_id"] == "MARCO_0"
@@ -27,8 +27,8 @@ def test_generate_data_marco_first_entry(indexing):
     }
 
 
-def test_generate_data_marco_last_entry(indexing):
-    generator = indexing.generate_data_marco(MS_MARCO_PASSAGE_DATASET)
+def test_generate_data_marco_last_entry(indexer):
+    generator = indexer.generate_data_marco(MS_MARCO_PASSAGE_DATASET)
     result = list(generator)[-1]
 
     assert result["_id"] == "MARCO_99"
@@ -42,8 +42,8 @@ def test_generate_data_marco_last_entry(indexing):
     }
 
 
-def test_generate_data_car(indexing):
-    generator = indexing.generate_data_car(TREC_CAR_PARAGRAPH_DATASET)
+def test_generate_data_car(indexer):
+    generator = indexer.generate_data_car(TREC_CAR_PARAGRAPH_DATASET)
     result = next(generator)
 
     assert result["_id"] == "CAR_00000047dc43083f49b68399c6deeed5c0e81c1f"
@@ -62,8 +62,8 @@ def test_generate_data_car(indexing):
     }
 
 
-def test_generate_data_car_last_entry(indexing):
-    generator = indexing.generate_data_car(TREC_CAR_PARAGRAPH_DATASET)
+def test_generate_data_car_last_entry(indexer):
+    generator = indexer.generate_data_car(TREC_CAR_PARAGRAPH_DATASET)
     result = list(generator)[-1]
 
     assert result["_id"] == "CAR_0000404a1797b531c6f7da0dde5743b78305cf88"

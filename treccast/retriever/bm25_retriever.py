@@ -3,10 +3,10 @@
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.sparse_query import SparseQuery
 from treccast.core.ranking import Ranking
-from treccast.retrieval.first_pass_retrieval import FirstPassRetrieval
+from treccast.retriever.retriever import Retriever
 
 
-class BM25Retrieval(FirstPassRetrieval):
+class BM25Retriever(Retriever):
     def __init__(
         self,
         es_collection: ElasticSearchIndex,
