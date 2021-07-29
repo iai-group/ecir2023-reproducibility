@@ -1,6 +1,7 @@
 name: treccast
 channels:
   - laura-dietz
+  - pytorch
   - conda-forge
   - defaults
 dependencies:
@@ -10,8 +11,11 @@ dependencies:
   - flake8
   - pre-commit
   - pytest
+  - pytorch=1.8
+  - pytorch-lightning=1.4
+  - transformers=4.9.0
   - nltk=3.6.2
   - elasticsearch=7.13.3
   - pip:
-    - cbor==1.0.0
+    - trec-car-tools
   
