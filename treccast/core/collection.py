@@ -63,7 +63,8 @@ class ElasticSearchIndex(Collection):
         """
         self._es.indices.close(self.index_name)
         self._es.indices.put_settings(
-            {"index": self._get_BM25_similarity(**kwargs)}
+            {"index": self._get_BM25_similarity(**kwargs)},
+            index=self._index_name,
         )
         self._es.indices.open(self.index_name)
 

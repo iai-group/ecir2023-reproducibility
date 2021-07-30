@@ -4,7 +4,7 @@ import argparse
 
 from treccast.retriever.retriever import Retriever
 from treccast.retriever.bm25_retriever import BM25Retriever
-from treccast.reranker.reranker import Reranker
+from treccast.reranker.reranker import NeuralReranker, Reranker
 from treccast.core.topic import construct_topics_from_file
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.sparse_query import SparseQuery
@@ -62,6 +62,8 @@ def retrieve(
                 question, _ = topic.get_question_and_context(turn.turn_id)
                 query = SparseQuery(query_id, question)
                 ranking = retriever.retrieve(query)
+                if reranker:
+                    ranking = reranker.rerank(query, ranking)
                 for rank, (doc_id, score) in enumerate(
                     ranking.fetch_topk_docs(1000)
                 ):
@@ -119,6 +121,13 @@ def parse_args() -> argparse.Namespace:
         help="Performs retrieval if specified",
     )
     parser.add_argument(
+        "--reranker",
+        type=str,
+        nargs="?",
+        const="nboost/pt-bert-base-uncased-msmarco",
+        help="Performs reranking if specified",
+    )
+    parser.add_argument(
         "-t",
         "--topics",
         type=str,
@@ -152,7 +161,7 @@ if __name__ == "__main__":
     if args.retrieval:
         retriever = _get_retriever(
             "ms_marco_trec_car",
-            host_name="gustav1.ux.uis.no:9204",
+            host_name="localhost:9204",
             k1=args.es_k1,
             b=args.es_b,
         )
@@ -160,5 +169,5 @@ if __name__ == "__main__":
             args.topics,
             args.output,
             retriever=retriever,
-            reranker=None,
+            reranker=NeuralReranker(args.reranker) if args.reranker else None,
         )

@@ -12,14 +12,26 @@ class Ranking:
 
         Args:
             query_id: Unique id for the query.
-            scored_docs: List of tuples of doc
+            scored_docs: Dict of tuples of doc
                 ids and score pairs.
         """
         # TODO change the Tuple[str, float] in scored_docs to a
         #  {"content": "content str", "score": 10.2}
         # issue https://github.com/iai-group/trec-cast-2021/issues/22
         self._query_id = query_id
-        self._scored_docs = scored_docs if scored_docs is not None else {}
+        self._scored_docs = scored_docs or {}
+
+    def __len__(self):
+        return len(self._scored_docs)
+
+    @property
+    def query_id(self) -> str:
+        return self._query_id
+
+    @property
+    def documents(self) -> List[Tuple[str, str]]:
+        # TODO This should be addressed as part of Issue #22
+        return [(doc_id, doc[0]) for (doc_id, doc) in self._scored_docs.items()]
 
     def add_docs(
         self, scored_docs_list: List[Tuple[str, Tuple[str, float]]]

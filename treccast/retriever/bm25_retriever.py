@@ -39,19 +39,19 @@ class BM25Retriever(Retriever):
         res = self._es.search(
             index=self._index_name,
             q=query.query_text,
-            _source=False,
+            _source=True,
             size=num_results,
         )
         ranking = Ranking(query.query_id)
         for hit in res["hits"]["hits"]:
-            ranking.add_doc(hit["_id"], None, hit["_score"])
+            ranking.add_doc(hit["_id"], hit["_source"]["body"], hit["_score"])
         return ranking
 
 
 if __name__ == "__main__":
     # Example usage.
     esi = ElasticSearchIndex("ms_marco", hostname="localhost:9204")
-    bm25 = BM25Retrieval(esi)
+    bm25 = BM25Retriever(esi)
     query = SparseQuery(
         "81_1", "How do you know when your garage door opener is going bad?"
     )

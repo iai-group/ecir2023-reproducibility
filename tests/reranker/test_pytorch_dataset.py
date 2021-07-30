@@ -1,7 +1,7 @@
 import pytest
 
 from treccast.core.ranking import Ranking
-from treccast.reranker.pytorch_dataset import PointWiseDataset
+from treccast.reranker.train.pytorch_dataset import PointWiseDataset
 from treccast.core.query.query import Query
 
 
