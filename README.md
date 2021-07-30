@@ -20,23 +20,29 @@ Our system follows a conventional conversational passage retrieval pipeline (see
 
 ## Experiments 2020
 
-Evaluation scores are generated using trec_eval:
+Evaluation scores are generated using trec_eval (note that relevance threshold is >=2 for binary measures!):
 ```
-$ {TREC_EVAL_PATH}/trec_eval -m all_trec data/qrels/2020.txt data/runs-2020/{RUNID}.trec
+$ {TREC_EVAL_PATH}/trec_eval -m all_trec -l2 data/qrels/2020.txt data/runs-2020/{RUNID}.trec
 ```
 
   * It assumes that [trec_eval](https://github.com/usnistgov/trec_eval) is installed locally under `{TREC_EVAL_PATH}`.
 
-| *Method* | *Script* | *Index* | *MAP* | *MRR* | *NDCG* | *NDCG@5* | *recall@1000* |
-| -- | -- | -- | -- | -- | -- | -- | -- |
-| BM25 (default parameters) | `scripts/cast_bm25_default.sh` | `ms_marco_trec_car` | 0.0409 | 0.1780 | 0.1247 | 0.0614 ||
-| BM25 (k1=4.46, b=0.82) | `scripts/cast_bm25_optimized.sh` | `ms_marco_trec_car` | 0.0229 | 0.1259 | 0.0870 | 0.0373 ||
-| BM25+BERT base (default parameters) | `scripts/cast_bm25_default_rerank.sh` | `ms_marco_trec_car` | 0.0938 | 0.3053 | 0.1801 | 0.1586 | 0.2326 |
-| *Reference* ||||||
-| Best @TREC2020 || 0.302 | 0.593 | 0.526 | ||
-| TREC Organzers' auto baseline || 0.134 | 0.408 | 0.284 | ||
+There should be a script corresponding to each table row containing the exact parameterization.
+Scripts are to be run from root.
 
-Running first-pass BM25 ranker on 2020 data:
-```
-  scripts/cast_bm25.sh 
-```
+| *Method* | *Query rewriting* | *recall@1000* | *MAP* | *MRR* | *NDCG* | *NDCG@5* |
+| -- | -- | -- | -- | -- | -- | -- |
+| [BM25](scripts/2020/cast_bm25_default.sh) | None (raw) | 0.2093 | 0.0293 | 0.1080 | 0.1247 | 0.0614 |
+| BM25 | Automatic | | | | | |
+| BM25 | Manual | | | | | |
+| [BM25+BERT base](scripts/2020/cast_bm25_default_rerank.sh) | None (raw) | 0.2093 | 0.0792 | 0.2291 | 0.1801 | 0.1586 |
+| BM25+BERT base | Automatic | | | | | |
+| BM25+BERT base | Manual | | | | | |
+| *Reference* |||||
+| Organizers' baseline (??) | None (raw) | 0.1480 | 0.0658 | 0.2245 | 0.1437 | 0.1591 |
+| Organizers' baseline (BERT) | Automatic | 0.3084 | 0.1344 | 0.4084 | 0.2840 | 0.2865 |
+| Organizers' baseline (BERT) | Manual | 0.4981 | 0.2524 | 0.6516 | 0.4513 | 0.4609 |
+| Organizers' baseline (SDM) | Manual | 0.7701 | 0.1949 | 0.4794 | 0.4926 | 0.3113 |
+| Best @TREC2020 (grill_bmDuo) | Manual | 0.747 | 0.302 | 0.684 | 0.571 | |
+| Best @TREC2020 (h2oloo_RUN4) | Automatic | 0.633 | 0.302 | 0.593 | 0.526 | |
+| Best @TREC2020 w/ canonical results (h2oloo_RUN2) | Automatic | 0.705 | 0.326 | 0.621 | 0.575 |
