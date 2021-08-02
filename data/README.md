@@ -29,7 +29,16 @@ Elasticsearch server in use is `gustav1.ux.uis.no:9204`
   * `ms_marco_trec_car` => Basic inverted index without any preprocessing.
   * `ms_marco_trec_car_clean` => Inverted index with stopword removal and KStemming.
 
+## Topics
+
+  * Under `topics/2020` and `topics/2021` for Y2 and Y3, respectively.
+  * *TODO: explain which files/fields are used for manual/automatic query rewrites.*
+
 ## Qrels
 
   * `qrels/2019.txt`
   * `qrels/2020.txt` (Note: Turns with fewer than three relevant documents do not appear in the judgment file)
+
+## Rewrites
+
+  * Under `rewrites/2019` and `topics/2020` for Y1 and Y2, respectively.

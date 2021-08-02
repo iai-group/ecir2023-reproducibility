@@ -8,7 +8,7 @@ import pytest
 @pytest.fixture
 def topics():
     filepath = (
-        "data/topics-2020/automatic_evaluation_topics_annotated_v1.1.json"
+        "data/topics/2020/automatic_evaluation_topics_annotated_v1.1.json"
     )
     return construct_topics_from_file(filepath)
 
