@@ -22,14 +22,14 @@ def dummy_queries():
 @pytest.fixture
 def dummy_rankings():
     ranking1 = Ranking("0")
-    ranking1.add_doc("1", "doc1 content", 50.62)
-    ranking1.add_doc("2", "doc2 content", 1.52)
-    ranking1.add_doc("3", "doc3 content", 80.22)
+    ranking1.add_doc("1", 50.62, "doc1 content")
+    ranking1.add_doc("2", 1.52, "doc2 content")
+    ranking1.add_doc("3", 80.22, "doc3 content")
 
     ranking2 = Ranking("1")
-    ranking2.add_doc("1", "doc1 content", 20.43)
-    ranking2.add_doc("4", "doc4 content", 12.3)
-    ranking2.add_doc("5", "doc3 content", 100)
+    ranking2.add_doc("1", 20.43, "doc1 content")
+    ranking2.add_doc("4", 12.3, "doc4 content")
+    ranking2.add_doc("5", 100, "doc3 content")
 
     return [ranking1, ranking2]
 

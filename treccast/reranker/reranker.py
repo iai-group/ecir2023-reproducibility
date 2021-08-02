@@ -70,13 +70,18 @@ class NeuralReranker(Reranker):
         Returns:
             Ranking containing new scores for each document.
         """
-        doc_ids, documents = list(zip(*ranking.documents))
+        doc_ids, documents = ranking.documents
         logits = self._get_logits(query.question, documents)
 
-        new_ranking = Ranking(ranking.query_id)
-        for (logit, doc_id) in zip(logits, doc_ids):
-            new_ranking.add_doc(doc_id, None, logit[1])
-        return new_ranking
+        # Note: logit[0] corresponds to the document not being relevant and
+        # logit[1] corresponds to the document being relevant.
+        return Ranking(
+            ranking.query_id,
+            [
+                {"doc_id": doc_id, "score": logit[1]}
+                for (logit, doc_id) in zip(logits, doc_ids)
+            ],
+        )
 
     def _get_logits(self, query: str, documents: List[str]) -> ndarray:
         """Returns logits from the neural model.
@@ -86,8 +91,8 @@ class NeuralReranker(Reranker):
             documents: List of documents to evaluate.
 
         Returns:
-            Numpy array containing non-relevant and relevant scores for each
-                document.
+            Numpy array containing two values for each document: the probability
+                of the document being non-relevant [0] and relevant [1].
         """
         # TODO Split into manageable batch sizes.
         # https://github.com/iai-group/trec-cast-2021/issues/66
@@ -138,25 +143,26 @@ if __name__ == "__main__":
     ranking1 = Ranking("qid_0")
     ranking1.add_doc(
         "1",
+        50.62,
         "Many people search for âstandard garage door sizesâ on a daily "
         "basis. However there are many common size garage door widths and"
         "heights but the standard size is probably more a matter of the age"
         "of your home and what area of the town, state, or country that you "
         "live in. There are a number of standard sizes for residential garage "
         "doors in the United States.",
-        50.62,
     )
     ranking1.add_doc(
         "2",
+        1.52,
         "The presence of communication amid scientific minds was equally"
         "important to the success of the Manhattan Project as scientific"
         "intellect was. The only cloud hanging over the impressive achievement"
         " of the atomic researchers and engineers is what their success truly "
         "meant; hundreds of thousands of innocent lives obliterated.",
-        1.52,
     )
     ranking1.add_doc(
         "3",
+        80.22,
         "Garage Door Opener Problems. So, when the garage door opener decides "
         "to take a day off, it can leave you stuck outside, probably during a "
         "rain or snow storm. Though they may seem complicated, there really are"
@@ -165,12 +171,12 @@ if __name__ == "__main__":
         "the bottom of the door, use a flat shovel or similar tool to chip away"
         "at the ice. Once you get the door open, clear any water, ice or snow "
         "from the spot on the garage floor where the door rests when closed",
-        80.22,
     )
 
     ranking2 = Ranking("qid_1")
     ranking2.add_doc(
         "1",
+        20.43,
         "Typically, it will cost less to install a steel garage door without an"
         " opener than to install a custom wood door with a garage door opener. "
         "Recent innovations have also yielded high-tech doors with thick "
@@ -180,20 +186,20 @@ if __name__ == "__main__":
         " door. Rest assured it is a smart investment. In fact, installing a "
         "new garage door yields about 84 percent in resale value, according to "
         "Remodeling Magazine",
-        20.43,
     )
     ranking2.add_doc(
         "4",
+        12.3,
         "Organize volunteer community panels, boards, or committees that meet "
         "with the offender to discuss the incident and offender obligation to "
         "repair the harm to victims and community members. Facilitate the "
         "process of apologies to victims and communities. Invite local victim "
         "advocates to provide ongoing victim-awareness training for probation "
         "staff",
-        12.3,
     )
     ranking2.add_doc(
         "5",
+        100,
         "Purchasing extra remotes and getting openers set up for operation will"
         " typically range from $100 to $400, which will add to the overall cost"
         " of the garage door installation. If your opener works with the new "
@@ -201,7 +207,6 @@ if __name__ == "__main__":
         "door is much heavier than the old door, however, the old garage door "
         "opener won't be able to handle the extra weight. This is something to "
         "keep in mind when you're shopping for a new garage door.",
-        100,
     )
 
     query1 = Query(

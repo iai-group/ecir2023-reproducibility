@@ -69,22 +69,7 @@ def retrieve(
                 ranking = retriever.retrieve(query)
                 if reranker:
                     ranking = reranker.rerank(query, ranking)
-                for rank, (doc_id, score) in enumerate(
-                    ranking.fetch_topk_docs(1000)
-                ):
-                    f_out.write(
-                        " ".join(
-                            [
-                                query_id,
-                                "Q0",
-                                doc_id,
-                                str(rank + 1),
-                                str(score[1]),
-                                "BM25",
-                            ]
-                        )
-                        + "\n"
-                    )
+                ranking.write_to_file(f_out, run_id="BM25", k=1000)
 
 
 def parse_args() -> argparse.Namespace:

@@ -56,10 +56,17 @@ class BM25Retriever(Retriever):
             )
             res = self._retrieve(query.question, num_results)
 
-        ranking = Ranking(query.query_id)
-        for hit in res["hits"]["hits"]:
-            ranking.add_doc(hit["_id"], hit["_source"]["body"], hit["_score"])
-        return ranking
+        return Ranking(
+            query.query_id,
+            [
+                {
+                    "doc_id": hit["_id"],
+                    "score": hit["_score"],
+                    "content": hit["_source"]["body"],
+                }
+                for hit in res["hits"]["hits"]
+            ],
+        )
 
     def _retrieve(self, query: str, num_results: int = 1000) -> Dict[str, Any]:
         """Performs retrieval with ES analyzer.

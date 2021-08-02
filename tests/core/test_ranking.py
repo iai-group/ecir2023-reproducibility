@@ -1,47 +1,59 @@
 """Tests Ranking class from Ranker"""
-import pytest
+from io import StringIO
 
 from treccast.core.ranking import Ranking
 
 
-@pytest.fixture
-def empty_ranker():
-    return Ranking("0")
+def test_empty_ranking():
+    ranking = Ranking("0")
+    assert ranking.fetch_topk_docs(1) == []
+    assert len(ranking) == 0
 
 
-def test_empty_ranker(empty_ranker):
-    assert empty_ranker.fetch_topk_docs(1) == []
-
-
-def test_add_docs(empty_ranker):
-    empty_ranker.add_docs(
-        [
-            ("3", ("doc3 content", 80.22)),
-            ("1", ("doc1 content", 50.62)),
-            ("2", ("doc2 content", 1.52)),
-        ]
-    )
-    assert empty_ranker.get_doc_score("1") == 50.62
-    assert empty_ranker.get_doc_score("2") == 1.52
-    assert empty_ranker.get_doc_score("3") == 80.22
-
-
-def test_add_doc(empty_ranker):
-    empty_ranker.add_doc("1", "doc1 content", 50.62)
-    assert empty_ranker.get_doc_score("1") == 50.62
-
-
-def test_update_doc(empty_ranker):
-    empty_ranker.add_doc("1", "doc1 content", 50.62)
-    empty_ranker.set_doc_score("1", 1.52)
-    assert empty_ranker.get_doc_score("1") == 1.52
-
-
-def test_fetch_topk_docs(empty_ranker):
-    empty_ranker.add_doc("1", "doc1 content", 50.62)
-    empty_ranker.add_doc("2", "doc2 content", 1.52)
-    empty_ranker.add_doc("3", "doc3 content", 80.22)
-    assert empty_ranker.fetch_topk_docs(2) == [
-        ("3", ("doc3 content", 80.22)),
-        ("1", ("doc1 content", 50.62)),
+def test_add_doc():
+    ranking = Ranking("1")
+    ranking.add_doc("3", 80.22, "doc3 content")
+    ranking.add_doc("1", 50.62, "doc1 content")
+    ranking.add_doc("2", 1.52, "doc2 content")
+    assert len(ranking) == 3
+    doc_ids, contents = ranking.documents()
+    assert doc_ids == ["3", "1", "2"]
+    assert contents == [
+        "doc3 content",
+        "doc1 content",
+        "doc2 content",
     ]
+
+
+def test_fetch_topk_docs():
+    ranking = Ranking("2")
+    ranking.add_doc("1", 50.62, "doc1 content")
+    ranking.add_doc("2", 1.52, "doc2 content")
+    ranking.add_doc("3", 80.22, "doc3 content")
+    top2docs = ranking.fetch_topk_docs(2)
+    assert top2docs[0] == {
+        "doc_id": "3",
+        "score": 80.22,
+        "content": "doc3 content",
+    }
+    assert top2docs[1] == {
+        "doc_id": "1",
+        "score": 50.62,
+        "content": "doc1 content",
+    }
+
+
+def test_write_to_file():
+    outfile = StringIO()
+    ranking = Ranking(
+        "123",
+        [
+            {"doc_id": "001", "score": 10},
+            {"doc_id": "003", "score": 1},
+            {"doc_id": "002", "score": 5},
+        ],
+    )
+    ranking.write_to_file(outfile, "test", k=2)
+    outfile.seek(0)
+    content = outfile.read()
+    assert content == "123 Q0 001 1 10 test\n123 Q0 002 2 5 test\n"

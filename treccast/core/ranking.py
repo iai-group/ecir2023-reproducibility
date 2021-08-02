@@ -1,25 +1,23 @@
 """Represents a ranked list of items."""
 
-from typing import Dict, List, Tuple, Optional
+import io
+from typing import Dict, List, Tuple
 
 
 class Ranking:
-    def __init__(
-        self, query_id: str, scored_docs: Dict[str, Tuple[str, float]] = None
-    ) -> None:
-        """Instantiates a Ranking object using the query_id and a doc_id and
-            score dictionary.
+    def __init__(self, query_id: str, scored_docs: List[Dict] = None) -> None:
+        """Instantiates a Ranking object using the query_id and a list of scored
+        documents.
+
+        Documents are stored unordered; sorting is done when fetching them.
 
         Args:
             query_id: Unique id for the query.
-            scored_docs: Dict of tuples of doc
-                ids and score pairs.
+            scored_docs: List of dictionaries, where the keys `doc_id` and
+                `score` are mandatory, and `content` is optional.
         """
-        # TODO change the Tuple[str, float] in scored_docs to a
-        #  {"content": "content str", "score": 10.2}
-        # issue https://github.com/iai-group/trec-cast-2021/issues/22
         self._query_id = query_id
-        self._scored_docs = scored_docs or {}
+        self._scored_docs = scored_docs or []
 
     def __len__(self):
         return len(self._scored_docs)
@@ -28,72 +26,74 @@ class Ranking:
     def query_id(self) -> str:
         return self._query_id
 
-    @property
-    def documents(self) -> List[Tuple[str, str]]:
-        # TODO This should be addressed as part of Issue #22
-        return [(doc_id, doc[0]) for (doc_id, doc) in self._scored_docs.items()]
-
-    def add_docs(
-        self, scored_docs_list: List[Tuple[str, Tuple[str, float]]]
-    ) -> None:
-        """Adds a list of doc_id, score tuples to the dictionary.
-            It updates existing entries.
-
-        Args:
-            scored_docs_list: List of doc_id,
-                score tuples.
-        """
-        self._scored_docs.update(dict(scored_docs_list))
-
-    def add_doc(self, doc_id: str, doc_content: str, score: float) -> None:
-        """Adds a new score of a doc, given the doc_id.
-
-        Args:
-            doc_id (str): Unique id for the doc.
-            doc_content (str): String content of the document.
-            score (float): The relevance score of the doc.
-        """
-        self._scored_docs[doc_id] = (doc_content, score)
-
-    def set_doc_score(self, doc_id: str, score: float) -> None:
-        """Updates an existing score of a doc, given the doc_id.
-
-        Args:
-            doc_id: Unique id for the doc.
-            score: The relevance score of the doc.
-        """
-        if doc_id in self._scored_docs:
-            self._scored_docs[doc_id] = (self._scored_docs[doc_id][0], score)
-
-    def get_doc_score(self, doc_id: str) -> Optional[float]:
-        """Returns the score of the given doc id.
-
-        Args:
-            doc_id: Unique id for the doc.
+    def documents(self) -> Tuple[List[str], List[str]]:
+        """Returns documents and their contents.
 
         Returns:
-            The relevance score of the doc.
+            Two parallel lists, containing document IDs and their content.
         """
-        return (
-            self._scored_docs[doc_id][1]
-            if doc_id in self._scored_docs
-            else None
+        return [doc["doc_id"] for doc in self._scored_docs], [
+            doc.get("content") for doc in self._scored_docs
+        ]
+
+    def add_doc(
+        self, doc_id: str, score: float, doc_content: str = None
+    ) -> None:
+        """Adds a new document to the ranking.
+
+        Note: it doesn't check whether the document is already present.
+
+        Args:
+            doc_id: Document ID.
+            score: The relevance score of the doc.
+            doc_content (optional): String content of the document.
+        """
+        self._scored_docs.append(
+            {"doc_id": doc_id, "score": score, "content": doc_content}
         )
 
-    def fetch_topk_docs(self, k: int = 1000) -> List[Tuple[str, float]]:
-        """Fetches the top k docs based on their score.
+    def fetch_topk_docs(self, k: int = 1000) -> List[Dict]:
+        """Fetches the top-k docs based on their score.
 
             If k > len(self._scored_docs), the slicing automatically
             returns all elements in the list in sorted order.
-            Returns an empty array if there are no documents added to the
-            ranker.
+            Returns an empty array if there are no documents in the ranking.
 
         Args:
             k: Number of docs to fetch.
 
         Returns:
-            Ordered list of doc_id, score tuples.
+            Ordered list of dictionaries with doc_id, score, and (optional)
+                content fields.
         """
-        return sorted(
-            self._scored_docs.items(), key=lambda x: x[1][1], reverse=True
-        )[:k]
+        return [
+            doc
+            for doc in sorted(
+                self._scored_docs, key=lambda i: i["score"], reverse=True
+            )
+        ][:k]
+
+    def write_to_file(
+        self, f_out: io.StringIO, run_id: str = "Undefined", k: int = 1000
+    ) -> None:
+        """Writes the top-k documents into an output TREC runfile.
+
+        Args:
+            f_out: Text file object open for writing.
+            run_id (optional): Run ID. Defaults to "Undefined".
+            k (optional): Number of documents to output. Defaults to 1000.
+        """
+        for rank, doc in enumerate(self.fetch_topk_docs(k)):
+            f_out.write(
+                " ".join(
+                    [
+                        self._query_id,
+                        "Q0",
+                        doc["doc_id"],
+                        str(rank + 1),
+                        str(doc["score"]),
+                        run_id,
+                    ]
+                )
+                + "\n"
+            )

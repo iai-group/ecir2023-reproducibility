@@ -37,10 +37,7 @@ class PointWiseDataset(Dataset):
         self._queries = queries
         self._rankings = rankings
         self._query_doc_pairs = [
-            # TODO need to change the doc to a dict instead of tuple to avoid
-            # index hardcoding see
-            # https://github.com/iai-group/trec-cast-2021/issues/22
-            (query._question, doc[1][0])
+            (query._question, doc["content"])
             for query, ranking in zip(self._queries, self._rankings)
             for doc in ranking.fetch_topk_docs()
         ]
