@@ -14,7 +14,7 @@
   * Raw collections
     - [KILT Wikipedia](https://github.com/facebookresearch/KILT/) => `$COLLECTIONS/kilt/kilt_knowledgesource.json` (35G)
     - [MS MARCO (Documents)](https://github.com/microsoft/MSMARCO-Document-Ranking) => `$COLLECTIONS/msmarco-doc/msmarco-docs.tsv.gz` (7.9G)
-    - [Washington Post 2020](https://trec.nist.gov/data/wapost/) => **TO DOWNLOAD**
+    - [Washington Post 2020](https://trec.nist.gov/data/wapost/) => `$COLLECTIONS/wapo/WashingtonPost.v4.tar.gz` (2.4G)
   * Pre-processed collections (in TREC Web format) provided by the organizers => `$COLLECTIONS/trec-cast-y3`
     - KILT `kilt_knowledgesource.trecweb` (18G)
     - MS MARCO `msmarco-docs.trecweb` (21G)
