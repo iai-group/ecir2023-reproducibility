@@ -33,6 +33,7 @@ Scripts are to be run from root.
 | *Method* | *Query rewriting* | *recall@1000* | *MAP* | *MRR* | *NDCG* | *NDCG@5* |
 | -- | -- | -- | -- | -- | -- | -- |
 | [BM25](scripts/2020/cast_bm25_default.sh) | None (raw) | 0.2093 | 0.0293 | 0.1080 | 0.1247 | 0.0614 |
+| [BM25 (Stopword, KStem)](scripts/2020/cast_bm25_clean.sh) | None (raw) | 0.2608 | 0.0385 | 0.1078 | 0.1509 | 0.0787 |
 | BM25 | Automatic | | | | | |
 | BM25 | Manual | | | | | |
 | [BM25+BERT base](scripts/2020/cast_bm25_default_rerank.sh) | None (raw) | 0.2093 | 0.0792 | 0.2291 | 0.1801 | 0.1586 |

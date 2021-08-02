@@ -2,6 +2,8 @@
 
 To index the TREC CAR dataset we use [trec_car_tools](https://github.com/TREMA-UNH/trec-car-tools). 
 
+This module needs to be installed manually according to the instructions on their GitHub page.
+
 
 ## Usage
 

@@ -1,7 +1,7 @@
 """Interfaces for collections."""
 
 from abc import ABC
-from typing import Dict, Union
+from typing import Any, Dict
 
 from elasticsearch.client import Elasticsearch
 
@@ -39,11 +39,24 @@ class ElasticSearchIndex(Collection):
     def es(self) -> Elasticsearch:
         return self._es
 
-    def create_index(self) -> None:
-        """Create new index if it does not exist."""
+    def create_index(self, use_analyzer: bool = True) -> None:
+        """Create new index if it does not exist.
+
+
+        Args:
+            use_analyzer (optional): If True, use analyser to index and search
+                documents. Defaults to True.
+        """
         if not self._es.indices.exists(self._index_name):
-            self._es.indices.create(
-                self._index_name, {"settings": self._get_default_settings()}
+            settings = self._get_default_settings()
+            if use_analyzer:
+                settings.update(self._get_analysis_settings())
+            self._es.indices.create(self._index_name, {"settings": settings})
+            print(
+                "New Index: ",
+                self._index_name,
+                "\n",
+                self._es.indices.get_settings()[self._index_name],
             )
 
     def delete_index(self) -> None:
@@ -51,24 +64,18 @@ class ElasticSearchIndex(Collection):
         if self._es.indices.exists(self._index_name):
             self._es.indices.delete(self._index_name)
 
-    def reset_index(self) -> None:
-        """Deletes index if exists and creates a new one."""
-        print(f"Resetting the index: {self.index_name}")
-        self.delete_index()
-        self.create_index()
-
     def update_similarity_parameters(self, **kwargs) -> None:
         """Updates similarity metric for an existing index with a custom
         configuration. Currently only works with BM25.
         """
-        self._es.indices.close(self.index_name)
+        self._es.indices.close(self._index_name)
         self._es.indices.put_settings(
             {"index": self._get_BM25_similarity(**kwargs)},
             index=self._index_name,
         )
-        self._es.indices.open(self.index_name)
+        self._es.indices.open(self._index_name)
 
-    def _get_default_settings(self) -> Dict[str, Union[str, Dict]]:
+    def _get_default_settings(self) -> Dict[str, Any]:
         """Returns default index properties. This can be overridden with custom
         properties if needed.
 
@@ -79,7 +86,7 @@ class ElasticSearchIndex(Collection):
 
     def _get_BM25_similarity(
         self, b: float = 0.75, k1: float = 1.2
-    ) -> Dict[str, Union[str, Dict]]:
+    ) -> Dict[str, Any]:
         """Get dictionary containing settings for the default similarity with
         custom configuration.
 
@@ -92,3 +99,12 @@ class ElasticSearchIndex(Collection):
             parameters.
         """
         return {"similarity": {"default": {"type": "BM25", "b": b, "k1": k1}}}
+
+    def _get_analysis_settings(self) -> Dict[str, Any]:
+        """Elasticsearch analyzer. Should be overwritten if needed.
+
+        Returns:
+            Dictionary containing Elasticsearch configuration.
+        """
+
+        return {"analysis": {}}

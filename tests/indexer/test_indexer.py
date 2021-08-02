@@ -1,6 +1,7 @@
 import pytest
-from treccast.indexer.indexer import Indexer
+from treccast.indexer.indexer import Indexer, parse_file
 
+MS_MARCO_PASSAGE_DATASET_GZ = "tests/data/ms_marco_passage_sample.tar.gz"
 MS_MARCO_PASSAGE_DATASET = "tests/data/ms_marco_passage_sample.tsv"
 TREC_CAR_PARAGRAPH_DATASET = "tests/data/trec_car_paragraph_sample.cbor"
 INDEX_NAME = "test_ms_marco_trec_car"
@@ -9,6 +10,22 @@ INDEX_NAME = "test_ms_marco_trec_car"
 @pytest.fixture
 def indexer():
     return Indexer(INDEX_NAME)
+
+
+@pytest.mark.parametrize(
+    "filepath", [MS_MARCO_PASSAGE_DATASET_GZ, MS_MARCO_PASSAGE_DATASET]
+)
+def test_parse_file(filepath):
+    filepath = MS_MARCO_PASSAGE_DATASET
+    first_line = next(parse_file(filepath))
+    assert first_line == (
+        "0\tThe presence of communication amid "
+        "scientific minds was equally important to the success of the Manhattan"
+        " Project as scientific intellect was. The only cloud hanging over the "
+        "impressive achievement of the atomic researchers and engineers is what"
+        " their success truly meant; hundreds of thousands of innocent lives "
+        "obliterated.\n"
+    )
 
 
 def test_generate_data_marco_first_entry(indexer):

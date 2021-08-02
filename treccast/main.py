@@ -8,6 +8,7 @@ from treccast.reranker.reranker import NeuralReranker, Reranker
 from treccast.core.topic import construct_topics_from_file
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.sparse_query import SparseQuery
+from treccast.core.query.preprocessing.tokenizer import SimpleTokenizer
 
 DEFAULT_TOPIC_INPUT_PATH = (
     "data/topics-2020/automatic_evaluation_topics_annotated_v1.1.json"
@@ -40,6 +41,7 @@ def retrieve(
     topics_path: str,
     output_path: str,
     retriever: Retriever = None,
+    preprocess: bool = False,
     reranker: Reranker = None,
 ) -> None:
     """Performs (first-pass) retrieval and saves the results to a TREC runfile.
@@ -48,6 +50,7 @@ def retrieve(
         topics_path: Path to topic input file.
         output_path: Path to output TREC runfile.
         retriever: First-pass retrieval model. Defaults to None.
+        preprocess: If True use query preprocessing. Defaults to False.
         reranker: Reranker model. Defaults to None.
     """
     topics = construct_topics_from_file(topics_path)
@@ -60,7 +63,9 @@ def retrieve(
                 print(query_id)
                 # Context is currently not used.
                 question, _ = topic.get_question_and_context(turn.turn_id)
-                query = SparseQuery(query_id, question)
+                query = SparseQuery(
+                    query_id, question, SimpleTokenizer if preprocess else None
+                )
                 ranking = retriever.retrieve(query)
                 if reranker:
                     ranking = reranker.rerank(query, ranking)
@@ -121,6 +126,11 @@ def parse_args() -> argparse.Namespace:
         help="Performs retrieval if specified",
     )
     parser.add_argument(
+        "--preprocess",
+        action="store_true",
+        help="Use custom query preprocessing",
+    )
+    parser.add_argument(
         "--reranker",
         type=str,
         nargs="?",
@@ -134,6 +144,13 @@ def parse_args() -> argparse.Namespace:
         nargs="?",
         const=DEFAULT_TOPIC_INPUT_PATH,
         help="Performs retrieval using the specified path",
+    )
+    parser.add_argument(
+        "--es.index",
+        metavar="index",
+        dest="es_index",
+        default="ms_marco_trec_car",
+        help="Elasticsearch index",
     )
     parser.add_argument(
         "--es.k1",
@@ -160,7 +177,7 @@ if __name__ == "__main__":
         rewrite(args.topics, args.rewrite_output)
     if args.retrieval:
         retriever = _get_retriever(
-            "ms_marco_trec_car",
+            args.es_index,
             host_name="localhost:9204",
             k1=args.es_k1,
             b=args.es_b,
@@ -169,5 +186,6 @@ if __name__ == "__main__":
             args.topics,
             args.output,
             retriever=retriever,
+            preprocess=args.preprocess,
             reranker=NeuralReranker(args.reranker) if args.reranker else None,
         )

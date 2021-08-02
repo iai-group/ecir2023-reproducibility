@@ -1,5 +1,6 @@
 """BM25 retrieval using ElasticSearch."""
 
+from typing import Any, Dict
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.sparse_query import SparseQuery
 from treccast.core.ranking import Ranking
@@ -36,16 +37,67 @@ class BM25Retriever(Retriever):
         Returns:
             Document ranking.
         """
-        res = self._es.search(
-            index=self._index_name,
-            q=query.query_text,
-            _source=True,
-            size=num_results,
-        )
+        # TODO Improve logging.
+        # See https://github.com/iai-group/trec-cast-2021/issues/37
+        if query.tokenizer:
+            print("Retrieving using query:\n", query.preprocessed_query)
+            res = self._retrieve_without_analyzer(
+                query.preprocessed_query, num_results
+            )
+        else:
+            print(
+                "Retrieving using query:\n",
+                " ".join(
+                    token["token"]
+                    for token in self._es.indices.analyze(
+                        body={"text": query.question}, index=self._index_name
+                    )["tokens"]
+                ),
+            )
+            res = self._retrieve(query.question, num_results)
+
         ranking = Ranking(query.query_id)
         for hit in res["hits"]["hits"]:
             ranking.add_doc(hit["_id"], hit["_source"]["body"], hit["_score"])
         return ranking
+
+    def _retrieve(self, query: str, num_results: int = 1000) -> Dict[str, Any]:
+        """Performs retrieval with ES analyzer.
+
+        Args:
+            query: Search string.
+            num_results (optional): Number of documents to return (defaults
+                to 1000).
+        Returns:
+            ES search results dictionary.
+        """
+        body = {"query": {"match": {"body": {"query": query}}}}
+        return self._es.search(
+            body=body,
+            index=self._index_name,
+            _source=False,
+            size=num_results,
+        )
+
+    def _retrieve_without_analyzer(
+        self, query: str, num_results: int = 1000
+    ) -> Dict[str, Any]:
+        """Performs retrieval without ES analyzer. Used for reproducing default
+        results. Depreciated!
+
+        Args:
+            query: Search string.
+            num_results (optional): Number of documents to return. Defaults to 1000.
+
+        Returns:
+            ES search results dictionary.
+        """
+        return self._es.search(
+            index=self._index_name,
+            q=query,
+            _source=False,
+            size=num_results,
+        )
 
 
 if __name__ == "__main__":

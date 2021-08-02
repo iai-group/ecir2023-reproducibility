@@ -26,7 +26,8 @@ Elasticsearch server in use is `gustav1.ux.uis.no:9204`
 
 ### Y2
 
-  * `ms_marco_trec_car` => Basic inverted index for Y2 without any preprocessing.
+  * `ms_marco_trec_car` => Basic inverted index without any preprocessing.
+  * `ms_marco_trec_car_clean` => Inverted index with stopword removal and KStemming.
 
 ## Qrels
 
