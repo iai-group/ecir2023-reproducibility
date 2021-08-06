@@ -26,7 +26,7 @@ os.environ["MASTER_ADDR"] = "localhost"
 os.environ["MASTER_PORT"] = "12555"
 
 
-class BERTReranker(LightningModule):
+class BERTRerankModule(LightningModule):
     def __init__(
         self,
         queries: List[Query],
@@ -431,7 +431,7 @@ if __name__ == "__main__":
     # Uncomment this if you want to use multi-gpu training
     # dist.init_process_group("gloo", rank=1, world_size=1)
     rankings = [ranking1, ranking2]
-    ap = BERTReranker.add_model_specific_args()
+    ap = BERTRerankModule.add_model_specific_args()
     # Change the bert_type to something which pretrained for ms-marco passage
     # ranking for example, this huggingface model
     # "bert_type=nboost/pt-bert-base-uncased-msmarco"".
@@ -439,9 +439,9 @@ if __name__ == "__main__":
     ap_dict = ap.parse_args().__dict__
     print(ap_dict["bert_type"])
     # Create a pytorch-lightning trainer with all the training arguments
-    trainer = BERTReranker.get_lightning_trainer(ap)
+    trainer = BERTRerankModule.get_lightning_trainer(ap)
     # Create a BERT ranker which has a linear classification head on top of BERT
-    bert_reranker = BERTReranker(queries, rankings, ap_dict)
+    bert_reranker = BERTRerankModule(queries, rankings, ap_dict)
     # trainer.fit trains the model by calling the train_dataloader and
     #  training_step
     trainer.fit(bert_reranker)

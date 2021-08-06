@@ -5,7 +5,9 @@ import argparse
 from treccast.rewriter.rewriter import Rewriter, CachedRewriter
 from treccast.retriever.retriever import Retriever
 from treccast.retriever.bm25_retriever import BM25Retriever
-from treccast.reranker.reranker import NeuralReranker, Reranker
+from treccast.reranker.reranker import Reranker
+from treccast.reranker.bert_reranker import BERTReranker
+from treccast.reranker.t5_reranker import T5Reranker
 from treccast.core.topic import construct_topics_from_file
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.sparse_query import SparseQuery
@@ -131,8 +133,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--reranker",
         type=str,
-        nargs="?",
-        const="nboost/pt-bert-base-uncased-msmarco",
+        choices=["bert", "t5"],
         help="Performs reranking if specified",
     )
     parser.add_argument(
@@ -175,6 +176,13 @@ def main(args):
     """
     if args.rewrite:
         rewriter = _get_rewriter(args.rewrite_path)
+
+    reranker = None
+    if args.reranker == "bert":
+        reranker = BERTReranker()
+    if args.reranker == "t5":
+        reranker = T5Reranker()
+
     if args.retrieval:
         retriever = _get_retriever(
             args.es_index,
@@ -188,7 +196,7 @@ def main(args):
             rewriter=rewriter,
             retriever=retriever,
             preprocess=args.preprocess,
-            reranker=NeuralReranker(args.reranker) if args.reranker else None,
+            reranker=reranker,
         )
 
 

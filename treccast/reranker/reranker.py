@@ -2,13 +2,11 @@
 
 from abc import ABC, abstractmethod
 from typing import List, Tuple
-from numpy import ndarray
+
+import torch
 
 from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
-
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-import torch
 
 Batch = Tuple[torch.Tensor, torch.Tensor, torch.Tensor]
 
@@ -28,33 +26,22 @@ class Reranker(ABC):
         raise NotImplementedError
 
 
-class NeuralReranker(Reranker):
+class NeuralReranker(Reranker, ABC):
     def __init__(
         self,
-        model_dir: str = "nboost/pt-bert-base-uncased-msmarco",
         max_seq_len: int = 256,
     ) -> None:
-        """Neural reranker. Currently only supports BERT type architecture.
+        """Neural reranker.
 
         Args:
-            model_dir (optional): Location to the model. Defaults to
-                "nboost/pt-bert-base-uncased-msmarco".
             max_seq_len (optional): Maximal number of tokens. Defaults
                 to 256.
         """
+
         self._device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
         self._max_seq_len = max_seq_len
-
-        self._tokenizer = AutoTokenizer.from_pretrained(
-            model_dir, use_fast=True
-        )
-        self._model = AutoModelForSequenceClassification.from_pretrained(
-            model_dir
-        )
-
-        self._model.to(self._device, non_blocking=True)
 
     def rerank(
         self,
@@ -75,6 +62,7 @@ class NeuralReranker(Reranker):
 
         # Note: logit[0] corresponds to the document not being relevant and
         # logit[1] corresponds to the document being relevant.
+        # This is the same for both BERT and T5 rerankers.
         return Ranking(
             ranking.query_id,
             [
@@ -83,7 +71,10 @@ class NeuralReranker(Reranker):
             ],
         )
 
-    def _get_logits(self, query: str, documents: List[str]) -> ndarray:
+    @abstractmethod
+    def _get_logits(
+        self, query: str, documents: List[str]
+    ) -> List[List[float]]:
         """Returns logits from the neural model.
 
         Args:
@@ -94,22 +85,9 @@ class NeuralReranker(Reranker):
             Numpy array containing two values for each document: the probability
                 of the document being non-relevant [0] and relevant [1].
         """
-        # TODO Split into manageable batch sizes.
-        # https://github.com/iai-group/trec-cast-2021/issues/66
-        input_ids, attention_mask, token_type_ids = self._encode(
-            query, documents
-        )
+        raise NotImplementedError
 
-        with torch.no_grad():
-            logits = self._model(
-                input_ids,
-                attention_mask=attention_mask,
-                token_type_ids=token_type_ids,
-            )[0]
-            logits = logits.detach().cpu().numpy()
-
-            return logits
-
+    @abstractmethod
     def _encode(self, query: str, documents: List[str]) -> Batch:
         """Tokenize and collate a number of single inputs, adding special
         tokens and padding.
@@ -117,29 +95,15 @@ class NeuralReranker(Reranker):
         Returns:
             Batch: Input IDs, attention masks, token type IDs
         """
-        inputs = self._tokenizer.batch_encode_plus(
-            [[query, document] for document in documents],
-            add_special_tokens=True,
-            return_token_type_ids=True,
-            truncation=True,
-            padding=True,
-            max_length=self._max_seq_len,
-        )
-
-        input_ids = torch.tensor(inputs["input_ids"]).to(
-            self._device, non_blocking=True
-        )
-        attention_mask = torch.tensor(inputs["attention_mask"]).to(
-            self._device, non_blocking=True
-        )
-        token_type_ids = torch.tensor(inputs["token_type_ids"]).to(
-            self._device, non_blocking=True
-        )
-
-        return input_ids, attention_mask, token_type_ids
+        NotImplementedError
 
 
-if __name__ == "__main__":
+def validate(ranker: Reranker) -> None:
+    """Simple validation code to make sure the reranker is running as expected.
+
+    Args:
+        ranker: Reranker to validate.
+    """
     ranking1 = Ranking("qid_0")
     ranking1.add_doc(
         "1",
@@ -217,7 +181,6 @@ if __name__ == "__main__":
         "qid_1",
         "How much does it cost for someone to repair a garage door opener?",
     )
-    rankings = [ranking1, ranking2]
 
-    ranker = NeuralReranker()
     print(ranker.rerank(query1, ranking1).fetch_topk_docs())
+    print(ranker.rerank(query2, ranking2).fetch_topk_docs())

@@ -3,7 +3,7 @@ import pytest
 from treccast.core.ranking import Ranking
 from treccast.core.query.query import Query
 
-# from treccast.reranker.train.bert_reranker import BERTReranker
+# from treccast.reranker.train.bert_reranker import BERTRerankModule
 
 
 @pytest.fixture
@@ -96,13 +96,13 @@ def dummy_rankings():
 # TODO #47 Decide what needs to be tested in this module
 # https://github.com/iai-group/trec-cast-2021/issues/47
 # def test_init_bert_ranker(dummy_queries, dummy_rankings):
-#     ap = BERTReranker.add_model_specific_args()
+#     ap = BERTRerankModule.add_model_specific_args()
 #     ap_dict = ap.parse_args().__dict__
 #     # Create a pytorch-lightning trainer with all the training arguments
-#     trainer = BERTReranker.get_lightning_trainer(ap)
+#     trainer = BERTRerankModule.get_lightning_trainer(ap)
 #     # Create a BERT ranker which has a linear classification head on top of
 #     # BERT
-#     bert_reranker = BERTReranker(dummy_queries, dummy_rankings, ap_dict)
+#     bert_reranker = BERTRerankModule(dummy_queries, dummy_rankings, ap_dict)
 #     # trainer.fit trains the model by calling the train_dataloader and
 #     # training_step
 #     trainer.fit(bert_reranker)

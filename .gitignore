@@ -133,6 +133,7 @@ dmypy.json
 
 # Local data files such as pytorch training logs
 data/local
+data/models
 
 # MacOS
 .DS_Store
