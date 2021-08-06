@@ -70,7 +70,7 @@ class NeuralReranker(Reranker):
         Returns:
             Ranking containing new scores for each document.
         """
-        doc_ids, documents = ranking.documents
+        doc_ids, documents = ranking.documents()
         logits = self._get_logits(query.question, documents)
 
         # Note: logit[0] corresponds to the document not being relevant and

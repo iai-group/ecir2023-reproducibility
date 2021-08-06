@@ -2,6 +2,7 @@
 
 import argparse
 
+from treccast.rewriter.rewriter import Rewriter, CachedRewriter
 from treccast.retriever.retriever import Retriever
 from treccast.retriever.bm25_retriever import BM25Retriever
 from treccast.reranker.reranker import NeuralReranker, Reranker
@@ -13,33 +14,14 @@ from treccast.core.query.preprocessing.tokenizer import SimpleTokenizer
 DEFAULT_TOPIC_INPUT_PATH = (
     "data/topics-2020/automatic_evaluation_topics_annotated_v1.1.json"
 )
-DEFAULT_REWRITE_OUTPUT_PATH = "data/queries-2020/rewrite_method.txt"
+DEFAULT_REWRITE_PATH = "data/rewrites/2020/1_Original.tsv"
 DEFAULT_RANKING_OUTPUT_PATH = "data/runs-2020/bm25.trec"
-
-
-def rewrite(topics_path: str, output_path: str) -> None:
-    pass
-
-
-def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
-    """Returns (first-pass) retriever instance.
-
-    Args:
-        index_name: Name of the Elasticsearch index.
-        host_name: Host name for Elasticsearch process.
-
-    Returns:
-        The constructed class for first-pass retrieval.
-            Currently only supports BM25.
-    """
-    # Can be expanded with more arguments
-    esi = ElasticSearchIndex(index_name, hostname=host_name)
-    return BM25Retriever(esi, **kwargs)
 
 
 def retrieve(
     topics_path: str,
     output_path: str,
+    rewriter: Rewriter = None,
     retriever: Retriever = None,
     preprocess: bool = False,
     reranker: Reranker = None,
@@ -66,10 +48,42 @@ def retrieve(
                 query = SparseQuery(
                     query_id, question, SimpleTokenizer if preprocess else None
                 )
+                if rewriter:
+                    query = Rewriter.rewrite_query(query)
                 ranking = retriever.retrieve(query)
                 if reranker:
                     ranking = reranker.rerank(query, ranking)
                 ranking.write_to_file(f_out, run_id="BM25", k=1000)
+
+
+def _get_rewriter(path: str) -> Rewriter:
+    """Returns rewriter instance that generates rewritten questions.
+
+    Args:
+        path: Filepath containing rewrites.
+
+    Returns:
+        Rewriter class containing rewrites.
+    """
+    return CachedRewriter(path)
+
+
+def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
+    """Returns (first-pass) retriever instance.
+
+    Args:
+        index_name: Name of the Elasticsearch index.
+        host_name: Host name for Elasticsearch process.
+        **kwargs: Keyword arguments. For example, parameters `b` and `k1` for
+            the BM25 ranking function.
+
+    Returns:
+        The constructed class for first-pass retrieval.
+            Currently only supports BM25.
+    """
+    # Can be expanded with more arguments
+    esi = ElasticSearchIndex(index_name, hostname=host_name)
+    return BM25Retriever(esi, **kwargs)
 
 
 def parse_args() -> argparse.Namespace:
@@ -82,7 +96,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-w",
         "--rewrite",
-        type=bool,
+        action="store_true",
         help="Rewrites queries if specified",
     )
     parser.add_argument(
@@ -95,11 +109,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "-p",
-        "--rewrite_output",
+        "--rewrite_path",
         type=str,
-        nargs="?",
-        const=DEFAULT_REWRITE_OUTPUT_PATH,
-        help="Specifies the output path for rewritten queries",
+        default=DEFAULT_REWRITE_PATH,
+        help="Specifies the path for rewritten queries",
     )
     parser.add_argument(
         "-r",
@@ -154,12 +167,14 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-if __name__ == "__main__":
-    args = parse_args()
-    print(args)
+def main(args):
+    """Main function that will be executed running this file.
 
+    Args:
+        args: Command-line arguments.
+    """
     if args.rewrite:
-        rewrite(args.topics, args.rewrite_output)
+        rewriter = _get_rewriter(args.rewrite_path)
     if args.retrieval:
         retriever = _get_retriever(
             args.es_index,
@@ -170,7 +185,14 @@ if __name__ == "__main__":
         retrieve(
             args.topics,
             args.output,
+            rewriter=rewriter,
             retriever=retriever,
             preprocess=args.preprocess,
             reranker=NeuralReranker(args.reranker) if args.reranker else None,
         )
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    print("Arguments:\n", args, "\n")
+    main(args)

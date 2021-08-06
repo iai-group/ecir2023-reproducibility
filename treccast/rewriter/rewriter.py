@@ -1,8 +1,10 @@
 """Abstract query rewriting interface."""
 
 from abc import ABC, abstractmethod
+from treccast.core.util.file_parser import FileParser
 
-from treccast.core.query import Query
+from treccast.core.query.query import Query
+from treccast.core.query.sparse_query import SparseQuery
 from treccast.core.context import Context
 
 
@@ -23,3 +25,39 @@ class Rewriter(ABC):
             Rewritten query.
         """
         raise NotImplementedError
+
+
+class CachedRewriter(Rewriter):
+    def __init__(self, filepath: str) -> None:
+        """Simple "rewriter". Loads rewrites from a file.
+
+        Args:
+            filepath: Filepath containing rewrites.
+        """
+        self._get_rewrites(filepath)
+
+    def rewrite_query(
+        self, query: Query, context: Context = None
+    ) -> SparseQuery:
+        """Returns a new query containing a rewrite.
+
+        Args:
+            query: Query containing the original question.
+            context (optional): Query context. Not used in this class Defaults
+                to None.
+
+        Returns:
+            A new query with the same query_id containing a rewrite.
+        """
+        return self._rewrites.get(query.query_id)
+
+    def _get_rewrites(self, filepath: str) -> None:
+        """Loads rewrites from a file and stores them into a dictionary.
+
+        Args:
+            filepath: Path to the file containing rewrites.
+        """
+        self._rewrites = {}
+        for line in FileParser.parse(filepath):
+            _, _, qid, rewrite, original = line.split("\t")
+            self._rewrites[qid] = SparseQuery(qid, rewrite)

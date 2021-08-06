@@ -14,13 +14,13 @@ Usage:
 import argparse
 from typing import Any, Dict, Iterator, Union
 
+from treccast.core.util.file_parser import FileParser
 from trec_car import read_data
 from elasticsearch.helpers import parallel_bulk
 from treccast.core.collection import ElasticSearchIndex
 
 from nltk.corpus import stopwords
 import nltk
-import gzip
 
 DEFAULT_MS_MARCO_PASSAGE_DATASET = (
     "/data/collections/msmarco-passage/collection.tar.gz"
@@ -30,25 +30,6 @@ DEFAULT_TREC_CAR_PARAGRAPH_DATASET = (
 )
 DEFAULT_INDEX_NAME = "ms_marco_trec_car"
 DEFAULT_HOST_NAME = "localhost:9204"
-
-
-def parse_file(filepath: str) -> Iterator[str]:
-    """A generator from file.
-
-    Args:
-        filepath: Path to file.
-
-    Yields:
-        Single line in a file.
-    """
-    if filepath.endswith(".gz"):
-        input_file = gzip.open(filepath, "rb")
-    else:
-        input_file = open(filepath, "r")
-
-    with input_file as f:
-        for line in f:
-            yield line
 
 
 class Indexer(ElasticSearchIndex):
@@ -77,8 +58,8 @@ class Indexer(ElasticSearchIndex):
                 passage.
         """
         print("Starting to index the MS MARCO passage dataset")
-        for i, line in enumerate(parse_file(filepath)):
-            pid, content = line.strip().split("\t")
+        for i, line in enumerate(FileParser.parse(filepath)):
+            pid, content = line.split("\t")
             yield {
                 "_index": self._index_name,
                 "_id": f"MARCO_{pid}",
