@@ -1,0 +1,3306 @@
+[
+    {
+        "id": "81_1",
+        "question": "How do you know when your garage door opener is going bad?",
+        "category": "resource",
+        "type": [
+            "dbo:Device",
+            "dbo:Company",
+            "dbo:Organisation",
+            "dbo:Work",
+            "dbo:MeanOfTransportation",
+            "dbo:Weapon",
+            "dbo:Agent",
+            "dbo:Software",
+            "dbo:Disease",
+            "dbo:Engine"
+        ]
+    },
+    {
+        "id": "81_2",
+        "question": "Now my garage door opener stopped working. Why?",
+        "category": "resource",
+        "type": [
+            "dbo:Device",
+            "dbo:WrittenWork",
+            "dbo:Place",
+            "dbo:Organisation",
+            "dbo:RouteOfTransportation",
+            "dbo:ArchitecturalStructure",
+            "dbo:InformationAppliance",
+            "dbo:MeanOfTransportation",
+            "dbo:Infrastructure",
+            "dbo:Location"
+        ]
+    },
+    {
+        "id": "81_3",
+        "question": "How much does it cost for someone to repair a garage door opener?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "81_4",
+        "question": "How much does it cost to replace a garage door opener?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "81_5",
+        "question": "How do I choose a new garage door opener?",
+        "category": "resource",
+        "type": [
+            "dbo:Device",
+            "dbo:Weapon",
+            "dbo:InformationAppliance",
+            "dbo:MeanOfTransportation",
+            "dbo:Software",
+            "dbo:Aircraft",
+            "dbo:Engine",
+            "dbo:AutomobileEngine",
+            "dbo:Work",
+            "dbo:Company"
+        ]
+    },
+    {
+        "id": "81_6",
+        "question": "Which garage door opener is better, a belt or chain drive type?",
+        "category": "resource",
+        "type": [
+            "dbo:Device",
+            "dbo:Weapon",
+            "dbo:InformationAppliance",
+            "dbo:WrittenWork",
+            "dbo:MeanOfTransportation",
+            "dbo:AutomobileEngine",
+            "dbo:Engine",
+            "dbo:Locomotive",
+            "dbo:Aircraft",
+            "dbo:Infrastructure"
+        ]
+    },
+    {
+        "id": "81_7",
+        "question": "What does a smart garage door opener do?",
+        "category": "resource",
+        "type": [
+            "dbo:Device",
+            "dbo:MeanOfTransportation",
+            "dbo:Weapon",
+            "dbo:Software",
+            "dbo:InformationAppliance",
+            "dbo:Work",
+            "dbo:Activity",
+            "dbo:Aircraft",
+            "dbo:Motorcycle",
+            "dbo:Engine"
+        ]
+    },
+    {
+        "id": "81_8",
+        "question": "What's important for me to know about the safety of smart garage door openers?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Activity",
+            "dbo:Work",
+            "dbo:ChemicalCompound",
+            "dbo:AcademicSubject",
+            "dbo:ChemicalSubstance",
+            "dbo:Media",
+            "dbo:Company",
+            "dbo:Organisation",
+            "dbo:Weapon"
+        ]
+    },
+    {
+        "id": "81_9",
+        "question": "How could smart garage door openers be hacked?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:VideoGame",
+            "dbo:Disease",
+            "dbo:Publisher",
+            "dbo:WineRegion",
+            "dbo:Factory"
+        ]
+    },
+    {
+        "id": "82_1",
+        "question": "I would like to learn about GMO Food labeling.",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Media",
+            "dbo:Taxon",
+            "dbo:Activity",
+            "dbo:AcademicSubject",
+            "dbo:Disease",
+            "dbo:Ideology",
+            "dbo:Insect",
+            "dbo:LegalCase",
+            "dbo:Plant"
+        ]
+    },
+    {
+        "id": "82_2",
+        "question": "What are the pros and cons of GMO food labeling?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Ideology",
+            "dbo:Media",
+            "dbo:Case",
+            "dbo:Taxon",
+            "dbo:UnitOfWork",
+            "dbo:LegalCase",
+            "dbo:Species",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance"
+        ]
+    },
+    {
+        "id": "82_3",
+        "question": "What are the cons of GMO food labeling?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Ideology",
+            "dbo:Case",
+            "dbo:Media",
+            "dbo:UnitOfWork",
+            "dbo:LegalCase",
+            "dbo:Taxon",
+            "dbo:Continent",
+            "dbo:Species",
+            "dbo:Eukaryote"
+        ]
+    },
+    {
+        "id": "82_4",
+        "question": "What are the GMO food labeling rules in the EU?",
+        "category": "resource",
+        "type": [
+            "dbo:Media",
+            "dbo:TopicalConcept",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Work",
+            "dbo:LegalCase",
+            "dbo:Case",
+            "dbo:UnitOfWork",
+            "dbo:Taxon",
+            "dbo:Activity"
+        ]
+    },
+    {
+        "id": "82_5",
+        "question": "Tell me about traceability tools for GMO foods in the EU.",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Work",
+            "dbo:Media",
+            "dbo:Organisation",
+            "dbo:Biomolecule",
+            "dbo:Case",
+            "dbo:ChemicalSubstance",
+            "dbo:AcademicSubject",
+            "dbo:ChemicalCompound"
+        ]
+    },
+    {
+        "id": "82_6",
+        "question": "What is the role of Co-Extra in GMO food traceability in the EU?",
+        "category": "resource",
+        "type": [
+            "dbo:Organisation",
+            "dbo:Agent",
+            "dbo:Continent",
+            "dbo:GovernmentAgency",
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Bank",
+            "dbo:TelevisionEpisode",
+            "dbo:Port",
+            "dbo:Tax"
+        ]
+    },
+    {
+        "id": "82_7",
+        "question": "How is food tested for GMO contamination?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Media",
+            "dbo:Taxon",
+            "dbo:Disease",
+            "dbo:Food",
+            "dbo:MedicalSpecialty",
+            "dbo:Ideology",
+            "dbo:Case",
+            "dbo:EthnicGroup",
+            "dbo:Enzyme"
+        ]
+    },
+    {
+        "id": "82_8",
+        "question": "What's the difference between the European Union and United States approaches to testing for GMO food contamination?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Media",
+            "dbo:Case",
+            "dbo:ChemicalCompound",
+            "dbo:LegalCase",
+            "dbo:UnitOfWork",
+            "dbo:Taxon",
+            "dbo:ChemicalSubstance",
+            "dbo:Ideology",
+            "dbo:MusicFestival"
+        ]
+    },
+    {
+        "id": "82_9",
+        "question": "How does the DNA-based method work for testing GMO contamination.",
+        "category": "resource",
+        "type": [
+            "dbo:Biomolecule",
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Gene",
+            "dbo:Disease",
+            "dbo:Protein",
+            "dbo:GivenName",
+            "dbo:Media",
+            "dbo:Name",
+            "dbo:SkiResort"
+        ]
+    },
+    {
+        "id": "82_10",
+        "question": "How could Co-Extra improve DNA-based testing for GMO contamination?",
+        "category": "resource",
+        "type": [
+            "dbo:Organisation",
+            "dbo:Agent",
+            "dbo:Company",
+            "dbo:Biomolecule",
+            "dbo:RecordLabel",
+            "dbo:Bank",
+            "dbo:TopicalConcept",
+            "dbo:AcademicSubject",
+            "dbo:Gene",
+            "dbo:Factory"
+        ]
+    },
+    {
+        "id": "83_1",
+        "question": "What are some interesting facts about bees?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Location",
+            "dbo:Activity",
+            "dbo:Place",
+            "dbo:PopulatedPlace",
+            "dbo:Species",
+            "dbo:Disease",
+            "dbo:Eukaryote",
+            "dbo:AcademicSubject"
+        ]
+    },
+    {
+        "id": "83_2",
+        "question": "Why doesn\u2019t honey spoil?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Animal",
+            "dbo:Plant",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Mammal",
+            "dbo:Insect"
+        ]
+    },
+    {
+        "id": "83_3",
+        "question": "Why are so many bees dying?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:State",
+            "dbo:Location",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:AcademicSubject",
+            "dbo:Square",
+            "dbo:Factory",
+            "dbo:Musical"
+        ]
+    },
+    {
+        "id": "83_4",
+        "question": "What can be done to stop bees from dying?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Disease",
+            "dbo:ChemicalSubstance",
+            "dbo:ChemicalCompound",
+            "dbo:Activity",
+            "dbo:Name",
+            "dbo:PersonFunction",
+            "dbo:Species",
+            "dbo:Sport"
+        ]
+    },
+    {
+        "id": "83_5",
+        "question": "What has happened to bee habitat?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:State",
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:NaturalRegion",
+            "dbo:AcademicSubject",
+            "dbo:Name",
+            "dbo:Tax",
+            "dbo:PublicService"
+        ]
+    },
+    {
+        "id": "83_6",
+        "question": "What can I do to help provide a habitat for bees?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Activity",
+            "dbo:Sport",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:AcademicSubject",
+            "dbo:Tax",
+            "dbo:PublicService",
+            "dbo:Name"
+        ]
+    },
+    {
+        "id": "83_7",
+        "question": "What is the cause of colony collapse disorder?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:State",
+            "dbo:AcademicSubject",
+            "dbo:PopulatedPlace",
+            "dbo:Factory",
+            "dbo:CultivatedVariety",
+            "dbo:Tax",
+            "dbo:NaturalRegion",
+            "dbo:LunarCrater"
+        ]
+    },
+    {
+        "id": "83_8",
+        "question": "What would happen if the bees died out?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Settlement",
+            "dbo:AcademicSubject",
+            "dbo:PopulatedPlace",
+            "dbo:Factory",
+            "dbo:Disease",
+            "dbo:PublicService",
+            "dbo:NaturalRegion",
+            "dbo:Musical"
+        ]
+    },
+    {
+        "id": "84_1",
+        "question": "How does seed investment work for startups?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Company",
+            "dbo:Organisation",
+            "dbo:Person",
+            "dbo:AcademicSubject",
+            "dbo:Politician",
+            "dbo:Factory",
+            "dbo:RaceTrack",
+            "dbo:Disease",
+            "dbo:PlayboyPlaymate"
+        ]
+    },
+    {
+        "id": "84_2",
+        "question": "Tell me more about angel investment rounds.",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Person",
+            "dbo:Politician",
+            "dbo:AcademicSubject",
+            "dbo:LaunchPad",
+            "dbo:Case",
+            "dbo:UnitOfWork",
+            "dbo:MusicFestival"
+        ]
+    },
+    {
+        "id": "84_3",
+        "question": "How does an angel investment round compare with crowdfunding?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:SportsClub",
+            "dbo:AcademicSubject",
+            "dbo:Skyscraper",
+            "dbo:Event",
+            "dbo:Person",
+            "dbo:Case",
+            "dbo:Square"
+        ]
+    },
+    {
+        "id": "84_4",
+        "question": "How much is a typical A series investment round?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "84_5",
+        "question": "What are the risks of investing in startups?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Company",
+            "dbo:Person",
+            "dbo:Organisation",
+            "dbo:MilitaryPerson",
+            "dbo:Bank",
+            "dbo:EducationalInstitution",
+            "dbo:AcademicSubject",
+            "dbo:Settlement",
+            "dbo:Airline"
+        ]
+    },
+    {
+        "id": "84_6",
+        "question": "What are the different types of instruments used by Venture Capitalists?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Politician",
+            "dbo:Currency",
+            "dbo:Case",
+            "dbo:Bank",
+            "dbo:ComicsCharacter",
+            "dbo:Group",
+            "dbo:Mollusca"
+        ]
+    },
+    {
+        "id": "85_1",
+        "question": "How much does a Lamborghini cost?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "85_2",
+        "question": "How does a Lamborghini compare to a Ferrari?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "85_3",
+        "question": "Interesting. How much does a pimped-out food truck cost?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "85_4",
+        "question": "What licenses and permits are needed for a food truck?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Media",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Work",
+            "dbo:MilitaryUnit",
+            "dbo:Software",
+            "dbo:Case"
+        ]
+    },
+    {
+        "id": "85_5",
+        "question": "What makes a good food truck location?",
+        "category": "resource",
+        "type": [
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:City",
+            "dbo:Location",
+            "dbo:Settlement",
+            "dbo:Agent",
+            "dbo:Company",
+            "dbo:Island",
+            "dbo:Organisation",
+            "dbo:Continent"
+        ]
+    },
+    {
+        "id": "85_6",
+        "question": "What is a typical day like running a food truck?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Profession",
+            "dbo:PersonFunction",
+            "dbo:PeriodicalLiterature",
+            "dbo:WrittenWork",
+            "dbo:Activity",
+            "dbo:Magazine",
+            "dbo:Ship",
+            "dbo:Newspaper",
+            "dbo:Train"
+        ]
+    },
+    {
+        "id": "85_7",
+        "question": "How can I run a successful food truck?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:MeanOfTransportation",
+            "dbo:Person",
+            "dbo:PublicTransitSystem",
+            "dbo:Airline",
+            "dbo:Software",
+            "dbo:Ship",
+            "dbo:WrittenWork"
+        ]
+    },
+    {
+        "id": "85_8",
+        "question": "What are some good examples of successful food trucks to learn from?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:TopicalConcept",
+            "dbo:Company",
+            "dbo:Organisation",
+            "dbo:Person",
+            "dbo:Activity",
+            "dbo:AcademicSubject",
+            "dbo:Food",
+            "dbo:WrittenWork",
+            "dbo:GeologicalPeriod"
+        ]
+    },
+    {
+        "id": "85_9",
+        "question": "Besides inventive flavors, what made Kogi successful?",
+        "category": "resource",
+        "type": [
+            "dbo:Food",
+            "dbo:TopicalConcept",
+            "dbo:MusicGenre",
+            "dbo:Genre",
+            "dbo:Species",
+            "dbo:Beverage",
+            "dbo:Eukaryote",
+            "dbo:Plant",
+            "dbo:Insect",
+            "dbo:Ideology"
+        ]
+    },
+    {
+        "id": "86_1",
+        "question": "What is the climate like in Utah?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:NaturalPlace",
+            "dbo:Location",
+            "dbo:Lake",
+            "dbo:Disease",
+            "dbo:Mountain",
+            "dbo:EthnicGroup",
+            "dbo:Settlement",
+            "dbo:MountainRange",
+            "dbo:BodyOfWater"
+        ]
+    },
+    {
+        "id": "86_2",
+        "question": "How does the climate of Salt Lake City differ from Utah overall?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:Lake",
+            "dbo:Settlement",
+            "dbo:PopulatedPlace",
+            "dbo:AdministrativeRegion",
+            "dbo:NaturalPlace",
+            "dbo:MountainRange",
+            "dbo:Region",
+            "dbo:Event",
+            "dbo:Disease"
+        ]
+    },
+    {
+        "id": "86_3",
+        "question": "What is the main economic activity of Salt Lake City?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:Activity",
+            "dbo:Location",
+            "dbo:PopulatedPlace",
+            "dbo:Settlement",
+            "dbo:City",
+            "dbo:Lake",
+            "dbo:PublicService",
+            "dbo:SkiResort",
+            "dbo:Tax"
+        ]
+    },
+    {
+        "id": "86_4",
+        "question": "What was the impact of the 2002 olympic winter games on the economy of Salt Lake City?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "86_5",
+        "question": "What were important ski locations used in the 2002 olympic winter games?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:Location",
+            "dbo:NaturalPlace",
+            "dbo:Mountain",
+            "dbo:PopulatedPlace",
+            "dbo:ArchitecturalStructure",
+            "dbo:Lake",
+            "dbo:SportFacility",
+            "dbo:Settlement",
+            "dbo:City"
+        ]
+    },
+    {
+        "id": "86_6",
+        "question": "What are the important non-ski events that happen in Salt Lake City?",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Event",
+            "dbo:SocietalEvent",
+            "dbo:SportsEvent",
+            "dbo:Tournament",
+            "dbo:Biomolecule",
+            "dbo:Sport",
+            "dbo:SpaceMission",
+            "dbo:Game",
+            "dbo:TennisTournament"
+        ]
+    },
+    {
+        "id": "86_7",
+        "question": "What are some popular non-winter things to do in the Salt Lake City area?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:ArchitecturalStructure",
+            "dbo:Lake",
+            "dbo:Event",
+            "dbo:Activity",
+            "dbo:Place",
+            "dbo:Game",
+            "dbo:Building",
+            "dbo:PeriodicalLiterature",
+            "dbo:Software"
+        ]
+    },
+    {
+        "id": "87_1",
+        "question": "What are the different types of orange trees?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Eukaryote",
+            "dbo:FloweringPlant",
+            "dbo:Plant",
+            "dbo:Grape",
+            "dbo:Species",
+            "dbo:Ideology",
+            "dbo:CultivatedVariety",
+            "dbo:Mollusca"
+        ]
+    },
+    {
+        "id": "87_2",
+        "question": "How can you tell different types of orange trees apart?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:FloweringPlant",
+            "dbo:Grape",
+            "dbo:Plant",
+            "dbo:Eukaryote",
+            "dbo:Ideology",
+            "dbo:CultivatedVariety",
+            "dbo:Species",
+            "dbo:MusicGenre"
+        ]
+    },
+    {
+        "id": "87_3",
+        "question": "What type of orange tree has thorns?",
+        "category": "resource",
+        "type": [
+            "dbo:Taxon",
+            "dbo:TopicalConcept",
+            "dbo:Plant",
+            "dbo:Ideology",
+            "dbo:FloweringPlant",
+            "dbo:Grape",
+            "dbo:CultivatedVariety",
+            "dbo:Spacecraft",
+            "dbo:Square",
+            "dbo:Tax"
+        ]
+    },
+    {
+        "id": "87_4",
+        "question": "Where do orange trees originally come from?",
+        "category": "resource",
+        "type": [
+            "dbo:Country",
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:Location",
+            "dbo:State",
+            "dbo:TopicalConcept",
+            "dbo:Continent",
+            "dbo:Taxon",
+            "dbo:Plant",
+            "dbo:Island"
+        ]
+    },
+    {
+        "id": "87_5",
+        "question": "Tell me about the Hamlin orange variety.",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Eukaryote",
+            "dbo:Species",
+            "dbo:Plant",
+            "dbo:Animal",
+            "dbo:Name",
+            "dbo:Mammal",
+            "dbo:PopulatedPlace",
+            "dbo:Country"
+        ]
+    },
+    {
+        "id": "87_6",
+        "question": "Why did the Hamlin orange replace the Parson Brown variety?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Plant",
+            "dbo:MusicGenre",
+            "dbo:Name",
+            "dbo:Genre",
+            "dbo:Ideology",
+            "dbo:GridironFootballPlayer"
+        ]
+    },
+    {
+        "id": "87_7",
+        "question": "What are the different types of navel oranges?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Eukaryote",
+            "dbo:Species",
+            "dbo:Plant",
+            "dbo:FloweringPlant",
+            "dbo:Grape",
+            "dbo:Animal",
+            "dbo:Food",
+            "dbo:Ideology"
+        ]
+    },
+    {
+        "id": "87_8",
+        "question": "Which type of navel orange is the most delicious?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Plant",
+            "dbo:Food",
+            "dbo:FloweringPlant",
+            "dbo:Award",
+            "dbo:Grape",
+            "dbo:Animal"
+        ]
+    },
+    {
+        "id": "87_9",
+        "question": "How do cara cara oranges compare with blood oranges?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Country",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Plant",
+            "dbo:PopulatedPlace",
+            "dbo:Food",
+            "dbo:Genre",
+            "dbo:MusicGenre"
+        ]
+    },
+    {
+        "id": "88_1",
+        "question": "Can I have some information on the labor systems of the Ottoman Empire?",
+        "category": "resource",
+        "type": [
+            "dbo:Media",
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:Activity",
+            "dbo:State",
+            "dbo:EthnicGroup",
+            "dbo:Tax",
+            "dbo:Island",
+            "dbo:Factory",
+            "dbo:TelevisionEpisode"
+        ]
+    },
+    {
+        "id": "88_2",
+        "question": "What was the role of slavery in the labor system of the Ottoman Empire?",
+        "category": "resource",
+        "type": [
+            "dbo:Profession",
+            "dbo:PersonFunction",
+            "dbo:Media",
+            "dbo:PopulatedPlace",
+            "dbo:Activity",
+            "dbo:Priest",
+            "dbo:Work",
+            "dbo:Place",
+            "dbo:EthnicGroup",
+            "dbo:Factory"
+        ]
+    },
+    {
+        "id": "88_3",
+        "question": "How did the Ottoman Empire govern?",
+        "category": "resource",
+        "type": [
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:OfficeHolder",
+            "dbo:Monarch",
+            "dbo:PublicService",
+            "dbo:Priest",
+            "dbo:BeautyQueen",
+            "dbo:Factory",
+            "dbo:MemberOfParliament",
+            "dbo:Criminal"
+        ]
+    },
+    {
+        "id": "88_4",
+        "question": "Why was the Ottoman Empire important?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:PopulatedPlace",
+            "dbo:Location",
+            "dbo:State",
+            "dbo:City",
+            "dbo:Settlement",
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:Activity",
+            "dbo:Gene"
+        ]
+    },
+    {
+        "id": "88_5",
+        "question": "What was the culture like in the Ottoman Empire?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:PopulatedPlace",
+            "dbo:EthnicGroup",
+            "dbo:Person",
+            "dbo:HistoricalRegion",
+            "dbo:City",
+            "dbo:Region",
+            "dbo:State",
+            "dbo:Settlement",
+            "dbo:Agent"
+        ]
+    },
+    {
+        "id": "88_6",
+        "question": "What was the role of storytellers in the culture of the Ottoman Empire?",
+        "category": "resource",
+        "type": [
+            "dbo:Profession",
+            "dbo:PersonFunction",
+            "dbo:Work",
+            "dbo:Agent",
+            "dbo:Activity",
+            "dbo:Person",
+            "dbo:Media",
+            "dbo:Deity",
+            "dbo:Priest",
+            "dbo:MemberOfParliament"
+        ]
+    },
+    {
+        "id": "88_7",
+        "question": "What were popular stories told by meddahs in the Ottoman Empire?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Activity",
+            "dbo:TelevisionShow",
+            "dbo:Food",
+            "dbo:RadioProgram",
+            "dbo:WrittenWork",
+            "dbo:EthnicGroup",
+            "dbo:PeriodicalLiterature",
+            "dbo:HollywoodCartoon",
+            "dbo:Cartoon"
+        ]
+    },
+    {
+        "id": "88_8",
+        "question": "What was the importance of the confessional millet system to the Ottoman Empire?",
+        "category": "resource",
+        "type": [
+            "dbo:State",
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:Country",
+            "dbo:Location",
+            "dbo:GeologicalPeriod",
+            "dbo:Taxon",
+            "dbo:Media",
+            "dbo:TopicalConcept",
+            "dbo:Town"
+        ]
+    },
+    {
+        "id": "88_9",
+        "question": "Why did the British continue the confessional millet system from the Ottoman Empire?",
+        "category": "resource",
+        "type": [
+            "dbo:State",
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:Location",
+            "dbo:Country",
+            "dbo:TimePeriod",
+            "dbo:GeologicalPeriod",
+            "dbo:Taxon",
+            "dbo:TopicalConcept",
+            "dbo:Town"
+        ]
+    },
+    {
+        "id": "88_10",
+        "question": "What is the historical importance of the confessional millet system in the development of national identities?",
+        "category": "resource",
+        "type": [
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:State",
+            "dbo:Location",
+            "dbo:Country",
+            "dbo:TopicalConcept",
+            "dbo:GeologicalPeriod",
+            "dbo:Taxon",
+            "dbo:EthnicGroup",
+            "dbo:HistoricalPeriod"
+        ]
+    },
+    {
+        "id": "89_1",
+        "question": "What is the relationship between predator and prey?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Agent",
+            "dbo:Animal",
+            "dbo:Activity",
+            "dbo:PersonFunction",
+            "dbo:State",
+            "dbo:Name"
+        ]
+    },
+    {
+        "id": "89_2",
+        "question": "What do predator plants eat?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:AcademicSubject",
+            "dbo:Name",
+            "dbo:Plant",
+            "dbo:Musical",
+            "dbo:Grape",
+            "dbo:CultivatedVariety",
+            "dbo:Square",
+            "dbo:FloweringPlant"
+        ]
+    },
+    {
+        "id": "89_3",
+        "question": "What do Venus flytraps eat?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Plant",
+            "dbo:Animal",
+            "dbo:AcademicSubject",
+            "dbo:Mammal",
+            "dbo:FloweringPlant",
+            "dbo:PublicService"
+        ]
+    },
+    {
+        "id": "89_4",
+        "question": "Where is the Venus flytrap native to?",
+        "category": "resource",
+        "type": [
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:Country",
+            "dbo:Location",
+            "dbo:State",
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Settlement",
+            "dbo:Town",
+            "dbo:Continent"
+        ]
+    },
+    {
+        "id": "89_5",
+        "question": "How do Venus flytraps attract and catch their prey?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:PersonFunction",
+            "dbo:Place",
+            "dbo:Location",
+            "dbo:Animal",
+            "dbo:Cemetery",
+            "dbo:Profession"
+        ]
+    },
+    {
+        "id": "89_6",
+        "question": "What other carnivorous plants are native to North and South Carolina?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:AcademicSubject",
+            "dbo:Musical",
+            "dbo:Mollusca",
+            "dbo:Bank",
+            "dbo:Square",
+            "dbo:Species",
+            "dbo:Grape",
+            "dbo:CultivatedVariety"
+        ]
+    },
+    {
+        "id": "89_7",
+        "question": "How do populations of predators and prey relate?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:PersonFunction",
+            "dbo:Ideology",
+            "dbo:State",
+            "dbo:Name",
+            "dbo:GeologicalPeriod",
+            "dbo:Plant",
+            "dbo:MusicGenre",
+            "dbo:Bank"
+        ]
+    },
+    {
+        "id": "89_8",
+        "question": "Why would the roles of predator and prey reverse?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Agent",
+            "dbo:Taxon",
+            "dbo:Person",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:AcademicSubject",
+            "dbo:Ideology",
+            "dbo:Organisation",
+            "dbo:Name"
+        ]
+    },
+    {
+        "id": "89_9",
+        "question": "How do predators and prey influence biodiversity?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Legislature",
+            "dbo:State",
+            "dbo:MountainRange",
+            "dbo:Ideology",
+            "dbo:AcademicSubject",
+            "dbo:Name",
+            "dbo:MusicGenre",
+            "dbo:GridironFootballPlayer"
+        ]
+    },
+    {
+        "id": "89_10",
+        "question": "What are examples of apex predators?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Person",
+            "dbo:Eukaryote",
+            "dbo:Animal",
+            "dbo:Species",
+            "dbo:Agent",
+            "dbo:Ideology",
+            "dbo:Mollusca",
+            "dbo:Bird"
+        ]
+    },
+    {
+        "id": "89_11",
+        "question": "Why would humans be considered apex predators?",
+        "category": "resource",
+        "type": [
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:Eukaryote",
+            "dbo:Species",
+            "dbo:Animal",
+            "dbo:Scientist",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:EthnicGroup",
+            "dbo:OfficeHolder"
+        ]
+    },
+    {
+        "id": "90_1",
+        "question": "Which is the biggest commercial plane?",
+        "category": "resource",
+        "type": [
+            "dbo:MeanOfTransportation",
+            "dbo:Aircraft",
+            "dbo:Ship",
+            "dbo:Spacecraft",
+            "dbo:InformationAppliance",
+            "dbo:Device",
+            "dbo:Book",
+            "dbo:Work",
+            "dbo:WrittenWork",
+            "dbo:Locomotive"
+        ]
+    },
+    {
+        "id": "90_2",
+        "question": "What are the operational costs of the Airbus A380?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "90_3",
+        "question": "How does the Airbus A380 fuel consumption compare to its competitors?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "90_4",
+        "question": "How do the freighter versions of the Airbus A380 and Boeing 747 compare to each other?",
+        "category": "resource",
+        "type": [
+            "dbo:MeanOfTransportation",
+            "dbo:Aircraft",
+            "dbo:Ship",
+            "dbo:Media",
+            "dbo:ChemicalCompound",
+            "dbo:Spacecraft",
+            "dbo:ChemicalSubstance",
+            "dbo:Airline",
+            "dbo:Locomotive",
+            "dbo:InformationAppliance"
+        ]
+    },
+    {
+        "id": "90_5",
+        "question": "Why did the Airbus A380 stop being produced?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Company",
+            "dbo:Organisation",
+            "dbo:Airline",
+            "dbo:PublicTransitSystem",
+            "dbo:MeanOfTransportation",
+            "dbo:Aircraft",
+            "dbo:AcademicSubject",
+            "dbo:FormulaOneTeam",
+            "dbo:Brewery"
+        ]
+    },
+    {
+        "id": "90_6",
+        "question": "What was Boeing\u2019s response to compete with the Airbus A380?",
+        "category": "resource",
+        "type": [
+            "dbo:Company",
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Airline",
+            "dbo:PublicTransitSystem",
+            "dbo:Aircraft",
+            "dbo:MeanOfTransportation",
+            "dbo:Biomolecule",
+            "dbo:AutomobileEngine",
+            "dbo:SkiResort"
+        ]
+    },
+    {
+        "id": "90_7",
+        "question": "What is the newest version of the Boeing 777 and what is better about it?",
+        "category": "resource",
+        "type": [
+            "dbo:MeanOfTransportation",
+            "dbo:Media",
+            "dbo:Aircraft",
+            "dbo:Device",
+            "dbo:Spacecraft",
+            "dbo:InformationAppliance",
+            "dbo:Work",
+            "dbo:Engine",
+            "dbo:AutomobileEngine",
+            "dbo:Weapon"
+        ]
+    },
+    {
+        "id": "90_8",
+        "question": "What are the differences between the Boeing 777X-8 and 777X-9?",
+        "category": "resource",
+        "type": [
+            "dbo:MeanOfTransportation",
+            "dbo:Aircraft",
+            "dbo:Media",
+            "dbo:Device",
+            "dbo:Spacecraft",
+            "dbo:Song",
+            "dbo:InformationAppliance",
+            "dbo:ChemicalCompound",
+            "dbo:Locomotive",
+            "dbo:Taxon"
+        ]
+    },
+    {
+        "id": "91_1",
+        "question": "What is the purpose of GDPR?",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Media",
+            "dbo:Organisation",
+            "dbo:Game",
+            "dbo:Agent",
+            "dbo:Work",
+            "dbo:Sport",
+            "dbo:PublicService",
+            "dbo:Priest",
+            "dbo:Publisher"
+        ]
+    },
+    {
+        "id": "91_2",
+        "question": "What is different between GDPR and EU Data Protection Directive 95/46/EC?",
+        "category": "resource",
+        "type": [
+            "dbo:Media",
+            "dbo:Work",
+            "dbo:Activity",
+            "dbo:ProgrammingLanguage",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Language",
+            "dbo:Case",
+            "dbo:UnitOfWork",
+            "dbo:Software"
+        ]
+    },
+    {
+        "id": "91_3",
+        "question": "What are the privacy implications of social networks and cloud computing?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:Agent",
+            "dbo:Company",
+            "dbo:Organisation",
+            "dbo:WineRegion",
+            "dbo:Vein",
+            "dbo:Type",
+            "dbo:MobilePhone",
+            "dbo:PlayboyPlaymate"
+        ]
+    },
+    {
+        "id": "91_4",
+        "question": "Oh, IP addresses are considered PII? What is the full range of personal data defined in GDPR?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "91_5",
+        "question": "How do big companies in the US adapt to GDPR?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Legislature",
+            "dbo:Band",
+            "dbo:Publisher",
+            "dbo:Group",
+            "dbo:Road",
+            "dbo:HistoricBuilding",
+            "dbo:Bank"
+        ]
+    },
+    {
+        "id": "91_6",
+        "question": "OK. Tell me about the privacy issues in social networks.",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Work",
+            "dbo:Non-ProfitOrganisation",
+            "dbo:Software",
+            "dbo:LegalCase",
+            "dbo:PlayboyPlaymate",
+            "dbo:Case",
+            "dbo:ChemicalSubstance"
+        ]
+    },
+    {
+        "id": "91_7",
+        "question": "What do users of social networks get in return for by giving up their privacy?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Agent",
+            "dbo:Software",
+            "dbo:Organisation",
+            "dbo:VideoGame",
+            "dbo:Company",
+            "dbo:Vein",
+            "dbo:University",
+            "dbo:Type",
+            "dbo:WineRegion"
+        ]
+    },
+    {
+        "id": "91_8",
+        "question": "What are the symptoms of social network addiction?",
+        "category": "resource",
+        "type": [
+            "dbo:Disease",
+            "dbo:Work",
+            "dbo:PeriodicalLiterature",
+            "dbo:Activity",
+            "dbo:AnatomicalStructure",
+            "dbo:EthnicGroup",
+            "dbo:Vein",
+            "dbo:WineRegion",
+            "dbo:Type",
+            "dbo:Software"
+        ]
+    },
+    {
+        "id": "92_1",
+        "question": "Do shoulder braces help recover from an injury?",
+        "category": "boolean",
+        "type": []
+    },
+    {
+        "id": "92_2",
+        "question": "Tell me more about some shoulder exercises that could help recovery from an injury.",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Disease",
+            "dbo:Sport",
+            "dbo:PersonFunction",
+            "dbo:BasketballPlayer",
+            "dbo:Profession",
+            "dbo:Swimmer",
+            "dbo:Athlete",
+            "dbo:Rocket",
+            "dbo:PublicService"
+        ]
+    },
+    {
+        "id": "92_3",
+        "question": "What are other exercises besides Pendulum circles for shoulder injuries?",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Sport",
+            "dbo:Game",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:Disease",
+            "dbo:Country",
+            "dbo:Protein",
+            "dbo:SkiResort",
+            "dbo:PublicService"
+        ]
+    },
+    {
+        "id": "92_4",
+        "question": "How do I know if my shoulder pain is serious?",
+        "category": "resource",
+        "type": [
+            "dbo:Disease",
+            "dbo:Person",
+            "dbo:Media",
+            "dbo:AnatomicalStructure",
+            "dbo:MedicalSpecialty",
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:Agent",
+            "dbo:PlayboyPlaymate",
+            "dbo:Factory"
+        ]
+    },
+    {
+        "id": "92_5",
+        "question": "When should you consider shoulder surgery?",
+        "category": "literal_date",
+        "type": []
+    },
+    {
+        "id": "92_6",
+        "question": "That seems extreme. What are other ways to treat shoulder pain?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:LegalCase",
+            "dbo:Disease",
+            "dbo:Lake",
+            "dbo:UnitOfWork",
+            "dbo:Case",
+            "dbo:Drug",
+            "dbo:Ideology",
+            "dbo:Insect"
+        ]
+    },
+    {
+        "id": "92_7",
+        "question": "How do I stop my shoulder from hurting at my desk?",
+        "category": "resource",
+        "type": [
+            "dbo:AnatomicalStructure",
+            "dbo:Media",
+            "dbo:Work",
+            "dbo:Muscle",
+            "dbo:Vein",
+            "dbo:Disease",
+            "dbo:Software",
+            "dbo:Nerve",
+            "dbo:WineRegion",
+            "dbo:PeriodicalLiterature"
+        ]
+    },
+    {
+        "id": "92_8",
+        "question": "What are the benefits of a standing desk for shoulder pain?",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Disease",
+            "dbo:Media",
+            "dbo:Profession",
+            "dbo:Sport",
+            "dbo:PersonFunction",
+            "dbo:Device",
+            "dbo:Work",
+            "dbo:BoardGame",
+            "dbo:Priest"
+        ]
+    },
+    {
+        "id": "93_1",
+        "question": "Tell me about purchasing a Burger King franchise.",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Company",
+            "dbo:Organisation",
+            "dbo:AcademicSubject",
+            "dbo:Airline",
+            "dbo:PublicTransitSystem",
+            "dbo:Family",
+            "dbo:Factory",
+            "dbo:BeautyQueen",
+            "dbo:IceHockeyPlayer"
+        ]
+    },
+    {
+        "id": "93_2",
+        "question": "No, not information about Burger King\u2019s acquisition. I want to know how to open a Burger King franchise.",
+        "category": "resource",
+        "type": [
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Agent",
+            "dbo:TopicalConcept",
+            "dbo:AcademicSubject",
+            "dbo:Disease",
+            "dbo:PublicTransitSystem",
+            "dbo:Band",
+            "dbo:Non-ProfitOrganisation",
+            "dbo:Factory"
+        ]
+    },
+    {
+        "id": "93_3",
+        "question": "Is there any financial support for the initial franchise fee of a Burger King restaurant?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Non-ProfitOrganisation",
+            "dbo:MilitaryUnit",
+            "dbo:Group",
+            "dbo:Band",
+            "dbo:EducationalInstitution",
+            "dbo:Motorcycle",
+            "dbo:Publisher"
+        ]
+    },
+    {
+        "id": "93_4",
+        "question": "How much does a Burger King franchise owner make?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "93_5",
+        "question": "Is it better to be a Burger King franchisee or an independent restaurant owner?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:RecordLabel",
+            "dbo:Airline",
+            "dbo:Scientist",
+            "dbo:PublicTransitSystem",
+            "dbo:Factory",
+            "dbo:Non-ProfitOrganisation",
+            "dbo:Publisher"
+        ]
+    },
+    {
+        "id": "93_6",
+        "question": "What support does the franchise provide?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:SportsTeam",
+            "dbo:SoccerClub",
+            "dbo:MilitaryUnit",
+            "dbo:SportsLeague",
+            "dbo:BasketballLeague",
+            "dbo:Brewery",
+            "dbo:AmericanFootballLeague"
+        ]
+    },
+    {
+        "id": "93_7",
+        "question": "OK let's do it. What is the process of buying a Burger King franchise?",
+        "category": "resource",
+        "type": [
+            "dbo:Organisation",
+            "dbo:Company",
+            "dbo:Agent",
+            "dbo:PublicTransitSystem",
+            "dbo:Bank",
+            "dbo:Factory",
+            "dbo:Square",
+            "dbo:Airline",
+            "dbo:PlayboyPlaymate",
+            "dbo:Case"
+        ]
+    },
+    {
+        "id": "94_1",
+        "question": "None",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Organisation",
+            "dbo:Band",
+            "dbo:EducationalInstitution",
+            "dbo:Group",
+            "dbo:University",
+            "dbo:Disease",
+            "dbo:MusicalArtist",
+            "dbo:AcademicSubject"
+        ]
+    },
+    {
+        "id": "94_2",
+        "question": "Interesting. That\u2019s later than I expected. Who were the winners of snowboarding events in the 1998 Winter Olympics?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Athlete",
+            "dbo:FigureSkater",
+            "dbo:Swimmer",
+            "dbo:Artist",
+            "dbo:TennisPlayer",
+            "dbo:Gymnast",
+            "dbo:PlayboyPlaymate",
+            "dbo:WinterSportPlayer"
+        ]
+    },
+    {
+        "id": "94_3",
+        "question": "What are strap-in snowboard bindings?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Device",
+            "dbo:Weapon",
+            "dbo:Agent",
+            "dbo:Media",
+            "dbo:Organisation",
+            "dbo:Motorcycle",
+            "dbo:InformationAppliance",
+            "dbo:Newspaper",
+            "dbo:Engine"
+        ]
+    },
+    {
+        "id": "94_4",
+        "question": "What\u2019s an alternative to the strap-in binding style for snowboarding?",
+        "category": "resource",
+        "type": [
+            "dbo:Organisation",
+            "dbo:Agent",
+            "dbo:Infrastructure",
+            "dbo:Work",
+            "dbo:Eukaryote",
+            "dbo:Animal",
+            "dbo:Company",
+            "dbo:AcademicSubject",
+            "dbo:University",
+            "dbo:PlayboyPlaymate"
+        ]
+    },
+    {
+        "id": "94_5",
+        "question": "What else besides bindings do I need for my first time snowboarding?",
+        "category": "resource",
+        "type": [
+            "dbo:Organisation",
+            "dbo:Work",
+            "dbo:MeanOfTransportation",
+            "dbo:Agent",
+            "dbo:Activity",
+            "dbo:Aircraft",
+            "dbo:Skyscraper",
+            "dbo:Motorcycle",
+            "dbo:ArchitecturalStructure",
+            "dbo:Language"
+        ]
+    },
+    {
+        "id": "94_6",
+        "question": "How can I teach myself to get started snowboarding?",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Profession",
+            "dbo:PersonFunction",
+            "dbo:Agent",
+            "dbo:Sport",
+            "dbo:Organisation",
+            "dbo:Language",
+            "dbo:Wrestler",
+            "dbo:FigureSkater",
+            "dbo:MartialArtist"
+        ]
+    },
+    {
+        "id": "94_7",
+        "question": "What are the best snowboarding slopes for beginners around Seattle?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:NaturalPlace",
+            "dbo:Location",
+            "dbo:ArchitecturalStructure",
+            "dbo:Lake",
+            "dbo:Mountain",
+            "dbo:SportFacility",
+            "dbo:BodyOfWater",
+            "dbo:Sea",
+            "dbo:Building"
+        ]
+    },
+    {
+        "id": "94_8",
+        "question": "What are other things to do at Mount Bachelor Ski & Sports",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Sport",
+            "dbo:Game",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:MountainRange",
+            "dbo:Lake",
+            "dbo:RaceTrack",
+            "dbo:Factory",
+            "dbo:PublicService"
+        ]
+    },
+    {
+        "id": "95_1",
+        "question": "None",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Organisation",
+            "dbo:Band",
+            "dbo:EducationalInstitution",
+            "dbo:Group",
+            "dbo:University",
+            "dbo:Disease",
+            "dbo:MusicalArtist",
+            "dbo:AcademicSubject"
+        ]
+    },
+    {
+        "id": "95_2",
+        "question": "Interesting. What is the impact of burning waste and garbage on the environment?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:NaturalPlace",
+            "dbo:BodyOfWater",
+            "dbo:Lake",
+            "dbo:Competition",
+            "dbo:Contest",
+            "dbo:MountainPass"
+        ]
+    },
+    {
+        "id": "95_3",
+        "question": "Why waste compaction slows the biodegradation of organic waste?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Disease",
+            "dbo:Protein",
+            "dbo:SkiResort",
+            "dbo:Factory",
+            "dbo:TelevisionEpisode",
+            "dbo:Enzyme"
+        ]
+    },
+    {
+        "id": "95_4",
+        "question": "How is sewage recycled?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:NaturalPlace",
+            "dbo:River",
+            "dbo:Stream",
+            "dbo:Place",
+            "dbo:BodyOfWater",
+            "dbo:Species",
+            "dbo:Bacteria",
+            "dbo:ArchitecturalStructure"
+        ]
+    },
+    {
+        "id": "95_5",
+        "question": "What are the pros and cons of recycling vs composting garbage?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Ideology",
+            "dbo:ChemicalCompound",
+            "dbo:Taxon",
+            "dbo:Animal",
+            "dbo:ChemicalSubstance",
+            "dbo:Eukaryote",
+            "dbo:TelevisionShow",
+            "dbo:Case",
+            "dbo:Media"
+        ]
+    },
+    {
+        "id": "95_6",
+        "question": "Tell me more about biodegradable plastics.",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalSubstance",
+            "dbo:ChemicalCompound",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Animal",
+            "dbo:Activity",
+            "dbo:Competition",
+            "dbo:Contest",
+            "dbo:Taxon",
+            "dbo:Case"
+        ]
+    },
+    {
+        "id": "95_7",
+        "question": "How are biodegradable plastics made?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalSubstance",
+            "dbo:ChemicalCompound",
+            "dbo:Taxon",
+            "dbo:TopicalConcept",
+            "dbo:Food",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Language",
+            "dbo:SkiResort",
+            "dbo:Animal"
+        ]
+    },
+    {
+        "id": "95_8",
+        "question": "How is corn oil used to make biodegradable plastics?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Food",
+            "dbo:Animal",
+            "dbo:SkiResort",
+            "dbo:Contest"
+        ]
+    },
+    {
+        "id": "96_1",
+        "question": "How do you make Japanese Yakiniku?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Work",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:Food",
+            "dbo:TopicalConcept",
+            "dbo:MusicGenre",
+            "dbo:Software",
+            "dbo:Plant"
+        ]
+    },
+    {
+        "id": "96_2",
+        "question": "Can the sauce for Yakiniku be used in other dishes?",
+        "category": "resource",
+        "type": [
+            "dbo:Food",
+            "dbo:Country",
+            "dbo:Beverage",
+            "dbo:Work",
+            "dbo:Genre",
+            "dbo:Device",
+            "dbo:Beer",
+            "dbo:CollegeCoach",
+            "dbo:Engine",
+            "dbo:Insect"
+        ]
+    },
+    {
+        "id": "96_3",
+        "question": "What are the best Yakiniku restaurants in Tokyo?",
+        "category": "resource",
+        "type": [
+            "dbo:Food",
+            "dbo:Place",
+            "dbo:ArchitecturalStructure",
+            "dbo:Agent",
+            "dbo:EducationalInstitution",
+            "dbo:Beverage",
+            "dbo:Location",
+            "dbo:Work",
+            "dbo:Building",
+            "dbo:Organisation"
+        ]
+    },
+    {
+        "id": "96_4",
+        "question": "Tell me Sushi Michelin restaurants in Tokyo.",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:ArchitecturalStructure",
+            "dbo:Location",
+            "dbo:Building",
+            "dbo:Food",
+            "dbo:Infrastructure",
+            "dbo:Hotel",
+            "dbo:Tower",
+            "dbo:Castle",
+            "dbo:Train"
+        ]
+    },
+    {
+        "id": "96_5",
+        "question": "How do I make dinner reservations in Tokyo restaurants?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Work",
+            "dbo:MeanOfTransportation",
+            "dbo:Software",
+            "dbo:Motorcycle",
+            "dbo:Athlete",
+            "dbo:Building",
+            "dbo:Disease",
+            "dbo:ArchitecturalStructure"
+        ]
+    },
+    {
+        "id": "96_6",
+        "question": "Tell me what other fun things there are to do in Tokyo besides eating.",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:Activity",
+            "dbo:ArchitecturalStructure",
+            "dbo:Game",
+            "dbo:Food",
+            "dbo:Work",
+            "dbo:Building",
+            "dbo:Insect",
+            "dbo:PeriodicalLiterature",
+            "dbo:RouteOfTransportation"
+        ]
+    },
+    {
+        "id": "96_7",
+        "question": "What is the cost of living in Tokyo compared to New York City (NYC)?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "96_8",
+        "question": "What is the salary of working in foreign law firms in Tokyo?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "97_1",
+        "question": "None",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Organisation",
+            "dbo:Band",
+            "dbo:EducationalInstitution",
+            "dbo:Group",
+            "dbo:University",
+            "dbo:Disease",
+            "dbo:MusicalArtist",
+            "dbo:AcademicSubject"
+        ]
+    },
+    {
+        "id": "97_2",
+        "question": "What are notable games between Baltimore Ravens versus Pittsburgh Steelers",
+        "category": "resource",
+        "type": [
+            "dbo:Event",
+            "dbo:SocietalEvent",
+            "dbo:Work",
+            "dbo:AmericanFootballPlayer",
+            "dbo:GridironFootballPlayer",
+            "dbo:Name",
+            "dbo:MeanOfTransportation",
+            "dbo:MilitaryConflict",
+            "dbo:Spacecraft",
+            "dbo:Competition"
+        ]
+    },
+    {
+        "id": "97_3",
+        "question": "What are notable moments in the Ravens and Steelers rivalry?",
+        "category": "resource",
+        "type": [
+            "dbo:Species",
+            "dbo:AmericanFootballPlayer",
+            "dbo:GridironFootballPlayer",
+            "dbo:Event",
+            "dbo:Athlete",
+            "dbo:Person",
+            "dbo:SocietalEvent",
+            "dbo:Agent",
+            "dbo:Animal",
+            "dbo:Eukaryote"
+        ]
+    },
+    {
+        "id": "97_4",
+        "question": "Tell me more about Polamalu\u2019s Interception versus Ravens in the 2008 AFC Championship game.",
+        "category": "resource",
+        "type": [
+            "dbo:Athlete",
+            "dbo:Agent",
+            "dbo:AmericanFootballPlayer",
+            "dbo:GridironFootballPlayer",
+            "dbo:SoccerClub",
+            "dbo:SportsTeam",
+            "dbo:Organisation",
+            "dbo:AmericanFootballTeam",
+            "dbo:MeanOfTransportation",
+            "dbo:SoccerPlayer"
+        ]
+    },
+    {
+        "id": "97_5",
+        "question": "How about Polamalu's interception return touchdown?",
+        "category": "resource",
+        "type": [
+            "dbo:Athlete",
+            "dbo:AmericanFootballPlayer",
+            "dbo:GridironFootballPlayer",
+            "dbo:Place",
+            "dbo:SoccerClub",
+            "dbo:Location",
+            "dbo:BasketballPlayer",
+            "dbo:Work",
+            "dbo:SoccerPlayer",
+            "dbo:SportsTeam"
+        ]
+    },
+    {
+        "id": "97_6",
+        "question": "Tell me more about the immaculate reception of Pittsburgh Steelers.",
+        "category": "resource",
+        "type": [
+            "dbo:Building",
+            "dbo:Place",
+            "dbo:Activity",
+            "dbo:ArchitecturalStructure",
+            "dbo:ReligiousBuilding",
+            "dbo:Award",
+            "dbo:Person",
+            "dbo:Church",
+            "dbo:Language",
+            "dbo:ProgrammingLanguage"
+        ]
+    },
+    {
+        "id": "97_7",
+        "question": "What happened to Three Rivers stadium?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:Location",
+            "dbo:SportsTeam",
+            "dbo:PopulatedPlace",
+            "dbo:SoccerClub",
+            "dbo:ArchitecturalStructure",
+            "dbo:SportFacility",
+            "dbo:Organisation",
+            "dbo:Stadium",
+            "dbo:City"
+        ]
+    },
+    {
+        "id": "97_8",
+        "question": "Tell me more about the Steelers' defense scheme.",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Activity",
+            "dbo:SoccerClub",
+            "dbo:AmericanFootballPlayer",
+            "dbo:GridironFootballPlayer",
+            "dbo:Athlete",
+            "dbo:SportsTeam",
+            "dbo:SportsLeague",
+            "dbo:Place"
+        ]
+    },
+    {
+        "id": "98_1",
+        "question": "What is the environmental cost of food production?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "98_2",
+        "question": "Oh that much water? How much water is used in meat production?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "98_3",
+        "question": "How much less water is used to produce vegetables compared to meat?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "98_4",
+        "question": "What are the benefits of being vegetarian?",
+        "category": "resource",
+        "type": [
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Animal",
+            "dbo:TopicalConcept",
+            "dbo:Ideology",
+            "dbo:Disease",
+            "dbo:Taxon",
+            "dbo:Insect",
+            "dbo:Work",
+            "dbo:Lake"
+        ]
+    },
+    {
+        "id": "98_5",
+        "question": "Are there any health concerns of being vegetarian?",
+        "category": "resource",
+        "type": [
+            "dbo:Disease",
+            "dbo:Species",
+            "dbo:MedicalSpecialty",
+            "dbo:Eukaryote",
+            "dbo:Animal",
+            "dbo:Insect",
+            "dbo:Ideology",
+            "dbo:EthnicGroup",
+            "dbo:Taxon",
+            "dbo:Port"
+        ]
+    },
+    {
+        "id": "98_6",
+        "question": "What are the sources of proteins for vegetarians?",
+        "category": "resource",
+        "type": [
+            "dbo:Taxon",
+            "dbo:TopicalConcept",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Biomolecule",
+            "dbo:Protein",
+            "dbo:Food",
+            "dbo:Animal",
+            "dbo:Mollusca",
+            "dbo:Insect"
+        ]
+    },
+    {
+        "id": "98_7",
+        "question": "Can you show me some vegetarian recipes with almonds?",
+        "category": "resource",
+        "type": [
+            "dbo:Food",
+            "dbo:Work",
+            "dbo:HollywoodCartoon",
+            "dbo:TelevisionShow",
+            "dbo:Film",
+            "dbo:Ideology",
+            "dbo:Bird",
+            "dbo:Cartoon",
+            "dbo:Island",
+            "dbo:Device"
+        ]
+    },
+    {
+        "id": "98_8",
+        "question": "How do you make almond flour?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Country",
+            "dbo:PersonFunction",
+            "dbo:Food",
+            "dbo:Profession",
+            "dbo:Taxon",
+            "dbo:Plant",
+            "dbo:AcademicSubject",
+            "dbo:PublicService",
+            "dbo:PlayboyPlaymate"
+        ]
+    },
+    {
+        "id": "99_1",
+        "question": "None",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Organisation",
+            "dbo:Band",
+            "dbo:EducationalInstitution",
+            "dbo:Group",
+            "dbo:University",
+            "dbo:Disease",
+            "dbo:MusicalArtist",
+            "dbo:AcademicSubject"
+        ]
+    },
+    {
+        "id": "99_2",
+        "question": "What should you do to treat hypercapnia?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Disease",
+            "dbo:Work",
+            "dbo:UnitOfWork",
+            "dbo:Film",
+            "dbo:Case",
+            "dbo:Factory",
+            "dbo:Software",
+            "dbo:PlayboyPlaymate"
+        ]
+    },
+    {
+        "id": "99_3",
+        "question": "What are treatments for high cholesterol?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalSubstance",
+            "dbo:ChemicalCompound",
+            "dbo:Drug",
+            "dbo:UnitOfWork",
+            "dbo:Enzyme",
+            "dbo:Mollusca",
+            "dbo:SkiResort",
+            "dbo:Factory",
+            "dbo:Case",
+            "dbo:Protein"
+        ]
+    },
+    {
+        "id": "99_4",
+        "question": "What should I eat to improve high cholesterol?",
+        "category": "resource",
+        "type": [
+            "dbo:Eukaryote",
+            "dbo:Species",
+            "dbo:Animal",
+            "dbo:Food",
+            "dbo:Insect",
+            "dbo:Plant",
+            "dbo:Work",
+            "dbo:Ideology",
+            "dbo:Disease",
+            "dbo:Protein"
+        ]
+    },
+    {
+        "id": "99_5",
+        "question": "What are the differences of saturated fat and trans fat?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Species",
+            "dbo:Eukaryote",
+            "dbo:Animal",
+            "dbo:Media",
+            "dbo:Food",
+            "dbo:Insect",
+            "dbo:Ideology",
+            "dbo:Biomolecule"
+        ]
+    },
+    {
+        "id": "99_6",
+        "question": "What are the benefits of unsaturated fats?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:Species",
+            "dbo:ChemicalSubstance",
+            "dbo:Animal",
+            "dbo:Eukaryote",
+            "dbo:Disease",
+            "dbo:Biomolecule",
+            "dbo:Insect",
+            "dbo:Lake",
+            "dbo:Protein"
+        ]
+    },
+    {
+        "id": "99_7",
+        "question": "Oh, I like fish. What foods besides fish are good sources of unsaturated fats?",
+        "category": "resource",
+        "type": [
+            "dbo:Food",
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Work",
+            "dbo:Species",
+            "dbo:Ideology",
+            "dbo:Eukaryote",
+            "dbo:Insect",
+            "dbo:MusicGenre",
+            "dbo:Grape"
+        ]
+    },
+    {
+        "id": "99_8",
+        "question": "What types of unsaturated fats does olive oil contain?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Eukaryote",
+            "dbo:Species",
+            "dbo:TopicalConcept",
+            "dbo:Taxon",
+            "dbo:Grape",
+            "dbo:FloweringPlant",
+            "dbo:Food",
+            "dbo:Plant"
+        ]
+    },
+    {
+        "id": "100_1",
+        "question": "None",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Organisation",
+            "dbo:Band",
+            "dbo:EducationalInstitution",
+            "dbo:Group",
+            "dbo:University",
+            "dbo:Disease",
+            "dbo:MusicalArtist",
+            "dbo:AcademicSubject"
+        ]
+    },
+    {
+        "id": "100_2",
+        "question": "What can a dentist do to fix a chipped tooth?",
+        "category": "resource",
+        "type": [
+            "dbo:Media",
+            "dbo:AnatomicalStructure",
+            "dbo:Agent",
+            "dbo:Work",
+            "dbo:Person",
+            "dbo:MedicalSpecialty",
+            "dbo:Sport",
+            "dbo:Profession",
+            "dbo:PublicService",
+            "dbo:PersonFunction"
+        ]
+    },
+    {
+        "id": "100_3",
+        "question": "What are the differences between dental crowns and veneers?",
+        "category": "resource",
+        "type": [
+            "dbo:ChemicalCompound",
+            "dbo:Media",
+            "dbo:ChemicalSubstance",
+            "dbo:Work",
+            "dbo:AnatomicalStructure",
+            "dbo:Food",
+            "dbo:TopicalConcept",
+            "dbo:Currency",
+            "dbo:Tax",
+            "dbo:Taxon"
+        ]
+    },
+    {
+        "id": "100_4",
+        "question": "How does implant compare to crown?",
+        "category": "resource",
+        "type": [
+            "dbo:Media",
+            "dbo:Work",
+            "dbo:Device",
+            "dbo:AnatomicalStructure",
+            "dbo:Weapon",
+            "dbo:MeanOfTransportation",
+            "dbo:Motorcycle",
+            "dbo:Album",
+            "dbo:Agent",
+            "dbo:InformationAppliance"
+        ]
+    },
+    {
+        "id": "100_5",
+        "question": "Which one of dental implants or crowns is more expensive?",
+        "category": "resource",
+        "type": [
+            "dbo:Device",
+            "dbo:Media",
+            "dbo:AnatomicalStructure",
+            "dbo:ChemicalSubstance",
+            "dbo:ChemicalCompound",
+            "dbo:Weapon",
+            "dbo:Work",
+            "dbo:MedicalSpecialty",
+            "dbo:Album",
+            "dbo:MusicalWork"
+        ]
+    },
+    {
+        "id": "100_6",
+        "question": "What is the coverage of the crown in insurance?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "100_7",
+        "question": "What is the coverage of crown in medicare?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "100_8",
+        "question": "Show me medicare dentists in Seattle.",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:BasketballPlayer",
+            "dbo:Band",
+            "dbo:Athlete",
+            "dbo:Writer",
+            "dbo:MedicalSpecialty",
+            "dbo:Disease",
+            "dbo:BeautyQueen",
+            "dbo:Media"
+        ]
+    },
+    {
+        "id": "101_1",
+        "question": "What is Melania Trump's religion?",
+        "category": "resource",
+        "type": [
+            "dbo:Country",
+            "dbo:EthnicGroup",
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Food",
+            "dbo:Factory",
+            "dbo:Organisation",
+            "dbo:HistoricBuilding",
+            "dbo:PlayboyPlaymate",
+            "dbo:Name"
+        ]
+    },
+    {
+        "id": "101_2",
+        "question": "What did Melania Trump do before she was married?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Profession",
+            "dbo:PersonFunction",
+            "dbo:Person",
+            "dbo:Activity",
+            "dbo:Game",
+            "dbo:Sport",
+            "dbo:Organisation",
+            "dbo:Venue",
+            "dbo:GolfCourse"
+        ]
+    },
+    {
+        "id": "101_3",
+        "question": "Does Melania Trump have children?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:OfficeHolder",
+            "dbo:RadioProgram",
+            "dbo:Deity",
+            "dbo:Monarch",
+            "dbo:Media",
+            "dbo:PublicService",
+            "dbo:Factory",
+            "dbo:MemberOfParliament"
+        ]
+    },
+    {
+        "id": "101_4",
+        "question": "How old is Barron Trump?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "101_5",
+        "question": "Donald and Melania Trump met at the Kit Kat Club? Where is the Kit Kat Club?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:Location",
+            "dbo:PopulatedPlace",
+            "dbo:ArchitecturalStructure",
+            "dbo:City",
+            "dbo:Building",
+            "dbo:Settlement",
+            "dbo:Country",
+            "dbo:SportFacility",
+            "dbo:State"
+        ]
+    },
+    {
+        "id": "101_6",
+        "question": "When did Melania Trump become a model?",
+        "category": "literal_date",
+        "type": []
+    },
+    {
+        "id": "101_7",
+        "question": "Does the public pay the First Lady of the United States?",
+        "category": "boolean",
+        "type": []
+    },
+    {
+        "id": "101_8",
+        "question": "Does the public pay Ivanka Trump?",
+        "category": "boolean",
+        "type": []
+    },
+    {
+        "id": "101_9",
+        "question": "Does the public pay Jared Kushner?",
+        "category": "boolean",
+        "type": []
+    },
+    {
+        "id": "101_10",
+        "question": "What does Jared Kushner do at the White House?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Profession",
+            "dbo:PersonFunction",
+            "dbo:Organisation",
+            "dbo:Person",
+            "dbo:Activity",
+            "dbo:Legislature",
+            "dbo:Monarch",
+            "dbo:TopicalConcept",
+            "dbo:Name"
+        ]
+    },
+    {
+        "id": "102_1",
+        "question": "When did social security start in the US?",
+        "category": "literal_date",
+        "type": []
+    },
+    {
+        "id": "102_2",
+        "question": "Was social security mandatory?",
+        "category": "boolean",
+        "type": []
+    },
+    {
+        "id": "102_3",
+        "question": "Who received the first social security check?",
+        "category": "resource",
+        "type": [
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:GovernmentAgency",
+            "dbo:Scientist",
+            "dbo:Criminal",
+            "dbo:BeautyQueen",
+            "dbo:BasketballPlayer",
+            "dbo:Bone",
+            "dbo:Media",
+            "dbo:IceHockeyPlayer"
+        ]
+    },
+    {
+        "id": "102_4",
+        "question": "When did the government start borrowing from social security?",
+        "category": "literal_date",
+        "type": []
+    },
+    {
+        "id": "102_5",
+        "question": "How much money is owed to social security?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "102_6",
+        "question": "When will social security run out of money?",
+        "category": "literal_date",
+        "type": []
+    },
+    {
+        "id": "102_7",
+        "question": "Wow! What will happen if social security runs out of money?",
+        "category": "resource",
+        "type": [
+            "dbo:Place",
+            "dbo:PopulatedPlace",
+            "dbo:Settlement",
+            "dbo:Work",
+            "dbo:Location",
+            "dbo:City",
+            "dbo:Country",
+            "dbo:Software",
+            "dbo:Agent",
+            "dbo:State"
+        ]
+    },
+    {
+        "id": "102_8",
+        "question": "Can social security be fixed?",
+        "category": "boolean",
+        "type": []
+    },
+    {
+        "id": "102_9",
+        "question": "How much of a tax increase will keep social security solvent?",
+        "category": "literal_number",
+        "type": []
+    },
+    {
+        "id": "103_1",
+        "question": "Why were the Grateful Dead such an influential live band?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Person",
+            "dbo:Group",
+            "dbo:Band",
+            "dbo:MusicalArtist",
+            "dbo:Artist",
+            "dbo:Factory",
+            "dbo:Bone",
+            "dbo:EducationalInstitution"
+        ]
+    },
+    {
+        "id": "103_2",
+        "question": "Why did the Grateful Dead allow live recordings?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Work",
+            "dbo:MusicalWork",
+            "dbo:Person",
+            "dbo:EducationalInstitution",
+            "dbo:Band",
+            "dbo:Group",
+            "dbo:Single",
+            "dbo:SkiResort"
+        ]
+    },
+    {
+        "id": "103_3",
+        "question": "Did the Grateful Dead have a #1 hit?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:MusicalWork",
+            "dbo:Single",
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:Album",
+            "dbo:MusicalArtist",
+            "dbo:SkiResort",
+            "dbo:Senator",
+            "dbo:Rocket"
+        ]
+    },
+    {
+        "id": "103_4",
+        "question": "Who was the leader of the Grateful Dead?",
+        "category": "resource",
+        "type": [
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:Artist",
+            "dbo:MusicalArtist",
+            "dbo:OfficeHolder",
+            "dbo:Artery",
+            "dbo:PublicService",
+            "dbo:Factory",
+            "dbo:Disease",
+            "dbo:Criminal"
+        ]
+    },
+    {
+        "id": "103_5",
+        "question": "How did Jerry Garcia lose his finger?",
+        "category": "resource",
+        "type": [
+            "dbo:AnatomicalStructure",
+            "dbo:Activity",
+            "dbo:Disease",
+            "dbo:Award",
+            "dbo:Media",
+            "dbo:MountainRange",
+            "dbo:Vein",
+            "dbo:Name",
+            "dbo:Muscle",
+            "dbo:GivenName"
+        ]
+    },
+    {
+        "id": "103_6",
+        "question": "What was Jerry Garcia\u2019s relationship to Jefferson Airplane?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Person",
+            "dbo:Band",
+            "dbo:Group",
+            "dbo:Company",
+            "dbo:MusicalArtist",
+            "dbo:Artist",
+            "dbo:RecordLabel",
+            "dbo:SkiResort"
+        ]
+    },
+    {
+        "id": "103_7",
+        "question": "Is Cassidy about Jack Casady?",
+        "category": "boolean",
+        "type": []
+    },
+    {
+        "id": "103_8",
+        "question": "Who wrote Cassidy?",
+        "category": "resource",
+        "type": [
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:Writer",
+            "dbo:Artist",
+            "dbo:MusicalArtist",
+            "dbo:ComicsCreator",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:Criminal",
+            "dbo:Comedian"
+        ]
+    },
+    {
+        "id": "103_9",
+        "question": "What else did John Barlow and Bob Weir write?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:WrittenWork",
+            "dbo:Book",
+            "dbo:TelevisionShow",
+            "dbo:Magazine",
+            "dbo:PeriodicalLiterature",
+            "dbo:Play",
+            "dbo:Film",
+            "dbo:Politician",
+            "dbo:Criminal"
+        ]
+    },
+    {
+        "id": "103_10",
+        "question": "Why did the Grateful Dead break up?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Band",
+            "dbo:Organisation",
+            "dbo:Group",
+            "dbo:MusicalArtist",
+            "dbo:Factory",
+            "dbo:Disease",
+            "dbo:Bone",
+            "dbo:Artist"
+        ]
+    },
+    {
+        "id": "104_1",
+        "question": "Who are some of the well-known Information Retrieval researchers?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Scientist",
+            "dbo:Artist",
+            "dbo:MilitaryPerson",
+            "dbo:Organisation",
+            "dbo:Writer",
+            "dbo:Gymnast",
+            "dbo:Judge",
+            "dbo:Philosopher"
+        ]
+    },
+    {
+        "id": "104_2",
+        "question": "What Information Retrieval research did Bruce Croft work on?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:AcademicSubject",
+            "dbo:Person",
+            "dbo:Organisation",
+            "dbo:TopicalConcept",
+            "dbo:Library",
+            "dbo:Company",
+            "dbo:Activity",
+            "dbo:EducationalInstitution",
+            "dbo:University"
+        ]
+    },
+    {
+        "id": "104_3",
+        "question": "Who are some important British Information Retrieval researchers?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:Scientist",
+            "dbo:OfficeHolder",
+            "dbo:MilitaryPerson",
+            "dbo:Writer",
+            "dbo:Artist",
+            "dbo:BeautyQueen",
+            "dbo:Organisation",
+            "dbo:TelevisionShow"
+        ]
+    },
+    {
+        "id": "104_4",
+        "question": "What did Cyril Cleverdon\u2019s studies contribute to the evaluation of Information Retrieval systems?",
+        "category": "resource",
+        "type": [
+            "dbo:AcademicSubject",
+            "dbo:TopicalConcept",
+            "dbo:Work",
+            "dbo:MedicalSpecialty",
+            "dbo:University",
+            "dbo:ProgrammingLanguage",
+            "dbo:Company",
+            "dbo:PersonFunction",
+            "dbo:Activity",
+            "dbo:Train"
+        ]
+    },
+    {
+        "id": "104_5",
+        "question": "What are some criticisms of the Cranfield project experiments?",
+        "category": "resource",
+        "type": [
+            "dbo:TopicalConcept",
+            "dbo:Work",
+            "dbo:Person",
+            "dbo:Ideology",
+            "dbo:Software",
+            "dbo:Disease",
+            "dbo:Taxon",
+            "dbo:EducationalInstitution",
+            "dbo:Species",
+            "dbo:WrittenWork"
+        ]
+    },
+    {
+        "id": "104_6",
+        "question": "How did the Cranfield Experiments influence modern information retrieval evaluation initiatives?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:ProgrammingLanguage",
+            "dbo:Language",
+            "dbo:Organisation",
+            "dbo:Person",
+            "dbo:PeriodicalLiterature",
+            "dbo:AcademicSubject",
+            "dbo:Agent",
+            "dbo:Type"
+        ]
+    },
+    {
+        "id": "104_7",
+        "question": "What is TREC for information retrieval research?",
+        "category": "literal_string",
+        "type": []
+    },
+    {
+        "id": "104_8",
+        "question": "What are some recent TREC tasks?",
+        "category": "resource",
+        "type": [
+            "dbo:Activity",
+            "dbo:Sport",
+            "dbo:Profession",
+            "dbo:PersonFunction",
+            "dbo:Game",
+            "dbo:Media",
+            "dbo:Lake",
+            "dbo:Settlement",
+            "dbo:Name",
+            "dbo:TopicalConcept"
+        ]
+    },
+    {
+        "id": "104_9",
+        "question": "e-Discovery? What's that?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:EducationalInstitution",
+            "dbo:University",
+            "dbo:Activity",
+            "dbo:Planet",
+            "dbo:Person",
+            "dbo:Work",
+            "dbo:GovernmentAgency",
+            "dbo:CelestialBody"
+        ]
+    },
+    {
+        "id": "104_10",
+        "question": "What are the important components of an information retrieval test collection?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:ProgrammingLanguage",
+            "dbo:EducationalInstitution",
+            "dbo:Activity",
+            "dbo:Church",
+            "dbo:Language",
+            "dbo:PeriodicalLiterature",
+            "dbo:CollectionOfValuables",
+            "dbo:Media"
+        ]
+    },
+    {
+        "id": "104_11",
+        "question": "What about evaluation benchmarks for music information retrieval?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:Agent",
+            "dbo:VideoGame",
+            "dbo:Company",
+            "dbo:Album",
+            "dbo:MusicalWork",
+            "dbo:Film",
+            "dbo:Organisation",
+            "dbo:Person"
+        ]
+    },
+    {
+        "id": "104_12",
+        "question": "What are important evaluation measures for web search engines?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:VideoGame",
+            "dbo:ChemicalCompound",
+            "dbo:ChemicalSubstance",
+            "dbo:Film",
+            "dbo:Media",
+            "dbo:WineRegion",
+            "dbo:Company",
+            "dbo:PeriodicalLiterature"
+        ]
+    },
+    {
+        "id": "104_13",
+        "question": "What are important online evaluation metrics for web search?",
+        "category": "resource",
+        "type": [
+            "dbo:Work",
+            "dbo:Software",
+            "dbo:VideoGame",
+            "dbo:Company",
+            "dbo:PeriodicalLiterature",
+            "dbo:ChemicalCompound",
+            "dbo:Organisation",
+            "dbo:TelevisionShow",
+            "dbo:ChemicalSubstance",
+            "dbo:Newspaper"
+        ]
+    },
+    {
+        "id": "105_1",
+        "question": "When did the Black Lives Matter campaign begin?",
+        "category": "literal_date",
+        "type": []
+    },
+    {
+        "id": "105_2",
+        "question": "Tell me more about the shooting of Trayvon Martin.",
+        "category": "resource",
+        "type": [
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:Activity",
+            "dbo:BoardGame",
+            "dbo:Device",
+            "dbo:PersonFunction",
+            "dbo:Profession",
+            "dbo:Cat",
+            "dbo:PublicService",
+            "dbo:Priest"
+        ]
+    },
+    {
+        "id": "105_3",
+        "question": "Why was George Zimmerman acquitted?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Case",
+            "dbo:LegalCase",
+            "dbo:UnitOfWork",
+            "dbo:Person",
+            "dbo:Philosopher",
+            "dbo:Judge",
+            "dbo:Settlement",
+            "dbo:Event",
+            "dbo:SocietalEvent"
+        ]
+    },
+    {
+        "id": "105_4",
+        "question": "And how what happened to Michael Brown?",
+        "category": "resource",
+        "type": [
+            "dbo:Person",
+            "dbo:Agent",
+            "dbo:Work",
+            "dbo:Activity",
+            "dbo:Company",
+            "dbo:Software",
+            "dbo:Disease",
+            "dbo:City",
+            "dbo:TimePeriod",
+            "dbo:OfficeHolder"
+        ]
+    },
+    {
+        "id": "105_5",
+        "question": "Who named the movement \"Black Lives Matter\"?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:OfficeHolder",
+            "dbo:Organisation",
+            "dbo:PoliticalParty",
+            "dbo:Religious",
+            "dbo:Comedian",
+            "dbo:Criminal",
+            "dbo:Bone",
+            "dbo:Factory"
+        ]
+    },
+    {
+        "id": "105_6",
+        "question": "What was the US reaction to the Black Lives Matter movement?",
+        "category": "resource",
+        "type": [
+            "dbo:PoliticalParty",
+            "dbo:Ideology",
+            "dbo:Gene",
+            "dbo:Event",
+            "dbo:Media",
+            "dbo:Insect",
+            "dbo:MilitaryUnit",
+            "dbo:Region",
+            "dbo:LegalCase",
+            "dbo:Factory"
+        ]
+    },
+    {
+        "id": "105_7",
+        "question": "Tell me more about the Blue Lives Matter movement.",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:Organisation",
+            "dbo:Settlement",
+            "dbo:City",
+            "dbo:TopicalConcept",
+            "dbo:PopulatedPlace",
+            "dbo:Place",
+            "dbo:Ideology",
+            "dbo:Activity",
+            "dbo:MilitaryUnit"
+        ]
+    },
+    {
+        "id": "105_8",
+        "question": "Why were Rafael Ramos and Wenjian Liu killed?",
+        "category": "resource",
+        "type": [
+            "dbo:Disease",
+            "dbo:Criminal",
+            "dbo:Agent",
+            "dbo:Person",
+            "dbo:EthnicGroup",
+            "dbo:PlayboyPlaymate",
+            "dbo:PublicService",
+            "dbo:Bone",
+            "dbo:Factory",
+            "dbo:Enzyme"
+        ]
+    },
+    {
+        "id": "105_9",
+        "question": "What else motivates the Black Lives Matter movement?",
+        "category": "resource",
+        "type": [
+            "dbo:Agent",
+            "dbo:City",
+            "dbo:Settlement",
+            "dbo:Organisation",
+            "dbo:Person",
+            "dbo:TopicalConcept",
+            "dbo:Ideology",
+            "dbo:Activity",
+            "dbo:PopulatedPlace",
+            "dbo:Disease"
+        ]
+    }
+]
