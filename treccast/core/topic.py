@@ -14,6 +14,7 @@ class Turn:
         canonical_result_id: str,
         turn_id: int,
         manual_rewritten_utterance: str,
+        automatic_rewritten_utterance: str,
         query_turn_dependence: list,
         raw_utterance: str,
     ) -> None:
@@ -24,6 +25,7 @@ class Turn:
             canonical_result_id: [description]
             turn_id: [description]
             manual_rewritten_utterance: [description]
+            automatic_rewritten_utterance: [description]
             query_turn_dependence: [description]
             raw_utterance: [description]
         """
@@ -31,6 +33,7 @@ class Turn:
         self._canonical_result_id = canonical_result_id
         self._turn_id = turn_id
         self._manual_rewritten_utterance = manual_rewritten_utterance
+        self._automatic_rewritten_utterance = automatic_rewritten_utterance
         self._query_turn_dependence = query_turn_dependence
         self._raw_utterance = raw_utterance
         # TODO: Extend with the text of the canonical result
@@ -43,6 +46,14 @@ class Turn:
     @property
     def raw_utterance(self) -> str:
         return self._raw_utterance
+
+    @property
+    def manual_utterance(self) -> str:
+        return self._manual_rewritten_utterance
+
+    @property
+    def automatic_utterance(self) -> str:
+        return self._automatic_rewritten_utterance
 
 
 class Topic:
@@ -94,16 +105,31 @@ class Topic:
             raise IndexError(f"Invalid turn_id: {turn_id}")
         return self._turns[turn_id - 1]
 
-    def get_question_and_context(self, turn_id: int) -> Tuple[str, List[Turn]]:
+    def get_question_and_context(
+        self, turn_id: int, utterance_type: str = "raw"
+    ) -> Tuple[str, List[Turn]]:
         """Returns the question and context for a given topic turn.
 
         Args:
             turn_id: Turn ID.
+            utterance_type: Type of utterance to return. Choices are "raw",
+                "manual", and "automatic".
 
         Returns:
             Question (str) and list of Turns.
         """
-        return self.get_turn(turn_id).raw_utterance, self._turns[: turn_id - 1]
+        turn = self.get_turn(turn_id)
+        if utterance_type == "raw":
+            utterance = turn.raw_utterance
+        elif utterance_type == "automatic":
+            utterance = turn.automatic_utterance
+        elif utterance_type == "manual":
+            utterance = turn.manual_utterance
+        else:
+            raise ValueError(
+                "Incorrect utterance type. Accepted values are: 'raw', 'manual', and 'automatic'."
+            )
+        return utterance, self._turns[: turn_id - 1]
 
 
 def construct_topics_from_file(filepath: str) -> List[Topic]:
@@ -131,6 +157,9 @@ def construct_topics_from_file(filepath: str) -> List[Topic]:
                 manual_rewritten_utterance = raw_turn.get(
                     "manual_rewritten_utterance"
                 )
+                automatic_rewritten_utterance = raw_turn.get(
+                    "automatic_rewritten_utterance"
+                )
                 query_turn_dependence = raw_turn.get("query_turn_dependence")
                 raw_utterance = raw_turn.get("raw_utterance")
                 turn = Turn(
@@ -138,6 +167,7 @@ def construct_topics_from_file(filepath: str) -> List[Topic]:
                     canonical_result_id,
                     turn_id,
                     manual_rewritten_utterance,
+                    automatic_rewritten_utterance,
                     query_turn_dependence,
                     raw_utterance,
                 )

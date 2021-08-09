@@ -82,7 +82,7 @@ class BM25Retriever(Retriever):
         return self._es.search(
             body=body,
             index=self._index_name,
-            _source=False,
+            _source=True,
             size=num_results,
         )
 
@@ -102,7 +102,7 @@ class BM25Retriever(Retriever):
         return self._es.search(
             index=self._index_name,
             q=query,
-            _source=False,
+            _source=True,
             size=num_results,
         )
 

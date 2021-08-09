@@ -23,6 +23,7 @@ DEFAULT_RANKING_OUTPUT_PATH = "data/runs-2020/bm25.trec"
 def retrieve(
     topics_path: str,
     output_path: str,
+    utterance_type: str = "raw",
     rewriter: Rewriter = None,
     retriever: Retriever = None,
     preprocess: bool = False,
@@ -46,7 +47,9 @@ def retrieve(
                 # See: https://github.com/iai-group/trec-cast-2021/issues/37
                 print(query_id)
                 # Context is currently not used.
-                question, _ = topic.get_question_and_context(turn.turn_id)
+                question, _ = topic.get_question_and_context(
+                    turn.turn_id, utterance_type
+                )
                 query = SparseQuery(
                     query_id, question, SimpleTokenizer if preprocess else None
                 )
@@ -145,25 +148,26 @@ def parse_args() -> argparse.Namespace:
         help="Performs retrieval using the specified path",
     )
     parser.add_argument(
-        "--es.index",
-        metavar="index",
-        dest="es_index",
+        "--es_index",
         default="ms_marco_trec_car",
         help="Elasticsearch index",
     )
     parser.add_argument(
-        "--es.k1",
-        metavar="k1",
-        dest="es_k1",
+        "--es_k1",
         default=1.2,
         help="Elasticsearch BM25 k1 parameter",
     )
     parser.add_argument(
-        "--es.b",
-        metavar="b",
-        dest="es_b",
+        "--es_b",
         default=0.75,
         help="Elasticsearch BM25 b parameter",
+    )
+    parser.add_argument(
+        "--utterance_type",
+        type=str,
+        default="raw",
+        choices=["raw", "automatic", "manual"],
+        help="Select the type of utterance to use.",
     )
     return parser.parse_args()
 
@@ -174,6 +178,7 @@ def main(args):
     Args:
         args: Command-line arguments.
     """
+    rewriter = None
     if args.rewrite:
         rewriter = _get_rewriter(args.rewrite_path)
 
@@ -193,6 +198,7 @@ def main(args):
         retrieve(
             args.topics,
             args.output,
+            utterance_type=args.utterance_type,
             rewriter=rewriter,
             retriever=retriever,
             preprocess=args.preprocess,

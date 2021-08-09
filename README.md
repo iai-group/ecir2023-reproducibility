@@ -33,12 +33,15 @@ Scripts are to be run from root.
 | *Method* | *Query rewriting* | *recall@1000* | *MAP* | *MRR* | *NDCG* | *NDCG@5* |
 | -- | -- | -- | -- | -- | -- | -- |
 | [BM25](scripts/2020/cast_bm25_default.sh) | None (raw) | 0.2093 | 0.0293 | 0.1080 | 0.1247 | 0.0614 |
-| [BM25 (Stopword, KStem)](scripts/2020/cast_bm25_clean.sh) | None (raw) | 0.2608 | 0.0385 | 0.1078 | 0.1509 | 0.0787 |
-| BM25 | Automatic | | | | | |
-| BM25 | Manual | | | | | |
-| [BM25+BERT base](scripts/2020/cast_bm25_default_rerank.sh) | None (raw) | 0.2093 | 0.0792 | 0.2291 | 0.1801 | 0.1586 |
-| BM25+BERT base | Automatic | | | | | |
-| BM25+BERT base | Manual | | | | | |
+| [BM25](scripts/2020/cast_bm25_default_Automatic.sh) | Automatic | 0.4387 | 0.0796 | 0.3408 | 0.2377 | 0.1255 |
+| [BM25](scripts/2020/cast_bm25_default_manual.sh) | Manual | 0.6301 | 0.1405 | 0.5246 | 0.3611 | 0.2169 |
+| [BM25 (Stopword, KStem)](scripts/2020/cast_bm25_clean.sh) | None (raw) | 0.2620 | 0.0379 | 0.1097 | 0.1497 | 0.0750 |
+| [BM25 (Stopword, KStem)](scripts/2020/cast_bm25_clean_automatic.sh) | Automatic | 0.5121 | 0.1113 | 0.3844 | 0.2872 | 0.1542 |
+| [BM25 (Stopword, KStem)](scripts/2020/cast_bm25_clean_manual.sh) | Manual | 0.7202 | 0.1837 | 0.5551 | 0.4192 | 0.2473 |
+| [BM25 + BERT](scripts/2020/cast_bm25_default_rerank_bert.sh) | None (raw) | 0.2093 | 0.0792 | 0.2291 | 0.1801 | 0.1586 |
+| [BM25 (Stopword, KStem)+BERT](scripts/2020/cast_bm25_clean_rerank_bert.sh) | None (raw) | 0.2620 | 0.0906 | 0.2470 | 0.2050 | 0.1696 |
+| [BM25 (Stopword, KStem)+BERT](scripts/2020/cast_bm25_clean_manual_rerank_bert.sh) | Manual | 0.6936 | 0.3016 | 0.6325 | 0.5581 | 0.4732 |
+| BM25 (Stopword, KStem)+T5 | Manual | | | | | |
 | *Reference* |||||
 | Organizers' baseline (??) | None (raw) | 0.1480 | 0.0658 | 0.2245 | 0.1437 | 0.1591 |
 | Organizers' baseline (BERT) | Automatic | 0.3084 | 0.1344 | 0.4084 | 0.2840 | 0.2865 |
