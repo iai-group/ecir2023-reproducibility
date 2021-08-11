@@ -3,14 +3,15 @@ from typing import List
 import torch
 from transformers import T5ForConditionalGeneration, AutoTokenizer
 
-from treccast.reranker.reranker import NeuralReranker, validate, Batch
+from treccast.reranker.reranker import NeuralReranker, Batch
 
 
 class T5Reranker(NeuralReranker):
     def __init__(
         self,
         model_name: str = "castorini/monot5-base-msmarco",
-        max_seq_len: int = 256,
+        max_seq_len: int = 512,
+        batch_size: int = 64,
     ) -> None:
         """T5 reranker.
 
@@ -18,12 +19,14 @@ class T5Reranker(NeuralReranker):
             model_name (optional): Location to the model. Defaults to
                 "castorini/monot5-base-msmarco".
             max_seq_len (optional): Maximal number of tokens. Defaults
-                to 256.
+                to 512.
+            batch_size (optional): Batch size. Defaults
+                to 64.
         """
-        super().__init__(max_seq_len)
+        super().__init__(max_seq_len, batch_size)
 
         self._tokenizer = AutoTokenizer.from_pretrained(
-            "t5-base", cache_dir="data/models", use_fast=True
+            "t5-base", cache_dir="data/models"
         )
         self._model = T5ForConditionalGeneration.from_pretrained(
             model_name, cache_dir="data/models"
@@ -44,8 +47,6 @@ class T5Reranker(NeuralReranker):
             A list containing two values for each document: the probability
                 of the document being non-relevant [0] and relevant [1].
         """
-        # TODO Split into manageable batch sizes.
-        # https://github.com/iai-group/trec-cast-2021/issues/66
         input_ids, attention_mask, decoder_input_ids = self._encode(
             query, documents
         )
@@ -97,8 +98,3 @@ class T5Reranker(NeuralReranker):
         ).to(self._device, non_blocking=True)
 
         return input_ids, attention_mask, decode_ids
-
-
-if __name__ == "__main__":
-    ranker = T5Reranker()
-    validate(ranker)

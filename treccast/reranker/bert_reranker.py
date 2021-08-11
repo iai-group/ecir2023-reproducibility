@@ -3,14 +3,15 @@ from typing import List
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-from treccast.reranker.reranker import NeuralReranker, validate, Batch
+from treccast.reranker.reranker import NeuralReranker, Batch
 
 
 class BERTReranker(NeuralReranker):
     def __init__(
         self,
         model_name: str = "nboost/pt-bert-base-uncased-msmarco",
-        max_seq_len: int = 256,
+        max_seq_len: int = 512,
+        batch_size: int = 128,
     ) -> None:
         """BERT reranker. Currently only supports BERT type architecture.
 
@@ -18,9 +19,11 @@ class BERTReranker(NeuralReranker):
             model_name (optional): Location to the model. Defaults to
                 "nboost/pt-bert-base-uncased-msmarco".
             max_seq_len (optional): Maximal number of tokens. Defaults
-                to 256.
+                to 512.
+            batch_size (optional): Batch size. Defaults
+                to 128.
         """
-        super().__init__(max_seq_len)
+        super().__init__(max_seq_len, batch_size)
 
         self._tokenizer = AutoTokenizer.from_pretrained(
             "bert-base-uncased", cache_dir="data/models", use_fast=True
@@ -44,8 +47,6 @@ class BERTReranker(NeuralReranker):
             A list containing two values for each document: the probability
                 of the document being non-relevant [0] and relevant [1].
         """
-        # TODO Split into manageable batch sizes.
-        # https://github.com/iai-group/trec-cast-2021/issues/66
         input_ids, attention_mask, token_type_ids = self._encode(
             query, documents
         )
@@ -86,8 +87,3 @@ class BERTReranker(NeuralReranker):
         )
 
         return input_ids, attention_mask, token_type_ids
-
-
-if __name__ == "__main__":
-    ranker = BERTReranker()
-    validate(ranker)

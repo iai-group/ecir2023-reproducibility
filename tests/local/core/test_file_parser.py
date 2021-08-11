@@ -1,3 +1,4 @@
+"""Tests FileParser class from file_parser"""
 import pytest
 
 from treccast.core.util.file_parser import FileParser

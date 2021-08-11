@@ -52,6 +52,17 @@ class Ranking:
             {"doc_id": doc_id, "score": score, "content": doc_content}
         )
 
+    def add_docs(self, docs: List[Dict]) -> None:
+        """Adds multiple documents to the ranking.
+
+        Note: it doesn't check whether the document is already present.
+
+        Args:
+            docs: List of dictionaries, where the keys `doc_id` and
+                `score` are mandatory, and `content` is optional.
+        """
+        self._scored_docs.extend(docs)
+
     def fetch_topk_docs(self, k: int = 1000) -> List[Dict]:
         """Fetches the top-k docs based on their score.
 
@@ -66,12 +77,9 @@ class Ranking:
             Ordered list of dictionaries with doc_id, score, and (optional)
                 content fields.
         """
-        return [
-            doc
-            for doc in sorted(
-                self._scored_docs, key=lambda i: i["score"], reverse=True
-            )
-        ][:k]
+        return sorted(
+            self._scored_docs, key=lambda i: i["score"], reverse=True
+        )[:k]
 
     def write_to_file(
         self, f_out: io.StringIO, run_id: str = "Undefined", k: int = 1000

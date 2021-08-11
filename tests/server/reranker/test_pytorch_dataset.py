@@ -1,3 +1,4 @@
+"""Tests for PointWiseDataset from pytorch_dataset."""
 import pytest
 
 from treccast.core.ranking import Ranking

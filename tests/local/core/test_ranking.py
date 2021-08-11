@@ -25,6 +25,25 @@ def test_add_doc():
     ]
 
 
+def test_add_multiple_docs():
+    ranking = Ranking("1")
+    ranking.add_docs(
+        [
+            {"doc_id": "001", "score": 10},
+            {"doc_id": "003", "score": 1},
+            {"doc_id": "002", "score": 5},
+        ]
+    )
+    assert len(ranking) == 3
+    doc_ids, contents = ranking.documents()
+    assert doc_ids == ["001", "003", "002"]
+    assert contents == [
+        None,
+        None,
+        None,
+    ]
+
+
 def test_fetch_topk_docs():
     ranking = Ranking("2")
     ranking.add_doc("1", 50.62, "doc1 content")
