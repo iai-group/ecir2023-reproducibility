@@ -86,6 +86,11 @@ class Ranking:
         """Writes the results of ranking to a tsv file in the format:
             query_id, query, passage_id, passage
 
+        Note: The writer is of type csv._writer, but there is no simple way to
+            access this type, the only possible solutions would be to add a new
+            dependency or create a wrapper around the writer, see
+            https://stackoverflow.com/q/51264355 for more information.
+
         Args:
             writer: CSV writer that writes the tsv file.
                 It should have delimiter="\t", and a header should be written
