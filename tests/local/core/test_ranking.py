@@ -25,7 +25,7 @@ def test_add_doc():
     ]
 
 
-def test_add_multiple_docs():
+def test_add_docs():
     ranking = Ranking("1")
     ranking.add_docs(
         [
