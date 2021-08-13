@@ -32,9 +32,10 @@ class Ranking:
         Returns:
             Two parallel lists, containing document IDs and their content.
         """
-        return [doc["doc_id"] for doc in self._scored_docs], [
-            doc.get("content") for doc in self._scored_docs
-        ]
+        return (
+            [doc["doc_id"] for doc in self._scored_docs],
+            [doc.get("content") for doc in self._scored_docs],
+        )
 
     def add_doc(
         self, doc_id: str, score: float, doc_content: str = None
@@ -81,7 +82,23 @@ class Ranking:
             self._scored_docs, key=lambda i: i["score"], reverse=True
         )[:k]
 
-    def write_to_file(
+    def write_to_tsv_file(self, writer, query: str, k: int = 1000) -> None:
+        """Writes the results of ranking to a tsv file in the format:
+            query_id, query, passage_id, passage
+
+        Args:
+            writer: CSV writer that writes the tsv file.
+                It should have delimiter="\t", and a header should be written
+                before passing the writer to this function if required.
+            query: The query/question content for which the passages are retrieved.
+            k (optional): The number of documents to retrieve. Defaults to 1000.
+        """
+        for doc in self.fetch_topk_docs(k):
+            writer.writerow(
+                [self.query_id, query, doc["doc_id"], doc["content"]]
+            )
+
+    def write_to_trec_file(
         self, f_out: io.StringIO, run_id: str = "Undefined", k: int = 1000
     ) -> None:
         """Writes the top-k documents into an output TREC runfile.

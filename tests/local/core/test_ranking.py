@@ -1,4 +1,6 @@
 """Tests Ranking class from Ranker"""
+import csv
+
 from io import StringIO
 
 from treccast.core.ranking import Ranking
@@ -62,7 +64,31 @@ def test_fetch_topk_docs():
     }
 
 
-def test_write_to_file():
+def test_write_to_tsv_file():
+    outfile = StringIO()
+    tsv_writer = csv.writer(outfile, delimiter="\t")
+    tsv_writer.writerow(["query_id", "query", "passage_id", "passage"])
+    ranking = Ranking(
+        "123",
+        [
+            {"doc_id": "001", "score": 10, "content": "doc001\t content"},
+            {"doc_id": "003", "score": 1, "content": "doc003 content"},
+            {"doc_id": "002", "score": 5, "content": "doc002 content"},
+        ],
+    )
+    ranking.write_to_tsv_file(tsv_writer, "test", k=2)
+
+    outfile.seek(0)
+    read_csv = list(csv.reader(outfile, delimiter="\t"))
+    expected = [
+        ["query_id", "query", "passage_id", "passage"],
+        ["123", "test", "001", "doc001\t content"],
+        ["123", "test", "002", "doc002 content"],
+    ]
+    assert expected == read_csv
+
+
+def test_write_to_trec_file():
     outfile = StringIO()
     ranking = Ranking(
         "123",
@@ -72,7 +98,7 @@ def test_write_to_file():
             {"doc_id": "002", "score": 5},
         ],
     )
-    ranking.write_to_file(outfile, "test", k=2)
+    ranking.write_to_trec_file(outfile, "test", k=2)
     outfile.seek(0)
     content = outfile.read()
     assert content == "123 Q0 001 1 10 test\n123 Q0 002 2 5 test\n"

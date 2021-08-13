@@ -1,6 +1,7 @@
 """Main command line application."""
 
 import argparse
+import csv
 
 from treccast.rewriter.rewriter import Rewriter, CachedRewriter
 from treccast.retriever.retriever import Retriever
@@ -30,6 +31,7 @@ def retrieve(
     reranker: Reranker = None,
 ) -> None:
     """Performs (first-pass) retrieval and saves the results to a TREC runfile.
+    First pass retrieval results are also saved in a tsv file.
 
     Args:
         topics_path: Path to topic input file.
@@ -39,7 +41,11 @@ def retrieve(
         reranker: Reranker model. Defaults to None.
     """
     topics = construct_topics_from_file(topics_path)
-    with open(output_path, "w") as f_out:
+    with open(output_path, "w") as trec_out, open(
+        output_path.replace(".trec", ".tsv"), "w"
+    ) as retrieval_out:
+        tsv_writer = csv.writer(retrieval_out, delimeter="\t")
+        tsv_writer.writerow(["query_id", "query", "passage_id", "passage"])
         for topic in topics:
             for turn in topic.turns:
                 query_id = f"{topic.topic_id}_{turn.turn_id}"
@@ -58,7 +64,8 @@ def retrieve(
                 ranking = retriever.retrieve(query)
                 if reranker:
                     ranking = reranker.rerank(query, ranking)
-                ranking.write_to_file(f_out, run_id="BM25", k=1000)
+                ranking.write_to_tsv_file(tsv_writer, question, k=1000)
+                ranking.write_to_trec_file(trec_out, run_id="BM25", k=1000)
 
 
 def _get_rewriter(path: str) -> Rewriter:
@@ -148,19 +155,13 @@ def parse_args() -> argparse.Namespace:
         help="Performs retrieval using the specified path",
     )
     parser.add_argument(
-        "--es_index",
-        default="ms_marco_trec_car",
-        help="Elasticsearch index",
+        "--es_index", default="ms_marco_trec_car", help="Elasticsearch index",
     )
     parser.add_argument(
-        "--es_k1",
-        default=1.2,
-        help="Elasticsearch BM25 k1 parameter",
+        "--es_k1", default=1.2, help="Elasticsearch BM25 k1 parameter",
     )
     parser.add_argument(
-        "--es_b",
-        default=0.75,
-        help="Elasticsearch BM25 b parameter",
+        "--es_b", default=0.75, help="Elasticsearch BM25 b parameter",
     )
     parser.add_argument(
         "--utterance_type",
