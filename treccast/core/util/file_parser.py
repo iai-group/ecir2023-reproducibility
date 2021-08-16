@@ -18,8 +18,8 @@ class FileParser:
         """
         if filepath.endswith(".tar.gz"):
             return FileParser._parse_tar(filepath)
-        elif filepath.endswith(".tsv"):
-            return FileParser._parse_tsv(filepath)
+        elif filepath.endswith(".tsv") or filepath.endswith(".txt"):
+            return FileParser._parse_text_file(filepath)
         else:
             raise ValueError("File type not supported")
 
@@ -39,8 +39,8 @@ class FileParser:
                     yield line.decode().strip()
 
     @staticmethod
-    def _parse_tsv(filepath: str) -> Iterator[str]:
-        """Iterates through a TSV file line by line.
+    def _parse_text_file(filepath: str) -> Iterator[str]:
+        """Iterates through a text file line by line.
 
         Args:
             filepath: Path to file.
