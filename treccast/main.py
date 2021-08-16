@@ -19,6 +19,7 @@ DEFAULT_TOPIC_INPUT_PATH = (
 )
 DEFAULT_REWRITE_PATH = "data/rewrites/2020/1_Original.tsv"
 DEFAULT_RANKING_OUTPUT_PATH = "data/runs-2020/bm25.trec"
+DEFAULT_BERT_RERANKER_PATH = "nboost/pt-bert-base-uncased-msmarco"
 
 
 def retrieve(
@@ -147,6 +148,12 @@ def parse_args() -> argparse.Namespace:
         help="Performs reranking if specified",
     )
     parser.add_argument(
+        "--bert_reranker_path",
+        type=str,
+        default=DEFAULT_BERT_RERANKER_PATH,
+        help="Uses fine-tuned models from the specified path.",
+    )
+    parser.add_argument(
         "-t",
         "--topics",
         type=str,
@@ -185,7 +192,7 @@ def main(args):
 
     reranker = None
     if args.reranker == "bert":
-        reranker = BERTReranker()
+        reranker = BERTReranker(model_name=args.bert_reranker_path)
     if args.reranker == "t5":
         reranker = T5Reranker()
 

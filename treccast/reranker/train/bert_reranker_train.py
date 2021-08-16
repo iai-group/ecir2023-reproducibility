@@ -1,20 +1,29 @@
 import argparse
-from typing import List, Any, Tuple, Dict
-import torch
-from torch.utils.data import DataLoader
-from torch.utils.data.distributed import DistributedSampler
+import os
+import sys
+
 from pytorch_lightning import LightningModule, Trainer, seed_everything
+from torchmetrics import (
+    MetricCollection,
+    RetrievalMAP,
+    RetrievalMRR,
+    RetrievalNormalizedDCG,
+)
 from transformers import (
     AdamW,
     get_constant_schedule_with_warmup,
     AutoModel,
     AutoTokenizer,
 )
-import sys
-import os
+import torch
+from torch.utils.data import DataLoader
+from torch.utils.data.distributed import DistributedSampler
+from typing import List, Any, Tuple, Dict, Sequence, Optional
 
 from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
+from treccast.core.util.load_finetune_data import FineTuneDataLoader
+from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.train.pytorch_dataset import (
     PointWiseDataset,
     Batch,
@@ -23,50 +32,104 @@ from treccast.reranker.train.pytorch_dataset import (
 
 os.environ["TOKENIZERS_PARALLELISM"] = "True"
 os.environ["MASTER_ADDR"] = "localhost"
-os.environ["MASTER_PORT"] = "12555"
+os.environ["MASTER_PORT"] = "12556"
+os.environ["WORLD_SIZE"] = "4"
+os.environ["RANK"] = "0"
 
 
-class BERTRerankModule(LightningModule):
+class BERTRerankTrainer(LightningModule):
     def __init__(
         self,
-        queries: List[Query],
-        rankings: List[Ranking],
+        train_data: Tuple[List[Query], List[Ranking]],
         hparams: Dict[str, Any],
+        val_data: Optional[Tuple[List[Query], List[Ranking]]] = None,
+        test_data: Optional[Tuple[List[Query], List[Ranking]]] = None,
     ) -> None:
         """Vanilla BERT re-ranker.
 
         Args:
-            queries: List of queries to be re-ranked.
-            ranking: List of rankings for the queries.
+            train_data: Tuple of parallel list of queries and rankings to train.
+            train_data: Same type as train_data but used for validation.
+            test_data: Same type as train_data but used for data.
             hparams: Dictionary of parameters used for training and evaluating
                 the models.
         """
         LightningModule.__init__(self)
+        # This line is needed initialize the DDP but it seems to hang.
+        # Use DP instead.
+        # dist.init_process_group(backend="nccl")
         self._hp = hparams
         self._bert_model = AutoModel.from_pretrained(
             self._hp.get("bert_type"), return_dict=True
         )
         self._dropout = torch.nn.Dropout(self._hp.get("dropout"))
         self._classification = torch.nn.Linear(self._hp["bert_dim"], 1)
+        print(hparams["freeze_bert"])
         for p in self._bert_model.parameters():
             p.requires_grad = not hparams["freeze_bert"]
         self._tokenizer = AutoTokenizer.from_pretrained(
             self._hp.get("bert_type")
         )
-        # TODO right now self._dataset is used for training, testing and
-        # predicting, create a separate dataset objects when training and
-        # predicting is needed separately.
-        self._dataset = PointWiseDataset(
-            queries=queries,
-            rankings=rankings,
+        # Use part of the training data for validation
+
+        self._train_dataset = PointWiseDataset(
+            queries=train_data[0],
+            rankings=train_data[1],
             tokenizer=self._tokenizer,
             max_len=self._hp.get("max_len"),
         )
+
+        self._val_dataset = (
+            PointWiseDataset(
+                queries=val_data[0],
+                rankings=val_data[1],
+                tokenizer=self._tokenizer,
+                max_len=self._hp.get("max_len"),
+            )
+            if val_data
+            else None
+        )
+
+        self._test_dataset = (
+            PointWiseDataset(
+                queries=test_data[0],
+                rankings=test_data[1],
+                tokenizer=self._tokenizer,
+                max_len=self._hp.get("max_len"),
+            )
+            if test_data
+            else None
+        )
+
         self._batch_size = self._hp["batch_size"]
         self._num_workers = self._hp.get("num_workers")
         self._uses_ddp = "ddp" in self._hp.get("accelerator", "")
         self._batch_size = self._hp.get("batch_size")
         self._bce = torch.nn.BCEWithLogitsLoss()
+        self._val_metrics = MetricCollection(
+            [
+                RetrievalMAP(compute_on_step=False),
+                RetrievalMRR(compute_on_step=False),
+                RetrievalNormalizedDCG(compute_on_step=False),
+            ],
+            prefix="val_",
+        )
+        if self._uses_ddp:
+            self._sampler = DistributedSampler(
+                self._train_dataset, shuffle=True
+            )
+            self._shuffle = None
+        else:
+            self._sampler = None
+            self._shuffle = True
+
+    @property
+    def val_metric_names(self) -> Sequence[str]:
+        """Return all validation metrics that are computed after each epoch.
+        Returns:
+            Sequence[str]: The metric names
+        """
+        return self._val_metrics.keys()
 
     def forward(self, batch: Batch) -> torch.Tensor:
         """Compute the relevance scores for a batch.
@@ -99,20 +162,13 @@ class BERTRerankModule(LightningModule):
         Returns:
             DataLoader: The DataLoader
         """
-        if self._uses_ddp:
-            sampler = DistributedSampler(self._dataset, shuffle=True)
-            shuffle = None
-        else:
-            sampler = None
-            shuffle = True
-
         return DataLoader(
-            self._dataset,
+            self._train_dataset,
             batch_size=self._batch_size,
-            sampler=sampler,
-            shuffle=shuffle,
+            sampler=self._sampler,
+            shuffle=self._shuffle,
             num_workers=self._num_workers,
-            collate_fn=getattr(self._dataset, "collate_fn", None),
+            collate_fn=getattr(self._train_dataset, "collate_fn", None),
         )
 
     def training_step(self, batch: TrainBatch, batch_idx: int) -> torch.Tensor:
@@ -131,6 +187,59 @@ class BERTRerankModule(LightningModule):
         self.log("train_loss", loss)
         return loss
 
+    def val_dataloader(self) -> Optional[DataLoader]:
+        """Return a trainset DataLoader. If the trainset object has a function
+        named `collate_fn`, it is used. If the model is trained in DDP mode,
+        the standard `DistributedSampler` is used.
+
+        Returns:
+            DataLoader: The DataLoader
+        """
+        if self._val_dataset is None:
+            return None
+
+        return DataLoader(
+            self._val_dataset,
+            batch_size=self._batch_size,
+            sampler=self._sampler,
+            shuffle=self._shuffle,
+            num_workers=self._num_workers,
+            collate_fn=getattr(self._val_dataset, "collate_fn", None),
+        )
+
+    def predict_dataloader(self) -> Optional[DataLoader]:
+        """Return a testset DataLoader if the testset exists.
+        If the testset object has a function named `collate_fn`, it is used.
+
+        Returns:
+            Optional[DataLoader]: The DataLoader, or None if there is no testing
+                dataset.
+        """
+        if self._test_dataset is None:
+            return None
+        else:
+            return DataLoader(
+                self._test_dataset,
+                batch_size=self._batch_size,
+                shuffle=False,
+                num_workers=self._num_workers,
+                collate_fn=getattr(self._test_dataset, "collate_fn", None),
+            )
+
+    def predict_step(self, batch: TrainBatch, batch_idx: int) -> torch.Tensor:
+        """Train a single batch.
+
+        Args:
+            batch: A training batch, depending on
+            the mode batch_idx: Batch index (not used)
+
+        Returns:
+            torch.Tensor: Training loss
+        """
+
+        inputs, _ = batch
+        return self(inputs)
+
     def test_dataloader(self) -> DataLoader:
         """Return a trainset DataLoader. If the trainset object has a function
         named `collate_fn`, it is used. If the model is trained in DDP mode,
@@ -139,20 +248,14 @@ class BERTRerankModule(LightningModule):
         Returns:
             DataLoader: The DataLoader
         """
-        if self._uses_ddp:
-            sampler = DistributedSampler(self._dataset, shuffle=True)
-            shuffle = None
-        else:
-            sampler = None
-            shuffle = True
 
         return DataLoader(
-            self._dataset,
+            self._test_dataset,
             batch_size=self._batch_size,
-            sampler=sampler,
-            shuffle=shuffle,
+            sampler=self._sampler,
+            shuffle=self._shuffle,
             num_workers=self._num_workers,
-            collate_fn=getattr(self._dataset, "collate_fn", None),
+            collate_fn=getattr(self._test_dataset, "collate_fn", None),
         )
 
     def test_step(self, batch: TrainBatch, batch_idx: int):
@@ -171,40 +274,8 @@ class BERTRerankModule(LightningModule):
         }
         return out_dict
 
-    def predict_dataloader(self) -> DataLoader:
-        """Return a testset DataLoader if the testset exists.
-        If the testset object has a function named `collate_fn`, it is used.
-
-        Returns:
-            Optional[DataLoader]: The DataLoader, or None if there is no testing
-                dataset.
-        """
-
-        return DataLoader(
-            self._dataset,
-            batch_size=self._batch_size,
-            shuffle=False,
-            num_workers=self._num_workers,
-            collate_fn=getattr(self._dataset, "collate_fn", None),
-        )
-
-    def predict_step(
-        self, batch: TrainBatch, batch_idx: int, dataloader_idx: int
-    ) -> Dict[str, torch.Tensor]:
-        """Predict a single batch. The returned input is tokenized query,
-        doc pairs
-
-        Args:
-            batch: inputs and labels
-            batch_idx: Batch index (not used)
-            dataloader_idx: DataLoader index (not used)
-
-        Returns:
-            Dict[str, torch.Tensor]: predictions and gold labels
-        """
-        inputs, labels = batch
-        pred_dict = {"prediction": self(inputs), "label": labels}
-        return pred_dict
+    def save_model(self, folder: str):
+        self._bert_model.save_pretrained(folder)
 
     @staticmethod
     def get_lightning_trainer(ap):
@@ -237,7 +308,7 @@ class BERTRerankModule(LightningModule):
         ap.add_argument(
             "--max_epochs",
             type=int,
-            default=1,
+            default=10,
             help="Maximum number of epochs",
         )
         ap.add_argument(
@@ -314,12 +385,6 @@ class BERTRerankModule(LightningModule):
                 classification layer)",
         )
         ap.add_argument(
-            "--training_mode",
-            choices=["pointwise", "pairwise"],
-            default="pairwise",
-            help="Training mode",
-        )
-        ap.add_argument(
             "--num_workers",
             type=int,
             default=16,
@@ -349,105 +414,38 @@ class BERTRerankModule(LightningModule):
 
 if __name__ == "__main__":
     seed_everything(7)
-    queries = [
-        Query(
-            "qid_0",
-            "How do you know when your garage door opener is going bad?",
-        ),
-        Query(
-            "qid_1",
-            "How much does it cost for someone to repair a garage door opener?",
-        ),
-    ]
-    ranking1 = Ranking("0")
-    ranking1.add_doc(
-        "1",
-        "Many people search for âstandard garage door sizesâ on a daily "
-        "basis. However there are many common size garage door widths and"
-        "heights but the standard size is probably more a matter of the age"
-        "of your home and what area of the town, state, or country that you "
-        "live in. There are a number of standard sizes for residential garage "
-        "doors in the United States.",
-        50.62,
-    )
-    ranking1.add_doc(
-        "2",
-        "The presence of communication amid scientific minds was equally"
-        "important to the success of the Manhattan Project as scientific"
-        "intellect was. The only cloud hanging over the impressive achievement"
-        " of the atomic researchers and engineers is what their success truly "
-        "meant; hundreds of thousands of innocent lives obliterated.",
-        1.52,
-    )
-    ranking1.add_doc(
-        "3",
-        "Garage Door Opener Problems. So, when the garage door opener decides "
-        "to take a day off, it can leave you stuck outside, probably during a "
-        "rain or snow storm. Though they may seem complicated, there really are"
-        " several things most homeowners can do to diagnose and repair opener "
-        "failures.nd, if you are careful not to damage the door or the seal on "
-        "the bottom of the door, use a flat shovel or similar tool to chip away"
-        "at the ice. Once you get the door open, clear any water, ice or snow "
-        "from the spot on the garage floor where the door rests when closed",
-        80.22,
-    )
-
-    ranking2 = Ranking("1")
-    ranking2.add_doc(
-        "1",
-        "Typically, it will cost less to install a steel garage door without an"
-        " opener than to install a custom wood door with a garage door opener. "
-        "Recent innovations have also yielded high-tech doors with thick "
-        "insulation and energy-efficient glaze, as well as finished interior "
-        "surfaces and other significant upgrades.f your garage door has started"
-        " to malfunction, you might be considering installing a new or upgraded"
-        " door. Rest assured it is a smart investment. In fact, installing a "
-        "new garage door yields about 84 percent in resale value, according to "
-        "Remodeling Magazine",
-        20.43,
-    )
-    ranking2.add_doc(
-        "4",
-        "Organize volunteer community panels, boards, or committees that meet "
-        "with the offender to discuss the incident and offender obligation to "
-        "repair the harm to victims and community members. Facilitate the "
-        "process of apologies to victims and communities. Invite local victim "
-        "advocates to provide ongoing victim-awareness training for probation "
-        "staff",
-        12.3,
-    )
-    ranking2.add_doc(
-        "5",
-        "Purchasing extra remotes and getting openers set up for operation will"
-        " typically range from $100 to $400, which will add to the overall cost"
-        " of the garage door installation. If your opener works with the new "
-        "door, you won't need to have it replaced. In cases in which the new "
-        "door is much heavier than the old door, however, the old garage door "
-        "opener won't be able to handle the extra weight. This is something to "
-        "keep in mind when you're shopping for a new garage door.",
-        100,
-    )
-
-    # Uncomment this if you want to use multi-gpu training
-    # dist.init_process_group("gloo", rank=1, world_size=1)
-    rankings = [ranking1, ranking2]
-    ap = BERTRerankModule.add_model_specific_args()
+    fnt_loader = FineTuneDataLoader()
+    queries, rankings = fnt_loader.get_query_ranking_pairs()
+    ap = BERTRerankTrainer.add_model_specific_args()
     # Change the bert_type to something which pretrained for ms-marco passage
     # ranking for example, this huggingface model
     # "bert_type=nboost/pt-bert-base-uncased-msmarco"".
     # By default it uses bert-base-cased.
     ap_dict = ap.parse_args().__dict__
-    print(ap_dict["bert_type"])
+
     # Create a pytorch-lightning trainer with all the training arguments
-    trainer = BERTRerankModule.get_lightning_trainer(ap)
+    trainer = BERTRerankTrainer.get_lightning_trainer(ap)
+    ap_dict["bert_type"] = "nboost/pt-bert-base-uncased-msmarco"
+    print(ap_dict["bert_type"])
+
     # Create a BERT ranker which has a linear classification head on top of BERT
-    bert_reranker = BERTRerankModule(queries, rankings, ap_dict)
+    bert_reranker = BERTRerankTrainer((queries, rankings), ap_dict)
     # trainer.fit trains the model by calling the train_dataloader and
     #  training_step
+
     trainer.fit(bert_reranker)
+    folder = f'{ap_dict["bert_type"]}_fine_tuned'
+    bert_reranker.save_model(folder)
+
     # trainer.test test the model by calling the test_dataloader and
-    #  testing_step
-    print(trainer.test())
+    #  testing_step if calling test() make sure test data is passed in init.
+    # print(trainer.test())
     # trainer.predict test the model by calling the predict_dataloader and
-    #  predict_step
-    print(trainer.predict())
+    #  predict_step if calling predict() make sure test data is passed in init.
+    # print(trainer.predict())
+
+    # Validate the trained ranker by using it in BERTReranker
+    ranker = BERTReranker(folder)
+    print(
+        ranker.rerank(query=queries[0], ranking=rankings[0]).fetch_topk_docs()
+    )

@@ -24,7 +24,6 @@ class BERTReranker(NeuralReranker):
                 to 128.
         """
         super().__init__(max_seq_len, batch_size)
-
         self._tokenizer = AutoTokenizer.from_pretrained(
             "bert-base-uncased", cache_dir="data/models", use_fast=True
         )

@@ -34,11 +34,9 @@ class PointWiseDataset(Dataset):
             max_len: Max length for the tokenizer to truncate the
                 sequence.
         """
-        self._queries = queries
-        self._rankings = rankings
         self._query_doc_pairs = [
-            (query._question, doc["content"])
-            for query, ranking in zip(self._queries, self._rankings)
+            (query.question, doc["content"], doc["score"])
+            for query, ranking in zip(queries, rankings)
             for doc in ranking.fetch_topk_docs()
         ]
         self._tokenizer = tokenizer or AutoTokenizer.from_pretrained(
@@ -47,11 +45,16 @@ class PointWiseDataset(Dataset):
         self._max_len = max_len
 
     def __getitem__(self, index: int):
-        query, doc = self._query_doc_pairs[index]
-        # TODO the label is hardcoded to be 1, this should be depending on the
-        # rank of the document in the ground-truth. This also needs some
-        # negative samples if you are planning to train.
-        return ((query, doc), torch.tensor(1, dtype=torch.long))
+        """Get a specific item in the dataset.
+
+        Args:
+            index: index of the item.
+
+        Returns:
+            Tuple of query, doc pair and corresponding score.
+        """
+        query, doc, score = self._query_doc_pairs[index]
+        return ((query, doc), torch.tensor(score, dtype=torch.long))
 
     def collate_bert(
         self, inputs: Iterable[Input], tokenizer: AutoTokenizer
