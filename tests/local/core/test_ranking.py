@@ -67,7 +67,7 @@ def test_fetch_topk_docs():
 def test_write_to_tsv_file():
     outfile = StringIO()
     tsv_writer = csv.writer(outfile, delimiter="\t")
-    tsv_writer.writerow(["query_id", "query", "passage_id", "passage"])
+    tsv_writer.writerow(["query_id", "query", "passage_id", "passage", "label"])
     ranking = Ranking(
         "123",
         [
@@ -81,9 +81,9 @@ def test_write_to_tsv_file():
     outfile.seek(0)
     read_csv = list(csv.reader(outfile, delimiter="\t"))
     expected = [
-        ["query_id", "query", "passage_id", "passage"],
-        ["123", "test", "001", "doc001\t content"],
-        ["123", "test", "002", "doc002 content"],
+        ["query_id", "query", "passage_id", "passage", "label"],
+        ["123", "test", "001", "doc001\t content", "10"],
+        ["123", "test", "002", "doc002 content", "5"],
     ]
     assert expected == read_csv
 

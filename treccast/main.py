@@ -46,7 +46,9 @@ def retrieve(
         output_path.replace(".trec", ".tsv"), "w"
     ) as retrieval_out:
         tsv_writer = csv.writer(retrieval_out, delimeter="\t")
-        tsv_writer.writerow(["query_id", "query", "passage_id", "passage"])
+        tsv_writer.writerow(
+            ["query_id", "query", "passage_id", "passage", "label"]
+        )
         for topic in topics:
             for turn in topic.turns:
                 query_id = f"{topic.topic_id}_{turn.turn_id}"

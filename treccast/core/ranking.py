@@ -84,7 +84,7 @@ class Ranking:
 
     def write_to_tsv_file(self, writer, query: str, k: int = 1000) -> None:
         """Writes the results of ranking to a tsv file in the format:
-            query_id, query, passage_id, passage
+            query_id, query, passage_id, passage, score
 
         Note: The writer is of type csv._writer, but there is no simple way to
             access this type, the only possible solutions would be to add a new
@@ -100,7 +100,13 @@ class Ranking:
         """
         for doc in self.fetch_topk_docs(k):
             writer.writerow(
-                [self.query_id, query, doc["doc_id"], doc["content"]]
+                [
+                    self.query_id,
+                    query,
+                    doc["doc_id"],
+                    doc["content"],
+                    doc["score"],
+                ]
             )
 
     def write_to_trec_file(
