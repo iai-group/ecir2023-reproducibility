@@ -45,7 +45,7 @@ def retrieve(
     with open(output_path, "w") as trec_out, open(
         output_path.replace(".trec", ".tsv"), "w"
     ) as retrieval_out:
-        tsv_writer = csv.writer(retrieval_out, delimeter="\t")
+        tsv_writer = csv.writer(retrieval_out, delimiter="\t")
         tsv_writer.writerow(
             ["query_id", "query", "passage_id", "passage", "label"]
         )
@@ -164,13 +164,19 @@ def parse_args() -> argparse.Namespace:
         help="Performs retrieval using the specified path",
     )
     parser.add_argument(
-        "--es_index", default="ms_marco_trec_car", help="Elasticsearch index",
+        "--es_index",
+        default="ms_marco_trec_car",
+        help="Elasticsearch index",
     )
     parser.add_argument(
-        "--es_k1", default=1.2, help="Elasticsearch BM25 k1 parameter",
+        "--es_k1",
+        default=1.2,
+        help="Elasticsearch BM25 k1 parameter",
     )
     parser.add_argument(
-        "--es_b", default=0.75, help="Elasticsearch BM25 b parameter",
+        "--es_b",
+        default=0.75,
+        help="Elasticsearch BM25 b parameter",
     )
     parser.add_argument(
         "--utterance_type",

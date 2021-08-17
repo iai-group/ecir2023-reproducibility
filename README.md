@@ -44,9 +44,9 @@ Scripts are to be run from root.
 | [BM25 (Stopword, KStem) + BERT](scripts/2020/cast_bm25_clean_rerank_bert.sh) | None (raw) | 0.2620 | 0.0906 | 0.2470 | 0.2050 | 0.1696 |
 | [BM25 (Stopword, KStem) + BERT](scripts/2020/cast_bm25_clean_automatic_rerank_bert.sh) | Automatic | 0.4820 | 0.1886 | 0.4606 | 0.3839 | 0.3123 |
 | [BM25 (Stopword, KStem) + BERT](scripts/2020/cast_bm25_clean_manual_rerank_bert.sh) | Manual | 0.6936 | 0.3016 | 0.6325 | 0.5581 | 0.4732 |
-| BM25 (Stopword, KStem) + T5 | None (raw) | | | | | |
-| BM25 (Stopword, KStem) + T5 | Automatic | | | | | |
-| BM25 (Stopword, KStem) + T5 | Manual | | | | | |
+| [BM25 (Stopword, KStem) + T5](scripts/2020/cast_bm25_clean_rerank_t5.sh) | None (raw) | 0.2620 | 0.0959 | 0.2545 | 0.2080 | 0.1746 |
+| [BM25 (Stopword, KStem) + T5](scripts/2020/cast_bm25_clean_automatic_rerank_t5.sh) | Automatic | 0.4820 | 0.1953 | 0.4900 | 0.3909 | 0.3291 |
+| [BM25 (Stopword, KStem) + T5](scripts/2020/cast_bm25_clean_manual_rerank_t5.sh) | Manual | 0.6936 | 0.3384 | 0.7156 | 0.5839 | 0.5137 |
 | *Reference* |||||
 | Organizers' baseline (??) | None (raw) | 0.1480 | 0.0658 | 0.2245 | 0.1437 | 0.1591 |
 | Organizers' baseline (BERT) | Automatic | 0.3084 | 0.1344 | 0.4084 | 0.2840 | 0.2865 |

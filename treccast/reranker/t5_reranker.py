@@ -2,7 +2,7 @@ from typing import List
 
 import torch
 from transformers import T5ForConditionalGeneration, AutoTokenizer
-
+from ftfy import fix_text
 from treccast.reranker.reranker import NeuralReranker, Batch
 
 
@@ -77,7 +77,7 @@ class T5Reranker(NeuralReranker):
         """
         inputs = self._tokenizer.batch_encode_plus(
             [
-                f"Query: {query} Document: {document} Relevant:"
+                fix_text(f"Query: {query} Document: {document} Relevant:")
                 for document in documents
             ],
             add_special_tokens=True,

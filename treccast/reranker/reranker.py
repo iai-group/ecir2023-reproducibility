@@ -74,8 +74,10 @@ class NeuralReranker(Reranker, ABC):
             # This is the same for both BERT and T5 rerankers.
             reranking.add_docs(
                 [
-                    {"doc_id": doc_id, "score": logit[1]}
-                    for (logit, doc_id) in zip(logits, batch_doc_ids)
+                    {"doc_id": doc_id, "score": logit[1], "content": doc}
+                    for (logit, doc_id, doc) in zip(
+                        logits, batch_doc_ids, batch_documents
+                    )
                 ]
             )
         return reranking
