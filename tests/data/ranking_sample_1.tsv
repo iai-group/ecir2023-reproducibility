@@ -1,0 +1,7 @@
+query_id	query	passage_id	passage
+001	test query 1	001	test passage 1
+001	test query 1	002	test passage 2
+001	test query 1	003	test passage 3
+002	test query 2	002	test passage 2
+002	test query 2	004	test passage 4
+002	test query 2	005	test passage 5
