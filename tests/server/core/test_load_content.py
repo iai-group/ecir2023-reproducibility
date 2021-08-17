@@ -4,7 +4,7 @@ These tests expect Elasticsearch on localhost:9204, as well as default files in
 locations specified by keyword argument default values or otherwise hardcoded.
 """
 
-from treccast.core.query.literal_query import LiteralQuery
+from treccast.core.query.query import Query
 from treccast.core.util.load_content import (
     PassageLoader,
     QueryLoader,
@@ -23,7 +23,7 @@ def test_passage_loading():
 def test_query_loading():
     qloader = QueryLoader()
     temp_query = qloader.get("82_1")
-    assert type(temp_query) == LiteralQuery
+    assert type(temp_query) == Query
     assert (
         temp_query.question == "I would like to learn about GMO Food labeling."
     )

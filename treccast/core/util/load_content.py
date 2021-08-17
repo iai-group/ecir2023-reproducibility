@@ -6,7 +6,7 @@ from collections import defaultdict
 from typing import List
 
 from treccast.core.collection import ElasticSearchIndex
-from treccast.core.query.literal_query import LiteralQuery
+from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
 from treccast.core.topic import construct_topics_from_file
 from treccast.core.util.file_parser import FileParser
@@ -124,7 +124,7 @@ class QueryLoader(object):
                     )
                     skips += 1
                     continue
-                temp_literal_query = LiteralQuery(temp_query_id, temp_utterance)
+                temp_literal_query = Query(temp_query_id, temp_utterance)
                 if temp_query_id in self._query_dict:
                     print("Duplicate query ID loaded.")
                     print(temp_query_id)
@@ -136,7 +136,7 @@ class QueryLoader(object):
             + "specified types."
         )
 
-    def get(self, query_id) -> LiteralQuery:
+    def get(self, query_id) -> Query:
         return self._query_dict.get(query_id)
 
     @property
@@ -264,7 +264,7 @@ class RunfileLoader:
                     self._ploader.get(doc_id=doc_id),
                 )
 
-    def get_query(self, query_id: str) -> LiteralQuery:
+    def get_query(self, query_id: str) -> Query:
         """Get the query for a particular query ID.
 
         Args:
@@ -274,7 +274,7 @@ class RunfileLoader:
             The corresponding query.
         """
         query = self._qloader.get(query_id)
-        if type(query) == LiteralQuery and query.question is not None:
+        if type(query) == Query and query.question is not None:
             return query
         else:
             return None
