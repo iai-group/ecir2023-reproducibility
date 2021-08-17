@@ -22,7 +22,7 @@ class Collection(ABC):
 
 class ElasticSearchIndex(Collection):
     def __init__(
-        self, index_name: str, hostname: str = "localhost:9200"
+        self, index_name: str, hostname: str = "localhost:9200", **kwargs
     ) -> None:
         """Initializes an Elasticsearch instance on a given host.
 
@@ -30,10 +30,11 @@ class ElasticSearchIndex(Collection):
             index_name: Index name.
             hostname: Host name and port (defaults to
                 "localhost:9200").
+            **kwargs: Additional keyword arguments to be provided to the
+                Elasticsearch instance.
         """
         super().__init__(index_name)
-
-        self._es = Elasticsearch(hostname)
+        self._es = Elasticsearch(hostname, **kwargs)
 
     @property
     def es(self) -> Elasticsearch:

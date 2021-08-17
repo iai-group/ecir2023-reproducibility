@@ -14,13 +14,14 @@ Usage:
 import argparse
 from typing import Any, Dict, Iterator, Union
 
-from treccast.core.util.file_parser import FileParser
-from trec_car import read_data
+import nltk
+from nltk.corpus import stopwords
 from elasticsearch.helpers import parallel_bulk
+from trec_car import read_data
+
+from treccast.core.util.file_parser import FileParser
 from treccast.core.collection import ElasticSearchIndex
 
-from nltk.corpus import stopwords
-import nltk
 
 DEFAULT_MS_MARCO_PASSAGE_DATASET = (
     "/data/collections/msmarco-passage/collection.tar.gz"
@@ -43,7 +44,13 @@ class Indexer(ElasticSearchIndex):
             hostname: Host name and port (defaults to
                 "localhost:9200").
         """
-        super().__init__(index_name, hostname)
+        super().__init__(
+            index_name,
+            hostname,
+            timeout=120,
+            max_retries=10,
+            retry_on_timeout=True,
+        )
 
     def generate_data_marco(
         self, filepath: str
@@ -75,7 +82,7 @@ class Indexer(ElasticSearchIndex):
         """Data generator for batch indexing of TREC CAR dataset.
 
         Args:
-            filepath: Path to the TREC CAR paragraph dataset
+            filepath: Path to the TREC CAR paragraph dataset.
 
         Yields:
             Iterator[dict]: Dictionary containing index, id and contents of a
@@ -94,6 +101,35 @@ class Indexer(ElasticSearchIndex):
                 if i % 1000000 == 0:
                     print(f"Indexed {i} paragraphs")
             print(f"Indexing finished. Indexed total {i} paragraphs.")
+
+    def generate_data_trecweb(
+        self, filepath: str
+    ) -> Iterator[Dict[str, Union[str, Dict]]]:
+        """Data generator for batch indexing of preprocessed TRECWEB files.
+
+        Args:
+            filepath: Path to the a TRECWEB dataset.
+
+        Yields:
+            Dictionary containing index, id and contents of a
+                paragraph.
+        """
+        print(f"Starting to index filepath: {filepath}")
+        for i, (passage_id, title, passage) in enumerate(
+            FileParser.parse(filepath)
+        ):
+            yield {
+                "_index": self._index_name,
+                "_id": passage_id,
+                "_source": {
+                    "body": passage,
+                    "title": title,
+                    "catch_all": f"{title} {passage}",
+                },
+            }
+            if i % 1000000 == 0:
+                print(f"Indexed {i} paragraphs")
+        print(f"Indexing finished. Indexed total {i} paragraphs.")
 
     def batch_index(self, data_generator: Iterator[dict]) -> None:
         """Bulk index a dataset in parallel.
@@ -190,10 +226,21 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         const=DEFAULT_TREC_CAR_PARAGRAPH_DATASET,
         help="Specifies the path to TREC CAR dataset",
     )
+    parser.add_argument(
+        "--trecweb",
+        type=str,
+        nargs="+",
+        help="Specifies the path(s) to TRECWEB dataset(s)",
+    )
     return parser.parse_args()
 
 
 def main(args):
+    """Index documents based on the commadline arguments.
+
+    Args:
+        args: Arguments.
+    """
     indexing = Indexer(args.index, args.host)
     if args.reset:
         indexing.delete_index()
@@ -205,6 +252,10 @@ def main(args):
     if args.trec_car:
         data_generator = indexing.generate_data_car(args.trec_car)
         indexing.batch_index(data_generator)
+    if args.trecweb:
+        for filepath in args.trecweb:
+            data_generator = indexing.generate_data_trecweb(filepath)
+            indexing.batch_index(data_generator)
 
 
 if __name__ == "__main__":

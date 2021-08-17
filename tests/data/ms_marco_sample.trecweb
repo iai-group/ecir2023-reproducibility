@@ -1,0 +1,134 @@
+<DOC>
+<DOCNO>MARCO_D1555982</DOCNO>
+<DOCHDR>
+</DOCHDR>
+<HTML>
+<TITLE>The hot glowing surfaces of stars emit energy in the form of electromagnetic radiation.?</TITLE>
+<URL>https://answers.yahoo.com/question/index?qid=20071007114826AAwCFvR</URL>
+<BODY>
+<passage id=0>
+Science & Mathematics Physics The hot glowing surfaces of stars emit energy in the form of electromagnetic radiation.? It is a good approximation to assume that the emissivity e is equal to 1 for these surfaces. Find the radius of the star Rigel, the bright blue star in the constellation Orion that radiates energy at a rate of 2.7 x 10^32 W and has a surface temperature of 11,000 K. Assume that the star is spherical. Use σ =... show more Follow 3 answers Answers Relevance Rating Newest Oldest Best Answer: Stefan-Boltzmann law states that the energy flux by radiation is proportional to the forth power of the temperature: q = ε · σ · T^4 The total energy flux at a spherical surface of Radius R is Q = q·π·R² = ε·σ·T^4·π·R² Hence the radius is R = √ ( Q / (ε·σ·T^4·π) ) = √ ( 2.7x10+32 W / (1 · 5.67x10-8W/m²K^4 · (1100K)^4 · π) ) 
+</passage>
+<passage id=1>
+In contrast to <?ur study, bin<^ng = 3.22x10+13 m Source (s):http://en.wikipedia.org/wiki/Stefan_bolt...schmiso · 1 decade ago0 18 Comment Schmiso, you forgot a 4 in your answer. Your link even says it: L = 4pi (R^2)sigma (T^4). Using L, luminosity, as the energy in this problem, you can find the radius R by doing sqrt (L/ (4pisigma (T^4)). Hope this helps everyone. Caroline · 4 years ago4 1 Comment (Stefan-Boltzmann law) L = 4pi*R^2*sigma*T^4 Solving for R we get: => R = (1/ (2T^2)) * sqrt (L/ (pi*sigma)) Plugging in your values you should get: => R = (1/ (2 (11,000K)^2)) *sqrt ( (2.7*10^32W)/ (pi * (5.67*10^-8 W/m^2K^4))) R = 1.609 * 10^11 m? · 3 years ago0 1 Comment Maybe you would like to learn more about one of these? 
+</passage>
+<passage id=2>
+Want to build a free website? Interested in dating sites? Need a Home Security Safe? How to order contacts online?
+</passage>
+</BODY>
+</HTML>
+</DOC>
+
+<DOC>
+<DOCNO>MARCO_D2476582</DOCNO>
+<DOCHDR>
+</DOCHDR>
+<HTML>
+<TITLE>.</TITLE>
+<URL>http://www.crystalimpact.com/match/download.htm</URL>
+<BODY>
+<passage id=0>
+"Match! Download Area On this page you will find the current Match! software version 3.6.0.111 as well as free-of-charge reference patterns calculated from the COD database , and last-but-not-least installer packages of the well-known Rietveld program Full Prof (by J. Rodriguez-Carvajal) for all supported platforms. Registration If you are interested in the free-of-charge Match! 3 demo version , we would appreciate very much if you could give us some information about who you are and where you come from. Although this is not mandatory for downloading the demo version, we would like to be able to inform you by e-mail when updated versions have become available. Of course, we will treat your contact data as confidential and will not give them to any third party. As an alternative, you can follow us on Twitter or Google+ where we also post information about updates and other news. 
+</passage>
+<passage id=1>
+Name: University/Company: Institute/Department: City: Country: E-Mail: Download Match!The software packages provided below can either be used to install the Match! demonstration version, as installers for the electronic delivery option, or to update for your existing Match! installation to the most recent version. The download packages contain the latest version of the COD-Inorganics reference database as well as the full documentation (manual and online help). Without adding a license file the software installed from the download packages below serves as a demo version : The functionality is equivalent to the full version, the only difference being the time limitation: After you have installed the software for the first time it will work for 2 months. Once this evaluation period has passed you should purchase a license if you would like to continue using the software. If you would like to update your current version of Match! 3 on your computer, you should normally do not uninstall the previous version before installing the new version (but see below)! 
+</passage>
+<passage id=2>
+Instead, simply install the new version on top of the existing version . This is important in order to make sure that your license file is retained. If you are updating from a Match! version 3.4.x (or earlier) and you are encountering any difficulties when installing or running the new version, please follow these instructions: First of all, please copy your license file ""yourlicense.lic"" from your current/old Match! program directory (e.g. C:\Program Files (x86)\Match3"") to a safe place (e.g. a temporary directory). Afterwards, uninstall Match! , then make sure to manually remove all Match! program directories that might still exist. You are now ready to download and run the corresponding new version installer from the links below. Once you have installed the new version, please move your license file ""yourlicense.lic"" from the temporary directory back into the new Match! program directory. 
+</passage>
+<passage id=3>
+Please contact us if these hints did not help to run Match! on your computer!Installation packages are available for Windows (64-bit, 32-bit and XP/Vista), Mac OS X and Linux (Intel 32-bit and 64-bit). Before downloading the appropriate installation package using the links in the table below, please read the corresponding file ""Readme.txt"" carefully, in order to learn about system requirements as well as how to install the software on the corresponding platform (especially in case of the Linux and Windows packages). Note that in any case you need administrator privileges to install the software!Current version is 3.6.0.111 (released on January 17, 2018). Platform Readme file Download Package Size Windows 7, 8 or 10 (64 bits) Readme.txt Match-3-windows-x64-installer.exe 288 MBWindows 7, 8 or 10 (32 bits) Readme.txt Match-3-windows-x32-installer.exe 277 MBWindows XP or Vista (32 bits) Readme.txt Match-3-windows-xp-vista-installer.exe 249 MBMac OS X 10.10 ""Yosemite"" (or higher) Readme.txt Match-3-osx-installer.zip 293 MBLinux (Intel 32 bits) Readme.txt Match-3-linux-installer.run.zip 250 MBLinux (Intel 64 bits) 
+</passage>
+<passage id=4>
+Readme.txt Match-3-linux-x64-installer.run.zip 289 MBDownload other Match! versions You can also download previous versions as well as the most recent pre-release version. Tutorial in Spanish Language Thanks to the efforts of Prof. Santiago Rodríguez Almenar , an excellent tutorial document in Spanish language is available . Reference pattern databases In addition to any ICDD PDF database product, Match! can also use free-of-charge reference patterns calculated from crystal structure data that are available free-of-charge on the internet. These data come from the COD (""Crystallography Open Database"") . There are three different COD reference database packages available: The complete COD reference pattern database containing all appropriate entries from the COD, another package containing only COD reference patterns for inorganic compounds (without C-H-bonds), and finally a tiny small reference database that contains only reference patterns for Cement phases. The COD Inorganics reference pattern database (which can be downloaded below) can be used with Match! version 1.7 or higher. 
+</passage>
+<passage id=5>
+Please note, however, that the full COD reference database (containing more than 387,000 entries) can only be used with Match! version 3 64-bit versions, because the central database file has become so large (> 2 GB) that it can no longer be accessed with earlier as well as 32-bit versions. The most recent full COD version that is still compatible with Match! version 1 has been released on January 4, 2016, and can be downloaded from here. Installation instructions: First of all, download the compressed reference database file (s), by clicking on the corresponding file name (link) in the table below. When the download has finished, please unzip the contents of the zip-file (s) to the directory where you would like to save/create the new reference database. Once you have extracted the contents of the zip-file (s) please run Match!, open the Reference Database Library (e.g. from the ""Tools"" menu), press the ""Add"" button, and select the file ""Match Ref DBInfo.mtn"" in the directory where you have unzipped the files. 
+</passage>
+<passage id=6>
+The new reference database can now be selected for being used. Reference patterns from... File name Entries Size Date Revision Crystallography Open Database (COD) (single file)COD_20180102.zip387,020 2.23 GB January 2, 2018 204654COD inorganic compounds only COD_Inorganics_20180102.zip 69,035 188 MB January 2, 2018 204654Cement compounds only Cements_20140730.zip 73 0.2 MB July 30, 2014 -Download Full Prof Installers Match! uses the well-known Rietveld program Full Prof (J. Rodriguez-Carvajal, Physica B 192, 55 (1993)) to run Rietveld refinement calculations. You can download Full Prof installers for all supported platforms (Windows, Mac OS X, Linux and Linux 64-bit) either from the original Full Prof download page or from below. Platform Download Package Size Windows 64-bits Setup_Full Prof_Suite_July2017_64b.exe 93.2 MBWindows 32-bits Setup_Full Prof_Suite_July2017.exe 85.0 MBWindows XP, Vista Setup_Full Prof_Suite_July2017_XP.exe 82.5 MBMac OS X 10.8 ""Mountain Lion"" (or higher) Full Prof4Mac-v246.dmg 110 MBLinux 64-bits Full Prof_Suite_July2017_Linux64.gz 99.9 MBLinux Full Prof_Suite_May2015_Lin.tgz 93.2 MBFull Prof installation instructions (taken from Full Prof web page, with minor modifications): Windows Download the Windows installer package from the table above into some temporary directory, then double-click on it to run the installer. 
+</passage>
+<passage id=7>
+Follow the instructions on the screen, paying attention not to use directory names with blank or non ASCII characters in their name. Mac OS X Full Prof4Mac.app is the full implementation of the FULLPROF suite (64 bits). It is signed with the “Institut Laue-Langevin” certificate. Open Motif is embedded and there is no need for defining any environment variable. Just double-click the icon of the application to launch it. Requirements:mac OS Mountain Lion (10.8) or higherthe free X11 tool XQuartz.app (at http://xquartz.macosforge.org) version 2.7.9 or higher must be present on your computer. Installation Download the file ""Full Prof4Mac-vxxx.dmg"" to the Desktop. Click on it and drag the Full Prof4Mac icon to the icon ""Applications"". That's all ! Linux Download the installer file from the table above. Afterwards, please perform the following steps: General Mode (for all the users of the system)Activate the super-user mode Create a directory in which you want to hold the programs of the Full Prof_Suite. 
+</passage>
+<passage id=8>
+For instance: /usr/local/bin/Full Prof_Suite in some Linux systems Copy the file Full Prof_Suite_XXXXNNNN_Lin.tgz (XXX= Month NNNN=year) in the directory just created in step 2. Decompress the file .tgz with the following command:tar -xzvf Full Prof_Suite_XXXXNNNN_Lin.tgz Tell the users to activate the environment variable FULLPROF in their configuration file (see below)Local Mode (Installation for a single user)Create a directory in which you want to hold the programs of the Full Prof_Suite, e.g. $HOME/Full Prof_Suite For doing that you must execute the following commands:cd $HOME mkdir Full Prof_Suite cd Full Prof_Suite Copy the file Full Prof_Suite_XXXXNNNN_Lin.tgz (XXXX= Month NNNN=year) in the directory just created in step 2Decompress the file .tgz with the following command:tar -xzvf Full Prof_Suite_XXXXNNNN_Lin.tgz Modify the configuration file to activate the environment variable FULLPROF (see below)Activation of the environment variable of the Full Prof_Suite Depending of the SHELL of the user the commands are different. 
+</passage>
+<passage id=9>
+The aim is to create the environment variable FULLPROF. To know what is the shell one is using you should execute the command:echo $SHELLGenerally it is one of the following: Bourne (sh, bash), Korn (ksh), C (csh)From now we suppose we are using the Bourne of bash type. If you have another one you must consult how to do the equivalent commands we explain below. Edit the setting file of the user. In our case it should be in the root directory of the user and the name is .bashrc or .bash_profile Add the environment variable FULLPROF, that has as value the absolute path of the directory in which we have installed the programs of the Full Prof Suite. For instance: FULLPROF=/opt/Full Prof_Suite FULLPROF=/usr/local/bin/Full Prof_Suite<Add the above directory to the PATH variable PATH=$FULLPROF:$PATHExport the defined variableexport FULLPROFThe changes will be effective on opening a new terminal window. 
+</passage>
+<passage id=10>
+To verify that everything is OK, just type in your terminal the command:echo $FULLPROFThe system will show the directory in which you have installed the programs. After performing all the above steps all the programs of the Full Prof Suite are available from whatever working directory. If you need to update the Full Prof Suite you just have to do the steps 3 and 4 of the General or Local mode described above. Only in the case you decide to use another directory you have to redefine the environment variable. You can use the programs in console mode or use the toolbar (command tfp) to access the different programs. Depending of your installation you may need to install the libraries of Open Motif version 2.3. Do that only in case one of the GUIs doesn't work and you see a message of the form: ""lib Xm.so.3"" not available or something similar. "
+</passage>
+</BODY>
+</HTML>
+</DOC>
+
+<DOC>
+<DOCNO>MARCO_D3536686</DOCNO>
+<DOCHDR>
+</DOCHDR>
+<HTML>
+<TITLE>The Relationship between Confidence Intervals and Significance Testing</TITLE>
+<URL>http://www.dummies.com/education/science/biology/the-relationship-between-confidence-intervals-and-significance-testing/</URL>
+<BODY>
+<passage id=0>
+Education Science Biology The Relationship between Confidence Intervals and Significance Testing The Relationship between Confidence Intervals and Significance Testing Related Book Biostatistics For Dummies By John Pezzullo You can use confidence intervals (CIs) as an alternative to some of the usual significance tests. To assess significance using CIs, you first define a number that measures the amount of effect you’re testing for. This effect size can be the difference between two means or two proportions, the ratio of two means, an odds ratio, a relative risk ratio, or a hazard ratio, among others. The complete absence of any effect corresponds to a difference of 0, or a ratio of 1, so these are called the “no-effect” values. The following are always true: If the 95 percent CI around the observed effect size includes the no-effect value (0 for differences, 1 for ratios), then the effect is not statistically significant (that is, a significance test for that effect will produce p > 0.05).
+</passage>
+<passage id=1>
+If the 95 percent CI around the observed effect size does not include the no-effect value, then the effect is significant (that is, a significance test for that effect will produce p </= 0.05). The same kind of correspondence is true for other confidence levels and significance levels: 90 percent confidence levels correspond to the p = 0.10 significance level, 99 percent confidence levels correspond to the p = 0.01 significance level, and so on. So you have two different, but related, ways to prove that some effect is present — you can use significance tests, and you can use confidence intervals. Which one is better? The two methods are consistent with each other, but many people prefer the CI approach to the p-value approach. Why? The p value is the result of the complex interplay between the observed effect size, the sample size, and the size of random fluctuations, all boiled down into a single number that doesn’t tell you whether the effect was large or small, clinically important or negligible.
+</passage>
+<passage id=2>
+The CI around the mean effect clearly shows you the observed effect size, along with an indicator of how uncertain your knowledge of that effect size is. It tells you not only whether the effect is statistically significant, but also can give you an intuitive sense of whether the effect is clinically important. The CI approach lends itself to a very simple and natural way of comparing two products for equivalence or noninferiority.
+</passage>
+</BODY>
+</HTML>
+</DOC>
+
+<DOC>
+<DOCNO>MARCO_D1883376</DOCNO>
+<DOCHDR>
+</DOCHDR>
+<HTML>
+<TITLE>Raider - Small Trike Cover</TITLE>
+<URL>http://www.lehmantrikes.com/dealers/accessory/raider-small-trike-cover/</URL>
+<BODY>
+<passage id=0>
+<<Go back to accessories More Images Protect your Raider trike for Harley-Davidson from the elements with this water-resistant trike cover! Made of durable polyester with heat resistant lower panels, perma-venting system and soft cloth windshield liner. Features a 55” rear zipper and includes a carry all bag. Black and silver with classic Lehman Trikes logo with maple leaf. Part #HC1003, MSRP $99
+</passage>
+</BODY>
+</HTML>
+</DOC>
+
+<DOC>
+<DOCNO>MARCO_D301595</DOCNO>
+<DOCHDR>
+</DOCHDR>
+<HTML>
+<TITLE>Developmental Milestones and Your <8>-Year-Old Child</TITLE>
+<URL>http://childparenting.about.com/od/physicalemotionalgrowth/tp/Child-Development-Your-Eight-Year-Old-Child.htm</URL>
+<BODY>
+<passage id=0>
+"School-Age Kids Growth & Development Developmental Milestones and Your 8-Year-Old Child8-Year-Olds Are Expanding Their Worlds By Katherine Lee | Reviewed by Joel Forman, MDUpdated February 10, 2018Share Pin Email Print Eight-year-olds are becoming more confident about themselves and who they are. At age 8, your child will likely have developed some interests and hobbies and will know what he or she likes or doesn't like. At the same time, children this age are learning more about the world at large and are also better able to navigate social relationships with others more independently, with less guidance from parents. At home, 8-year-olds are able to tackle more complicated household chores and take on more responsibility for taking care of themselves, even helping out with younger siblings. In general, according to the CDC, these are some changes you may see in your child: Shows more independence from parents and family. 
+</passage>
+<passage id=1>
+Starts to think about the future. Understands more about his or her place in the world. Pays more attention to friendships and teamwork. Wants to be liked and accepted by friends.1 Behavior and Daily Routines Fabrice Le Rouge/Getty Images The 8-year-old's behavior and daily routines are shaped by the child's taste, interests, and personality. Parents and other significant adults in the child's life should keep in mind the importance of being good role models since this is a time when children are figuring out the world and who they are and how they fit into it. At this age, your child may get involved with more complex social activities and behaviors that help define his or her sense of self. Effective discipline techniques at this age include continuing to praise good behavior, focusing your child's efforts, what they can do and change, rather than innate traits (such as ""you are smart""). 
+</passage>
+<passage id=2>
+Set up and enforce consistent rules. Discipline should be aimed at guiding your child rather than punishing. Follow it with a discussion with your child about what she could do differently next time. Your 8-year-old can do more self-care in regards to hygiene and may begin to want to be part of deciding what the family eats. You might begin to give your child chores to contribute to the maintenance of the household and an allowance to begin to learn to manage money. At this age, your child still needs 10 to 11 hours of sleep per night.2 Physical Development Image Source/Getty Images For 8-year-old children, physical development will continue to be more about refinement of skills, coordination, and muscle control rather than huge changes. They begin to look like ""big kids,"" but puberty is still a couple of years away for most of them. 
+</passage>
+<passage id=3>
+Children with natural athletic potential may show their abilities at this developmental stage as their physical skills become more precise and accurate. In fact, this is often the age at which children decide whether they are athletic or not, and choose to participate in or avoid sports. Either way, it's important for parents to encourage physical activity. Even if your child isn't an athlete she can still enjoy running, swimming, biking, and many other types of non-sports-related physical fun.3 Emotional Development John Howard/Getty Images Eight-year-old emotional development may be growing at a deeper level than in younger years, and an 8-year-old may show more sophisticated and complex emotions and interactions. For instance, an 8-year-old may mask true thoughts or emotions to spare someone else's feelings or work through a problem without an adult's close supervision or intervention. 
+</passage>
+<passage id=4>
+This is the time when your child may be developing a more sophisticated sense of himself in the world. Her interests, talents, friends, and relationship with family all help her to establish a clear self-identity. It's also the beginning of desiring privacy and flip-flopping between self-confidence and self-doubt. It can be a good time to help your child develop patience and empathy for others.4 Cognitive Development Tom Merton/Getty Images Eight-year-old children are at a stage of intellectual development where they will be able to pay attention for longer periods of time. You can expect your child to be able to concentrate on an activity for up to an hour or more. Eight-year-olds will also be able to think more critically and express opinions using more complex and sophisticated vocabulary and language skills.5 Social Development Christopher Futcher/Getty Images This is the phase of social development where many children love being a part of sports teams and other social groups. 
+</passage>
+<passage id=5>
+In general, 8-year-old children enjoy school and will count on and value relationships with a few close friends and classmates. Parents of 8-year-olds should be on the lookout for problems such as school refusal, as this may indicate learning difficulties or being bullied at school. It is also a good age at which to discuss respecting others.6 What If My Child Is Different? Developmental milestones provide professionals and parents with a tool for comparing children to a norm. No child fits the ideal norm perfectly, and each child will have his or her personal quirks, strengths, challenges, and preferences. With that said, however, if you feel your child is far behind or ahead of the norm, it's well worth discussing the issue with your pediatrician and your child's teacher. If there are issues or opportunities, now is the time to learn about and address them. 
+</passage>
+<passage id=6>
+A Word From Verywell Your 8-year-old is in the full bloom of childhood. Enjoy activities and explore the world together. It's a great time to spark new interests in your child and watch her grow in every way. Sources: Anthony, Michelle. The emotional lives of 8-10-year-olds. Scholastic Publishing. Chaplin TM, Aldao A. Gender differences in emotion expression in children: A meta-analytic review Psychological Bulletin. 2013;139 (4):735-765. doi:10.1037/a0030737. Middle childhood. CDC. "
+</passage>
+</BODY>
+</HTML>
+</DOC>
