@@ -11,7 +11,7 @@ class T5Reranker(NeuralReranker):
         self,
         model_name: str = "castorini/monot5-base-msmarco",
         max_seq_len: int = 512,
-        batch_size: int = 64,
+        batch_size: int = 256,
     ) -> None:
         """T5 reranker.
 
