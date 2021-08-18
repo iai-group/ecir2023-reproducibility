@@ -29,6 +29,14 @@ Elasticsearch server in use is `gustav1.ux.uis.no:9204`
   * `ms_marco_trec_car` => Basic inverted index without any preprocessing.
   * `ms_marco_trec_car_clean` => Inverted index with stopword removal and KStemming.
 
+### Y3
+  * `ms_marco_kilt_wapo_clean` => Inverted index with stopword removal and KStemming.
+    - document ID: `[MARCO|KILT|WAPO]_document_id-passage_index`
+    - fields: 
+      - title: Document title.
+      - body: Passage text.
+      - catch_all: Concatenation of title and body.
+
 ## Topics
 
   * [Y1 topics](topics/2019)
@@ -50,4 +58,4 @@ Elasticsearch server in use is `gustav1.ux.uis.no:9204`
 
 ## Rewrites
 
-  * Under `rewrites/2019` and `topics/2020` for Y1 and Y2, respectively.
+  * Under `rewrites/2019` and `rewrites/2020` for Y1 and Y2, respectively.
