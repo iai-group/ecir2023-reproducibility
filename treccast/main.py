@@ -26,6 +26,7 @@ def retrieve(
     utterance_type: str = "raw",
     rewriter: Rewriter = None,
     retriever: Retriever = None,
+    field: str = "body",
     preprocess: bool = False,
     reranker: Reranker = None,
 ) -> None:
@@ -56,7 +57,7 @@ def retrieve(
             print(query.query_id)
             if rewriter:
                 query = Rewriter.rewrite_query(query)
-            ranking = retriever.retrieve(query)
+            ranking = retriever.retrieve(query, field)
             if reranker:
                 ranking = reranker.rerank(query, ranking)
             ranking.write_to_tsv_file(tsv_writer, query.question, k=1000)
@@ -89,7 +90,7 @@ def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
             Currently only supports BM25.
     """
     # Can be expanded with more arguments
-    esi = ElasticSearchIndex(index_name, hostname=host_name)
+    esi = ElasticSearchIndex(index_name, hostname=host_name, timeout=30)
     return BM25Retriever(esi, **kwargs)
 
 
@@ -171,6 +172,11 @@ def parse_args() -> argparse.Namespace:
         help="Elasticsearch BM25 b parameter",
     )
     parser.add_argument(
+        "--es_field",
+        default="body",
+        help="Elasticsearch field to query",
+    )
+    parser.add_argument(
         "--utterance_type",
         type=str,
         default="raw",
@@ -209,6 +215,7 @@ def main(args):
             utterance_type=args.utterance_type,
             rewriter=rewriter,
             retriever=retriever,
+            field=args.es_field,
             preprocess=args.preprocess,
             reranker=reranker,
         )

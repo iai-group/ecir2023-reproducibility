@@ -135,6 +135,7 @@ dmypy.json
 data/local
 data/models
 data/finetuning
+data/runs/*/*.tsv
 
 # MacOS
 .DS_Store

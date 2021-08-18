@@ -26,11 +26,14 @@ class BM25Retriever(Retriever):
         self._index_name = es_collection.index_name
         es_collection.update_similarity_parameters(k1=k1, b=b)
 
-    def retrieve(self, query: SparseQuery, num_results: int = 1000) -> Ranking:
+    def retrieve(
+        self, query: SparseQuery, field: str = "body", num_results: int = 1000
+    ) -> Ranking:
         """Performs retrieval.
 
         Args:
             query: Sparse query instance.
+            field: Index field to query.
             num_results: Number of documents to return (defaults
                 to 1000).
 
@@ -54,7 +57,7 @@ class BM25Retriever(Retriever):
                     )["tokens"]
                 ),
             )
-            res = self._retrieve(query.question, num_results)
+            res = self._retrieve(query.question, field, num_results)
 
         return Ranking(
             query.query_id,
@@ -68,17 +71,20 @@ class BM25Retriever(Retriever):
             ],
         )
 
-    def _retrieve(self, query: str, num_results: int = 1000) -> Dict[str, Any]:
+    def _retrieve(
+        self, query: str, field: str = "body", num_results: int = 1000
+    ) -> Dict[str, Any]:
         """Performs retrieval with ES analyzer.
 
         Args:
             query: Search string.
+            field: Index field to query.
             num_results (optional): Number of documents to return (defaults
                 to 1000).
         Returns:
             ES search results dictionary.
         """
-        body = {"query": {"match": {"body": {"query": query}}}}
+        body = {"query": {"match": {field: {"query": query}}}}
         return self._es.search(
             body=body,
             index=self._index_name,
