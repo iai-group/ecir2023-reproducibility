@@ -83,6 +83,17 @@ class Topic:
             raise IndexError(f"Invalid turn_id: {turn_id}")
         return self.turns[turn_id - 1]
 
+    def get_query_id(self, turn_id: int) -> str:
+        """Returns query ID corresponding to a given topic turn.
+
+        Args:
+            turn_id: Turn ID.
+
+        Returns:
+            Query ID.
+        """
+        return f"{self.topic_id}_{turn_id}"
+
     def get_query(
         self, turn_id: int, query_rewrite: QueryRewrite = None
     ) -> Query:
@@ -97,9 +108,8 @@ class Topic:
         Returns:
             Query object.
         """
-        query_id = f"{self.topic_id}_{turn_id}"
         utterance = self.get_turn(turn_id).get_utterance(query_rewrite)
-        return Query(query_id, utterance)
+        return Query(self.get_query_id(turn_id), utterance)
 
     def get_queries(self, query_rewrite: QueryRewrite = None) -> List[Query]:
         """Returns a list of queries corresponding to each of the turns,
@@ -169,10 +179,20 @@ class Topic:
             topic_id = raw_topic.get("number")  # int
             description = raw_topic.get("description")  # str
             title = raw_topic.get("title")  # str
+
+            # Canonical result ID is stored under different fields in the 2020
+            # topic files depending on the query rewrite.
+            canonical_result_id_field = "canonical_result_id"
+            if year == "2020":
+                if query_rewrite == QueryRewrite.MANUAL:
+                    canonical_result_id_field = "manual_canonical_result_id"
+                elif query_rewrite == QueryRewrite.AUTOMATIC:
+                    canonical_result_id_field = "automatic_canonical_result_id"
+
             turns = [
                 Turn(
                     turn_id=raw_turn.get("number"),
-                    canonical_result_id=raw_turn.get("canonical_result_id"),
+                    canonical_result_id=raw_turn.get(canonical_result_id_field),
                     result_turn_dependence=raw_turn.get(
                         "result_turn_dependence"
                     ),
