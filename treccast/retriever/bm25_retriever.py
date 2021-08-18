@@ -42,7 +42,7 @@ class BM25Retriever(Retriever):
         """
         # TODO Improve logging.
         # See https://github.com/iai-group/trec-cast-2021/issues/37
-        if query.tokenizer:
+        if "tokenizer" in query.__dict__:
             print("Retrieving using query:\n", query.preprocessed_query)
             res = self._retrieve_without_analyzer(
                 query.preprocessed_query, num_results

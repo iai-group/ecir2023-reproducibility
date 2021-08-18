@@ -9,7 +9,7 @@ from treccast.retriever.bm25_retriever import BM25Retriever
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.t5_reranker import T5Reranker
-from treccast.core.topic import Topic
+from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.collection import ElasticSearchIndex
 
 DEFAULT_TOPIC_INPUT_PATH = (
@@ -42,8 +42,8 @@ def retrieve(
     """
     # TODO(IK): load year and optionally query rewrite mode from config file
     # See: https://github.com/iai-group/trec-cast-2021/issues/126
-    year = "2020"
-    queries = Topic.load_queries_from_file(year)
+    year = "2021"
+    queries = Topic.load_queries_from_file(year, QueryRewrite.MANUAL)
     with open(output_path, "w") as trec_out, open(
         output_path.replace(".trec", ".tsv"), "w"
     ) as retrieval_out:
