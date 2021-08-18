@@ -96,6 +96,7 @@ def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
     esi = ElasticSearchIndex(index_name, hostname=host_name, timeout=30)
     return BM25Retriever(esi, **kwargs)
 
+
 def main(config):
     """Main function that will be executed running this file.
 
@@ -111,9 +112,9 @@ def main(config):
         reranker = BERTReranker(model_name=config["bert_reranker_path"].get())
     if config["reranker"].get() == "t5":
         reranker = T5Reranker()
-    if args.reranker == "bert_finetuned":
+    if config["reranker"] == "bert_finetuned":
         reranker = BERTRerankerFinetuned(
-            checkpoint_path=args.finetuned_checkpoint_path
+            checkpoint_path=config["finetuned_checkpoint_path"]
         )
 
     if config["retrieval"].get():

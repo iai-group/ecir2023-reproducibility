@@ -24,7 +24,10 @@ class FineTuneDataLoader:
         with open(file_name, "r") as f_in:
             spamreader = csv.reader(f_in, delimiter="\t")
             for fields in spamreader:
-                utterance, passage, score = fields
+                if len(fields) == 5:
+                    _, utterance, _, passage, score = fields
+                else:
+                    utterance, passage, score = fields
                 # TODO: Once we switch to the new fine-tune data remove this
                 # line since the data is expected to be binary.
                 score = 1 if float(score) >= 1 else 0

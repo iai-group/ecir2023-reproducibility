@@ -490,8 +490,14 @@ class BERTRerankTrainer(LightningModule):
 
 if __name__ == "__main__":
     seed_everything(7)
+    fnt_wow_loader = FineTuneDataLoader(
+        file_name="data/finetuning/wizard_of_wikipedia/wow_finetune_train.tsv"
+    )
+    wow_queries, wow_rankings = fnt_wow_loader.get_query_ranking_pairs()
     fnt_loader = FineTuneDataLoader()
     queries, rankings = fnt_loader.get_query_ranking_pairs()
+    queries.extend(wow_queries)
+    rankings.extend(wow_rankings)
     ap = BERTRerankTrainer.add_model_specific_args()
     # Change the bert_type to something which pretrained for ms-marco passage
     # ranking for example, this huggingface model
