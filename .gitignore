@@ -131,7 +131,8 @@ dmypy.json
 # vscode
 .vscode
 
-# Local data files such as pytorch training logs
+# Local data files such as pytorch training logs, data for finetuning and
+# finetuned models
 data/local
 data/models
 data/finetuning

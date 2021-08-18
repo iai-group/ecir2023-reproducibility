@@ -22,7 +22,6 @@ from trec_car import read_data
 from treccast.core.util.file_parser import FileParser
 from treccast.core.collection import ElasticSearchIndex
 
-
 DEFAULT_MS_MARCO_PASSAGE_DATASET = (
     "/data/collections/msmarco-passage/collection.tar.gz"
 )
