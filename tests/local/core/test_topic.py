@@ -8,7 +8,7 @@ import pytest
 def test_get_filepath():
     assert (
         Topic.get_filepath("2019")
-        == "data/topics/2019/evaluation_topics_v1.0.json"
+        == "data/topics/2019/2019_manual_evaluation_topics_v1.0.json"
     )
     assert (
         Topic.get_filepath("2020", QueryRewrite.MANUAL)

@@ -142,8 +142,6 @@ class Topic:
         filepath = f"data/topics/{year}/"
         if year == "2019_train":
             filepath += "train_topics"
-        elif year == "2019":
-            filepath += "evaluation_topics"
         else:
             variant = (
                 "automatic"

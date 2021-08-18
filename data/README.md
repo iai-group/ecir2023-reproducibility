@@ -41,7 +41,8 @@ Elasticsearch server in use is `gustav1.ux.uis.no:9204`
 
   * [Y1 topics](topics/2019)
     - [train_topics_v1.0.json](topics/2019/train_topics_v1.0.json): Training topics (30).
-    - [evaluation_topics_v1.0.json](data/topics/2019/evaluation_topics_v1.0.json): test/evaluation topics (50). Only 20 of the 50 test topics have judgments in the 2019 qrels file.
+    - [evaluation_topics_v1.0.json](data/topics/2019/evaluation_topics_v1.0.json): Original test topics by the organizers (50).
+    - [2019_manual_evaluation_topics_v1.0.json](topics/2019/2019_manual_evaluation_topics_v1.0.json): Test topics enriched with manual query rewrites (given by the organizers in a separate [TSV file](data/topics/2019/evaluation_topics_annotated_resolved_v1.0.tsv)) to follow the Y2/Y3 format (generated using [this script](treccast/core/util/topics/create_2019_topics_file.py)).
   * [Y2 topics](topics/2020)
     - [2020_manual_evaluation_topics_v1.0.json](topics/2020/2020_manual_evaluation_topics_v1.0.json): Manual query rewrites.
     - [2020_automatic_evaluation_topics_v1.0.json](topics/2020/2020_automatic_evaluation_topics_v1.0.json): Automatic query rewrites.
@@ -53,7 +54,7 @@ Elasticsearch server in use is `gustav1.ux.uis.no:9204`
 ## Qrels
 
   * [qrels/2019_train.txt](qrels/2019_train.txt): 2019 training topics; only 5 are judged on a three-point scale (2 very relevant, 1 relevant, and 0 not relevant).
-  * [qrels/2019.txt](qrels/2019.txt): 2019 test topics, judged on a five-point scale.
+  * [qrels/2019.txt](qrels/2019.txt): 2019 test topics, judged on a five-point scale. Only 20 of the 50 test topics have judgments.
   * [qrels/2020.txt](qrels/2020.txt): 2020 test topics. Note: Turns with fewer than three relevant documents do not appear in the judgment file.
 
 ## Rewrites
