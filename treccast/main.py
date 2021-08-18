@@ -1,6 +1,7 @@
 """Main command line application."""
 
 import argparse
+import confuse
 import csv
 
 from treccast.rewriter.rewriter import Rewriter, CachedRewriter
@@ -94,134 +95,48 @@ def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
     return BM25Retriever(esi, **kwargs)
 
 
-def parse_args() -> argparse.Namespace:
-    """Defines accepted arguments and returns the parsed values.
-
-    Returns:
-        Object with a property for each argument.
-    """
-    parser = argparse.ArgumentParser(prog="main.py")
-    parser.add_argument(
-        "-w",
-        "--rewrite",
-        action="store_true",
-        help="Rewrites queries if specified",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        type=str,
-        nargs="?",
-        const=DEFAULT_RANKING_OUTPUT_PATH,
-        help="Specifies the output path for the final ranking",
-    )
-    parser.add_argument(
-        "-p",
-        "--rewrite_path",
-        type=str,
-        default=DEFAULT_REWRITE_PATH,
-        help="Specifies the path for rewritten queries",
-    )
-    parser.add_argument(
-        "-r",
-        "--retrieval",
-        type=bool,
-        nargs="?",
-        default=False,
-        const=True,
-        help="Performs retrieval if specified",
-    )
-    parser.add_argument(
-        "--preprocess",
-        action="store_true",
-        help="Use custom query preprocessing",
-    )
-    parser.add_argument(
-        "--reranker",
-        type=str,
-        choices=["bert", "t5"],
-        help="Performs reranking if specified",
-    )
-    parser.add_argument(
-        "--bert_reranker_path",
-        type=str,
-        default=DEFAULT_BERT_RERANKER_PATH,
-        help="Uses fine-tuned models from the specified path.",
-    )
-    parser.add_argument(
-        "-t",
-        "--topics",
-        type=str,
-        nargs="?",
-        const=DEFAULT_TOPIC_INPUT_PATH,
-        help="Performs retrieval using the specified path",
-    )
-    parser.add_argument(
-        "--es_index",
-        default="ms_marco_trec_car",
-        help="Elasticsearch index",
-    )
-    parser.add_argument(
-        "--es_k1",
-        default=1.2,
-        help="Elasticsearch BM25 k1 parameter",
-    )
-    parser.add_argument(
-        "--es_b",
-        default=0.75,
-        help="Elasticsearch BM25 b parameter",
-    )
-    parser.add_argument(
-        "--es_field",
-        default="body",
-        help="Elasticsearch field to query",
-    )
-    parser.add_argument(
-        "--utterance_type",
-        type=str,
-        default="raw",
-        choices=["raw", "automatic", "manual"],
-        help="Select the type of utterance to use.",
-    )
-    return parser.parse_args()
-
-
-def main(args):
+def main(config):
     """Main function that will be executed running this file.
 
     Args:
-        args: Command-line arguments.
+        config: Configuration generated from YAML configuration file.
     """
     rewriter = None
-    if args.rewrite:
-        rewriter = _get_rewriter(args.rewrite_path)
+    if config["rewrite"].get(bool):
+        rewriter = _get_rewriter(config["rewrite_path"].get())
 
     reranker = None
-    if args.reranker == "bert":
-        reranker = BERTReranker(model_name=args.bert_reranker_path)
-    if args.reranker == "t5":
+    if config["reranker"].get() == "bert":
+        reranker = BERTReranker(model_name=config["bert_reranker_path"].get())
+    if config["reranker"].get() == "t5":
         reranker = T5Reranker()
 
-    if args.retrieval:
+    if config["retrieval"].get():
         retriever = _get_retriever(
-            args.es_index,
-            host_name="localhost:9204",
-            k1=args.es_k1,
-            b=args.es_b,
+            config["es_index"].get(),
+            host_name=config["host_name"].get(),
+            k1=config["es_k1"].get(),
+            b=config["es_b"].get(),
         )
         retrieve(
-            args.topics,
-            args.output,
-            utterance_type=args.utterance_type,
+            config["topics"].get(),
+            config["output"].get(),
+            utterance_type=config["utterance_type"].get(),
             rewriter=rewriter,
             retriever=retriever,
-            field=args.es_field,
-            preprocess=args.preprocess,
+            field=config["es_field"].get(),
+            preprocess=config["preprocess"].get(),
             reranker=reranker,
         )
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    print("Arguments:\n", args, "\n")
-    main(args)
+    parser = argparse.ArgumentParser(prog="main.py")
+    parser.add_argument(
+        "-c", "--config-file", default="config/config_default.yaml"
+    )
+    args = parser.parse_args()
+    config = confuse.Configuration("treccast")
+    config.set_file(args.config_file)
+    print("Loading config from {}:\n".format(args.config_file), config)
+    main(config)

@@ -17,6 +17,6 @@ dependencies:
   - transformers=4.9.0
   - nltk=3.6.2
   - elasticsearch=7.13.3
+  - confuse
   - pip:
     - trec-car-tools
-  
