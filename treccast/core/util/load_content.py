@@ -8,7 +8,7 @@ from typing import List
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
-from treccast.core.topic import load_topics_from_file
+from treccast.core.topic import Topic
 from treccast.core.util.file_parser import FileParser
 
 
@@ -103,7 +103,7 @@ class QueryLoader(object):
     def _load_from_file(self) -> None:
         """Loads queries from every turn in every topic in the topics files."""
         for fp in self._filepaths:
-            self._topics += load_topics_from_file(fp)
+            self._topics += Topic.load_topics_from_file(fp)
         skips = 0
         for topic in self._topics:
             for turn in topic.turns:
