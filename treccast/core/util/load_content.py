@@ -8,7 +8,7 @@ from typing import List
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
-from treccast.core.topic import construct_topics_from_file
+from treccast.core.topic import load_topics_from_file
 from treccast.core.util.file_parser import FileParser
 
 
@@ -66,6 +66,8 @@ class PassageLoader(object):
         return results
 
 
+# TODO(TL) Remove this class, it's no longer needed.
+# https://github.com/iai-group/trec-cast-2021/issues/128
 class QueryLoader(object):
     def __init__(
         self,
@@ -101,7 +103,7 @@ class QueryLoader(object):
     def _load_from_file(self) -> None:
         """Loads queries from every turn in every topic in the topics files."""
         for fp in self._filepaths:
-            self._topics += construct_topics_from_file(fp)
+            self._topics += load_topics_from_file(fp)
         skips = 0
         for topic in self._topics:
             for turn in topic.turns:
@@ -144,6 +146,8 @@ class QueryLoader(object):
         return list(self._query_dict.keys())
 
 
+# TODO(TL) Pass queries: List[Queries] as an argument instead of qloader
+# https://github.com/iai-group/trec-cast-2021/issues/128
 class QrelsLoader(object):
     def __init__(
         self,
@@ -220,6 +224,8 @@ class QrelsLoader(object):
             return None
 
 
+# TODO(TL) Pass queries: List[Queries] as an argument instead of qloader
+# https://github.com/iai-group/trec-cast-2021/issues/128
 class RunfileLoader:
     def __init__(
         self,
@@ -302,6 +308,9 @@ if __name__ == "__main__":
         'ms_marco_trec_car_clean'.
       - QueryLoader(): assumes 2020 manual v1.0 topic file.
     """
+    # TODO(TL) Load queries here using Topic.load_queries_from_file(year)
+    # https://github.com/iai-group/trec-cast-2021/issues/128
+
     print("Starting QRELS loader...")
     qrloader = QrelsLoader()
     # For each line in the QRELS file, query ID and passage ID are resolved, and

@@ -9,10 +9,8 @@ from treccast.retriever.bm25_retriever import BM25Retriever
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.t5_reranker import T5Reranker
-from treccast.core.topic import construct_topics_from_file
+from treccast.core.topic import Topic
 from treccast.core.collection import ElasticSearchIndex
-from treccast.core.query.sparse_query import SparseQuery
-from treccast.core.query.preprocessing.tokenizer import SimpleTokenizer
 
 DEFAULT_TOPIC_INPUT_PATH = (
     "data/topics-2020/automatic_evaluation_topics_annotated_v1.1.json"
@@ -41,7 +39,10 @@ def retrieve(
         preprocess: If True use query preprocessing. Defaults to False.
         reranker: Reranker model. Defaults to None.
     """
-    topics = construct_topics_from_file(topics_path)
+    # TODO(IK): load year and optionally query rewrite mode from config file
+    # See: https://github.com/iai-group/trec-cast-2021/issues/126
+    year = "2020"
+    queries = Topic.load_queries_from_file(year)
     with open(output_path, "w") as trec_out, open(
         output_path.replace(".trec", ".tsv"), "w"
     ) as retrieval_out:
@@ -49,26 +50,17 @@ def retrieve(
         tsv_writer.writerow(
             ["query_id", "query", "passage_id", "passage", "label"]
         )
-        for topic in topics:
-            for turn in topic.turns:
-                query_id = f"{topic.topic_id}_{turn.turn_id}"
-                # TODO: Replace print with logging.
-                # See: https://github.com/iai-group/trec-cast-2021/issues/37
-                print(query_id)
-                # Context is currently not used.
-                question, _ = topic.get_question_and_context(
-                    turn.turn_id, utterance_type
-                )
-                query = SparseQuery(
-                    query_id, question, SimpleTokenizer if preprocess else None
-                )
-                if rewriter:
-                    query = Rewriter.rewrite_query(query)
-                ranking = retriever.retrieve(query)
-                if reranker:
-                    ranking = reranker.rerank(query, ranking)
-                ranking.write_to_tsv_file(tsv_writer, question, k=1000)
-                ranking.write_to_trec_file(trec_out, run_id="BM25", k=1000)
+        for query in queries:
+            # TODO: Replace print with logging.
+            # See: https://github.com/iai-group/trec-cast-2021/issues/37
+            print(query.query_id)
+            if rewriter:
+                query = Rewriter.rewrite_query(query)
+            ranking = retriever.retrieve(query)
+            if reranker:
+                ranking = reranker.rerank(query, ranking)
+            ranking.write_to_tsv_file(tsv_writer, query.question, k=1000)
+            ranking.write_to_trec_file(trec_out, run_id="BM25", k=1000)
 
 
 def _get_rewriter(path: str) -> Rewriter:
