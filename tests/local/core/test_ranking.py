@@ -4,6 +4,7 @@ import csv
 from io import StringIO
 
 from treccast.core.ranking import Ranking
+from treccast.core.scored_document import ScoredDocument
 
 
 def test_empty_ranking():
@@ -102,3 +103,15 @@ def test_write_to_trec_file():
     outfile.seek(0)
     content = outfile.read()
     assert content == "123 Q0 001 1 10 test\n123 Q0 002 2 5 test\n"
+
+
+def test_document_dataclass():
+    doc = ScoredDocument(doc_id="1", content="Test document", score=1.0)
+    assert doc.content == "Test document"
+    assert doc.doc_id == "1"
+    assert doc.score == 1.0
+
+    doc_without_content = doc = ScoredDocument(doc_id="2", score=1.02)
+    assert doc_without_content.content is None
+    assert doc_without_content.doc_id == "2"
+    assert doc_without_content.score == 1.02
