@@ -35,7 +35,7 @@ class PointWiseDataset(Dataset):
                 sequence.
         """
         self._query_doc_pairs = [
-            (query.question, doc["content"], doc["score"])
+            (query, doc)
             for query, ranking in zip(queries, rankings)
             for doc in ranking.fetch_topk_docs()
         ]
@@ -53,8 +53,15 @@ class PointWiseDataset(Dataset):
         Returns:
             Tuple of query, doc pair and corresponding score.
         """
-        query, doc, score = self._query_doc_pairs[index]
-        return ((query, doc), torch.tensor(score, dtype=torch.long))
+        query, doc = self._query_doc_pairs[index]
+        query_str = query.question
+        doc_str = doc["content"]
+        score = doc["score"]
+        return (
+            torch.tensor(int(query.query_id), dtype=torch.long),
+            (query_str, doc_str),
+            torch.tensor(score, dtype=torch.float),
+        )
 
     def collate_bert(
         self, inputs: Iterable[Input], tokenizer: AutoTokenizer
@@ -68,8 +75,6 @@ class PointWiseDataset(Dataset):
         Returns:
             Batch: Input IDs, attention masks, token type IDs
         """
-        # If the data contains claim, context pairs then tokenize both
-        # otherwise tokenize only claims
         queries, docs = zip(*inputs)
         inputs = tokenizer(queries, docs, padding=True, truncation=True)
         if "token_type_ids" in inputs:
@@ -91,8 +96,9 @@ class PointWiseDataset(Dataset):
         Returns:
             PointwiseTrainBatch: A batch of pointwise inputs
         """
-        inputs_, labels = zip(*inputs)
+        q_ids, inputs_, labels = zip(*inputs)
         return (
+            torch.LongTensor(q_ids),
             self.collate_bert(inputs_, self._tokenizer),
             torch.FloatTensor(labels),
         )

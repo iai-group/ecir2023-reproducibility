@@ -11,11 +11,11 @@ from treccast.reranker.bert_reranker import BERTReranker
 def train_pairs():
     train_queries = [
         Query(
-            "qid_0",
+            "0",
             "How do you know when your garage door opener is going bad?",
         ),
         Query(
-            "qid_1",
+            "1",
             "How much does it cost for someone to repair a garage door opener?",
         ),
     ]
@@ -168,13 +168,13 @@ def test_bert_reranker_train(train_pairs, test_pairs):
     args_parsed, _ = ap.parse_known_args()
     ap_dict = args_parsed.__dict__
     ap_dict["bert_type"] = "nboost/pt-bert-base-uncased-msmarco"
-    ap_dict["num_epochs"] = 1
+    ap_dict["num_epochs"] = 2
     # # Removed the args injected by pytest.
 
     # Create a pytorch-lightning trainer with all the training arguments
     trainer = BERTRerankTrainer.get_lightning_trainer(args_parsed)
     # Create a BERT ranker which has a linear classification head
-    bert_reranker = BERTRerankTrainer(train_pairs, ap_dict)
+    bert_reranker = BERTRerankTrainer(ap_dict, train_pairs)
     # trainer.fit trains the model by calling the train_dataloader and
     # training_step
     trainer.fit(bert_reranker)

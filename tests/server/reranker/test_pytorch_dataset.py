@@ -39,7 +39,7 @@ def test_populate_pairs(dummy_queries, dummy_rankings):
     dataset = PointWiseDataset(dummy_queries, dummy_rankings)
     assert len(dataset._query_doc_pairs) == 6
     assert (
-        dataset._query_doc_pairs[0][0]
+        dataset._query_doc_pairs[0][0].question
         == "How do you know when your garage door opener is going bad?"
     )
-    assert dataset._query_doc_pairs[0][1] == "doc3 content"
+    assert dataset._query_doc_pairs[0][1]["content"] == "doc3 content"

@@ -10,6 +10,7 @@ from treccast.retriever.bm25_retriever import BM25Retriever
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.t5_reranker import T5Reranker
+from treccast.reranker.bert_reranker_finetuned import BERTRerankerFinetuned
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.collection import ElasticSearchIndex
 
@@ -19,6 +20,7 @@ DEFAULT_TOPIC_INPUT_PATH = (
 DEFAULT_REWRITE_PATH = "data/rewrites/2020/1_Original.tsv"
 DEFAULT_RANKING_OUTPUT_PATH = "data/runs-2020/bm25.trec"
 DEFAULT_BERT_RERANKER_PATH = "nboost/pt-bert-base-uncased-msmarco"
+DEFAULT_BERT_CHECKPOINT = "data/models/fine_tuned_models/lightning_logs/version_96/checkpoints/epoch=2-step=3236.ckpt"
 
 
 def retrieve(
@@ -94,7 +96,6 @@ def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
     esi = ElasticSearchIndex(index_name, hostname=host_name, timeout=30)
     return BM25Retriever(esi, **kwargs)
 
-
 def main(config):
     """Main function that will be executed running this file.
 
@@ -110,6 +111,10 @@ def main(config):
         reranker = BERTReranker(model_name=config["bert_reranker_path"].get())
     if config["reranker"].get() == "t5":
         reranker = T5Reranker()
+    if args.reranker == "bert_finetuned":
+        reranker = BERTRerankerFinetuned(
+            checkpoint_path=args.finetuned_checkpoint_path
+        )
 
     if config["retrieval"].get():
         retriever = _get_retriever(

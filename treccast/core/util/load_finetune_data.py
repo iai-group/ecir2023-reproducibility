@@ -1,3 +1,4 @@
+import csv
 from collections import defaultdict
 from typing import List, Tuple
 
@@ -7,27 +8,26 @@ from treccast.core.query.sparse_query import SparseQuery
 
 class FineTuneDataLoader:
     def __init__(
-        self, file_name: str = "data/finetuning/finetune_001.tsv"
+        self,
+        file_name: str = "data/finetuning/finetune_003.tsv",
     ) -> None:
         """Loads the fine tuning data for bert ranker.
 
         Args:
             file_name (str, optional): Defaults to
-            "data/finetuning/finetune_001.tsv". Should be copied from
+            "data/finetuning/finetune-2019_and_2020-manual_or_raw.tsv". Should be copied from
             gustav1:/data/scratch/trec-cast-2021/data/finetuning
         """
         self._queries = defaultdict(list)
         self._file_name = file_name
 
         with open(file_name, "r") as f_in:
-            for line in f_in:
-                fields = line.rstrip().split("\t")
-                if len(fields) != 3:
-                    raise ValueError(
-                        f"The data format is invalid, "
-                        f"{len(fields)} fields found {line}"
-                    )
+            spamreader = csv.reader(f_in, delimiter="\t")
+            for fields in spamreader:
                 utterance, passage, score = fields
+                # TODO: Once we switch to the new fine-tune data remove this
+                # line since the data is expected to be binary.
+                score = 1 if float(score) >= 1 else 0
                 self._queries[utterance].append((passage, float(score)))
 
     def get_query_ranking_pairs(

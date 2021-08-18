@@ -1,8 +1,18 @@
 import argparse
 import os
 import sys
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
+import torch
 from pytorch_lightning import LightningModule, Trainer, seed_everything
+from pytorch_lightning.callbacks import (
+    EarlyStopping,
+    LearningRateMonitor,
+    ModelCheckpoint,
+)
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader
+from torch.utils.data.distributed import DistributedSampler
 from torchmetrics import (
     MetricCollection,
     RetrievalMAP,
@@ -11,22 +21,16 @@ from torchmetrics import (
 )
 from transformers import (
     AdamW,
-    get_constant_schedule_with_warmup,
     AutoModel,
     AutoTokenizer,
+    get_constant_schedule_with_warmup,
 )
-import torch
-from torch.utils.data import DataLoader
-from torch.utils.data.distributed import DistributedSampler
-from typing import List, Any, Tuple, Dict, Sequence, Optional
-
 from treccast.core.query.query import Query
 from treccast.core.ranking import Ranking
 from treccast.core.util.load_finetune_data import FineTuneDataLoader
-from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.train.pytorch_dataset import (
-    PointWiseDataset,
     Batch,
+    PointWiseDataset,
     TrainBatch,
 )
 
@@ -40,8 +44,8 @@ os.environ["RANK"] = "0"
 class BERTRerankTrainer(LightningModule):
     def __init__(
         self,
-        train_data: Tuple[List[Query], List[Ranking]],
         hparams: Dict[str, Any],
+        train_data: Tuple[List[Query], List[Ranking]] = None,
         val_data: Optional[Tuple[List[Query], List[Ranking]]] = None,
         test_data: Optional[Tuple[List[Query], List[Ranking]]] = None,
     ) -> None:
@@ -58,6 +62,7 @@ class BERTRerankTrainer(LightningModule):
         # This line is needed initialize the DDP but it seems to hang.
         # Use DP instead.
         # dist.init_process_group(backend="nccl")
+
         self._hp = hparams
         self._bert_model = AutoModel.from_pretrained(
             self._hp.get("bert_type"), return_dict=True
@@ -72,11 +77,15 @@ class BERTRerankTrainer(LightningModule):
         )
         # Use part of the training data for validation
 
-        self._train_dataset = PointWiseDataset(
-            queries=train_data[0],
-            rankings=train_data[1],
-            tokenizer=self._tokenizer,
-            max_len=self._hp.get("max_len"),
+        self._train_dataset = (
+            PointWiseDataset(
+                queries=train_data[0],
+                rankings=train_data[1],
+                tokenizer=self._tokenizer,
+                max_len=self._hp.get("max_len"),
+            )
+            if train_data
+            else None
         )
 
         self._val_dataset = (
@@ -182,7 +191,7 @@ class BERTRerankTrainer(LightningModule):
             torch.Tensor: Training loss
         """
 
-        inputs, labels = batch
+        _, inputs, labels = batch
         loss = self._bce(self(inputs).flatten(), labels.flatten())
         self.log("train_loss", loss)
         return loss
@@ -202,10 +211,50 @@ class BERTRerankTrainer(LightningModule):
             self._val_dataset,
             batch_size=self._batch_size,
             sampler=self._sampler,
-            shuffle=self._shuffle,
+            shuffle=False,
             num_workers=self._num_workers,
             collate_fn=getattr(self._val_dataset, "collate_fn", None),
         )
+
+    def validation_step(
+        self, batch: TrainBatch, batch_idx: int
+    ) -> Dict[str, torch.Tensor]:
+        """Process a single validation batch. The returned query IDs are
+            internal integer IDs.
+        Args:
+            batch (ValTestBatch): Query IDs, document IDs, inputs and labels
+            batch_idx (int): Batch index
+        Returns:
+            Dict[str, torch.Tensor]: Query IDs, predictions and labels
+        """
+        q_ids, inputs, labels = batch
+        return {
+            "predictions": self(inputs).flatten(),
+            "labels": labels,
+            "q_ids": q_ids,
+        }
+
+    def validation_step_end(self, step_results: Dict[str, torch.Tensor]):
+        """Update the validation metrics.
+        Args:
+            step_results (Dict[str, torch.Tensor]): Results from a single validation step
+        """
+        self._val_metrics(
+            step_results["predictions"],
+            step_results["labels"].int(),
+            indexes=step_results["q_ids"],
+        )
+
+    def validation_epoch_end(
+        self, val_results: Iterable[Dict[str, torch.Tensor]]
+    ):
+        """Compute validation metrics. The results may be approximate.
+        Args:
+            val_results (Iterable[Dict[str, torch.Tensor]]): Results of validation steps
+        """
+        for metric, value in self._val_metrics.compute().items():
+            self.log(metric, value, sync_dist=True)
+        self._val_metrics.reset()
 
     def predict_dataloader(self) -> Optional[DataLoader]:
         """Return a testset DataLoader if the testset exists.
@@ -237,7 +286,7 @@ class BERTRerankTrainer(LightningModule):
             torch.Tensor: Training loss
         """
 
-        inputs, _ = batch
+        _, inputs, _ = batch
         return self(inputs)
 
     def test_dataloader(self) -> DataLoader:
@@ -265,7 +314,7 @@ class BERTRerankTrainer(LightningModule):
             batch: inputs and labels
             batch_idx: Batch index (not used)
         """
-        inputs, labels = batch
+        _, inputs, labels = batch
         out_dict = {
             "tokens": [input for input in inputs[0]],
             "attention": [input for input in inputs[1]],
@@ -276,6 +325,28 @@ class BERTRerankTrainer(LightningModule):
 
     def save_model(self, folder: str):
         self._bert_model.save_pretrained(folder)
+
+    @staticmethod
+    def train_test_val_split(X, Y, split=(0.1, 0.05), shuffle=True):
+        """Split dataset into train/val/test subsets by 70:20:10(default).
+
+        Args:
+        X: List of data.
+        Y: List of labels corresponding to data.
+        split: Tuple of split ratio in `test:val` order.
+        shuffle: Bool of shuffle or not.
+
+        Returns:
+        Three dataset in `train:test:val` order.
+        """
+        assert len(X) == len(Y), "The length of X and Y must be consistent."
+        X_train, X_test_val, Y_train, Y_test_val = train_test_split(
+            X, Y, test_size=(split[0] + split[1]), shuffle=shuffle
+        )
+        X_test, X_val, Y_test, Y_val = train_test_split(
+            X_test_val, Y_test_val, test_size=split[1], shuffle=False
+        )
+        return (X_train, Y_train), (X_test, Y_test), (X_val, Y_val)
 
     @staticmethod
     def get_lightning_trainer(ap):
@@ -397,7 +468,7 @@ class BERTRerankTrainer(LightningModule):
         )
         ap.add_argument(
             "--save_dir",
-            default="data/local/out",
+            default="data/models/fine_tuned_models/",
             help="Directory for logs, checkpoints and predictions",
         )
         ap.add_argument(
@@ -408,6 +479,11 @@ class BERTRerankTrainer(LightningModule):
         )
         ap.add_argument(
             "--test", action="store_true", help="Test the model after training"
+        )
+        ap.add_argument(
+            "--val_metric",
+            default="val_RetrievalMAP",
+            help="Validation metric to monitor",
         )
         return ap
 
@@ -421,18 +497,51 @@ if __name__ == "__main__":
     # ranking for example, this huggingface model
     # "bert_type=nboost/pt-bert-base-uncased-msmarco"".
     # By default it uses bert-base-cased.
-    ap_dict = ap.parse_args().__dict__
+    args = ap.parse_args()
+    ap_dict = args.__dict__
 
     # Create a pytorch-lightning trainer with all the training arguments
     trainer = BERTRerankTrainer.get_lightning_trainer(ap)
     ap_dict["bert_type"] = "nboost/pt-bert-base-uncased-msmarco"
     print(ap_dict["bert_type"])
 
+    train_data, val_data, test_data = BERTRerankTrainer.train_test_val_split(
+        queries, rankings
+    )
+    print(
+        "created splits ",
+        len(train_data[0]),
+        len(val_data[0]),
+        len(test_data[0]),
+    )
     # Create a BERT ranker which has a linear classification head on top of BERT
-    bert_reranker = BERTRerankTrainer((queries, rankings), ap_dict)
+    bert_reranker = BERTRerankTrainer(
+        ap_dict, train_data, val_data=val_data, test_data=test_data
+    )
     # trainer.fit trains the model by calling the train_dataloader and
     #  training_step
 
+    early_stopping = EarlyStopping(
+        monitor=args.val_metric,
+        mode="max",
+        patience=args.val_patience,
+        verbose=True,
+    )
+    model_checkpoint = ModelCheckpoint(
+        monitor=args.val_metric,
+        mode="max",
+        save_top_k=args.save_top_k,
+        verbose=True,
+    )
+    trainer = Trainer.from_argparse_args(
+        args,
+        deterministic=True,
+        default_root_dir=args.save_dir,
+        callbacks=[LearningRateMonitor(), early_stopping, model_checkpoint],
+    )
+    if args.load_weights:
+        weights = torch.load(args.load_weights)
+        bert_reranker.load_state_dict(weights["state_dict"])
     trainer.fit(bert_reranker)
     folder = f'{ap_dict["bert_type"]}_fine_tuned'
     bert_reranker.save_model(folder)
@@ -445,7 +554,7 @@ if __name__ == "__main__":
     # print(trainer.predict())
 
     # Validate the trained ranker by using it in BERTReranker
-    ranker = BERTReranker(folder)
-    print(
-        ranker.rerank(query=queries[0], ranking=rankings[0]).fetch_topk_docs()
-    )
+    # ranker = BERTReranker(folder)
+    # print(
+    #     ranker.rerank(query=queries[0], ranking=rankings[0]).fetch_topk_docs()
+    # )
