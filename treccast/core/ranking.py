@@ -1,7 +1,12 @@
-"""Represents a ranked list of items."""
+"""Represents a ranked list of items.
+"""
+from __future__ import annotations
 
+import csv
 import io
 from typing import Dict, List, Tuple
+
+from treccast.core.util.passage_loader import PassageLoader
 
 
 class Ranking:
@@ -133,3 +138,31 @@ class Ranking:
                 )
                 + "\n"
             )
+
+    @staticmethod
+    def load_rankings_from_runfile(
+        filepath: str,
+        ploader: PassageLoader = None,
+    ) -> Dict[str, Ranking]:
+        """Creates a list of Ranking objects from a TREC runfile.
+        Also, optionally loads passage content.
+
+        Args:
+            filepath: Path to the runfile.
+            ploader (optional): PassageLoader can retrieve passage contents from
+            Elasticsearch instance. Defaults to None.
+
+        Returns:
+            A dictionary of the Ranking objects built from the runfile, with
+            query ID as key..
+        """
+        rankings = {}
+        with open(filepath, "r") as f_in:
+            reader = csv.reader(f_in, delimiter=" ")
+            for row in reader:
+                q_id, _, doc_id, _, score, _ = row
+                content = ploader.get(doc_id=doc_id) if ploader else None
+                if q_id not in rankings:
+                    rankings[q_id] = Ranking(query_id=q_id)
+                rankings[q_id].add_doc(doc_id, float(score), content)
+        return rankings

@@ -1,6 +1,5 @@
 """Tests Ranking class from Ranker"""
 import csv
-
 from io import StringIO
 
 from treccast.core.ranking import Ranking
@@ -115,3 +114,11 @@ def test_document_dataclass():
     assert doc_without_content.content is None
     assert doc_without_content.doc_id == "2"
     assert doc_without_content.score == 1.02
+
+
+def test_load_rankings_from_runfile():
+    runfile = "data/runs/2020/org_baselines/y2_manual_results_500.v1.0.run"
+    rankings = Ranking.load_rankings_from_runfile(runfile)
+    ranking = rankings["81_1"]
+    assert ranking.query_id == "81_1"
+    assert len(ranking) == 500
