@@ -1,7 +1,11 @@
 """Ensemble model to be used with the tsv output files of other first-pass retrievers"""
 
+import argparse
+import confuse
 import csv
+import os
 
+from collections import Counter
 from typing import List
 
 
@@ -89,6 +93,8 @@ class Ensemble:
         removed_duplicates = list(map(list, removed_duplicates_set))
         removed_duplicates.sort(key=flattened_rankings.index)
         self.combined_rankings = removed_duplicates
+        counts = Counter(sublist[0] for sublist in removed_duplicates)
+        print("Counts for each query: {}".format(counts))
         return self.combined_rankings
 
     def write_to_tsv(self, path: str) -> None:
@@ -104,9 +110,21 @@ class Ensemble:
 
 
 if __name__ == "__main__":
-    input_paths = ["data/runs/some_file.tsv"]  # Populate with input
-    thresholds = [1000]  # Populate with thresholds
-    output_path = "data/runs/ensemble.tsv"  # Set the output path
+    parser = argparse.ArgumentParser(prog="main.py")
+    parser.add_argument(
+        "-c", "--config-file", default="config/ensemble/bm25_ensemble.yaml"
+    )
+    args = parser.parse_args()
+    config = confuse.Configuration("treccast")
+    config.set_file(args.config_file)
+    print("Loading config from {}:\n".format(args.config_file), config)
+
+    base_path = config["base_path"].get()
+    input_paths = [
+        os.path.join(base_path, f) for f in config["input_files"].get()
+    ]
+    thresholds = config["thresholds"].get()
+    output_path = config["output_file"].get()
     ensemble = Ensemble(input_paths, thresholds)
     ensemble.combine_rankings()
     ensemble.write_to_tsv(output_path)
