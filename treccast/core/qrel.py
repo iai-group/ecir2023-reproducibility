@@ -18,7 +18,7 @@ def binarize_relevance(rel: float) -> int:
     Returns:
         Either 0 or 1.
     """
-    return 1 if rel >= 3 else 0
+    return 1 if rel >= 2 else 0
 
 
 class Qrel:
