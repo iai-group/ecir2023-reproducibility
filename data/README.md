@@ -8,6 +8,7 @@
 
   * [MS MARCO Passage Ranking collection](https://github.com/microsoft/MSMARCO-Passage-Ranking) => `$COLLECTIONS/msmarco-passage/collection.tar.gz` (988M)  
   * [TREC CAR paragraph collection v2.0](http://trec-car.cs.unh.edu/datareleases/) => `$COLLECTIONS/trec-car/paragraphCorpus.v2.0.tar.gz` (6.9G)
+  * `2020/2020_topic_shift_labels.tsv` - Manually labeled queries from Y2, where `1` indicates a topic shift from the previous turn.
 
 ### Y3
 
