@@ -4,7 +4,7 @@ These tests expect Elasticsearch on localhost:9204, as well as default files in
 locations specified by keyword argument default values or otherwise hardcoded.
 """
 
-from treccast.core.query.query import Query
+from treccast.core.query import Query
 from treccast.core.util.load_content import (
     PassageLoader,
     QueryLoader,

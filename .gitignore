@@ -136,7 +136,7 @@ dmypy.json
 data/local
 data/models
 data/finetuning
-data/runs/*/*.tsv
+data/first_pass
 
 # MacOS
 .DS_Store

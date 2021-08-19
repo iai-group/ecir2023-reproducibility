@@ -25,7 +25,7 @@ from transformers import (
     AutoTokenizer,
     get_constant_schedule_with_warmup,
 )
-from treccast.core.query.query import Query
+from treccast.core.query import Query
 from treccast.core.ranking import Ranking
 from treccast.core.util.load_finetune_data import FineTuneDataLoader
 from treccast.reranker.train.pytorch_dataset import (

@@ -1,12 +1,12 @@
 import pytest
 
 from treccast.core.ranking import Ranking
-from treccast.core.query.sparse_query import SparseQuery
+from treccast.core.query import Query
 
 
 @pytest.fixture
 def query():
-    return SparseQuery(
+    return Query(
         "qid_0",
         "How do you know when your garage door opener is going bad?",
     )
@@ -58,7 +58,7 @@ def ranking():
     )
 
 
-# QUERY2 = SparseQuery(
+# QUERY2 = Query(
 #     "qid_1",
 #     "How much does it cost for someone to repair a garage door opener?",
 # )

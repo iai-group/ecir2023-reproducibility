@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 from transformers import AutoTokenizer
 from typing import List, Tuple, Iterable
 from treccast.core.ranking import Ranking
-from treccast.core.query.query import Query
+from treccast.core.query import Query
 
 Input = Tuple[str, str]
 Batch = Tuple[

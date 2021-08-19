@@ -1,7 +1,7 @@
 import pytest
 
 from treccast.rewriter.rewriter import CachedRewriter
-from treccast.core.query.sparse_query import SparseQuery
+from treccast.core.query import Query
 
 REWRITES = "data/rewrites/2020/11_Human.tsv"
 
@@ -28,7 +28,7 @@ REWRITES = "data/rewrites/2020/11_Human.tsv"
 )
 def test_cached_rewriter(qid: str, original: str, rewrite: str):
     rewriter = CachedRewriter(REWRITES)
-    query = SparseQuery(qid, original)
+    query = Query(qid, original)
 
     rewritten_query = rewriter.rewrite_query(query)
 

@@ -2,7 +2,7 @@ import pytest
 from pytorch_lightning import seed_everything
 
 from treccast.core.ranking import Ranking
-from treccast.core.query.query import Query
+from treccast.core.query import Query
 from treccast.reranker.train.bert_reranker_train import BERTRerankTrainer
 from treccast.reranker.bert_reranker import BERTReranker
 

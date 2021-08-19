@@ -24,31 +24,32 @@ DEFAULT_BERT_CHECKPOINT = "data/models/fine_tuned_models/lightning_logs/version_
 
 
 def retrieve(
-    topics_path: str,
-    output_path: str,
-    utterance_type: str = "raw",
+    output_name: str,
+    year: str = "2021",
+    query_rewrite: str = "manual",
     rewriter: Rewriter = None,
     retriever: Retriever = None,
-    field: str = "body",
-    preprocess: bool = False,
+    es_field: str = "body",
     reranker: Reranker = None,
 ) -> None:
     """Performs (first-pass) retrieval and saves the results to a TREC runfile.
     First pass retrieval results are also saved in a tsv file.
 
     Args:
-        topics_path: Path to topic input file.
         output_path: Path to output TREC runfile.
+        year: Year for which to run the application.
+        query_rewrite: Type of query to use. Defaults to "manual".
+        rewriter: Rewriter to use. Defaults to None
         retriever: First-pass retrieval model. Defaults to None.
-        preprocess: If True use query preprocessing. Defaults to False.
+        es_field: Elasticsearch field to query. Year 2021 has options title,
+            body and catch_all.
         reranker: Reranker model. Defaults to None.
     """
-    # TODO(IK): load year and optionally query rewrite mode from config file
-    # See: https://github.com/iai-group/trec-cast-2021/issues/126
-    year = "2021"
-    queries = Topic.load_queries_from_file(year, QueryRewrite.MANUAL)
-    with open(output_path, "w") as trec_out, open(
-        output_path.replace(".trec", ".tsv"), "w"
+    queries = Topic.load_queries_from_file(
+        year, QueryRewrite[query_rewrite.upper()] if query_rewrite else None
+    )
+    with open(f"data/runs/{year}/{output_name}.trec", "w") as trec_out, open(
+        f"data/first_pass/{year}/{output_name}.tsv", "w"
     ) as retrieval_out:
         tsv_writer = csv.writer(retrieval_out, delimiter="\t")
         tsv_writer.writerow(
@@ -60,7 +61,7 @@ def retrieve(
             print(query.query_id)
             if rewriter:
                 query = Rewriter.rewrite_query(query)
-            ranking = retriever.retrieve(query, field)
+            ranking = retriever.retrieve(query, es_field)
             if reranker:
                 ranking = reranker.rerank(query, ranking)
             ranking.write_to_tsv_file(tsv_writer, query.question, k=1000)
@@ -125,13 +126,12 @@ def main(config):
             b=config["es_b"].get(),
         )
         retrieve(
-            config["topics"].get(),
-            config["output"].get(),
-            utterance_type=config["utterance_type"].get(),
+            output_name=config["output_name"].get(),
+            year=config["year"].get(),
+            query_rewrite=config["query_rewrite"].get(),
             rewriter=rewriter,
             retriever=retriever,
-            field=config["es_field"].get(),
-            preprocess=config["preprocess"].get(),
+            es_field=config["es_field"].get(),
             reranker=reranker,
         )
 

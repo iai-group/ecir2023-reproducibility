@@ -1,11 +1,10 @@
 """Abstract query rewriting interface."""
 
 from abc import ABC, abstractmethod
-from treccast.core.util.file_parser import FileParser
 
-from treccast.core.query.query import Query
-from treccast.core.query.sparse_query import SparseQuery
 from treccast.core.context import Context
+from treccast.core.query import Query
+from treccast.core.util.file_parser import FileParser
 
 
 class Rewriter(ABC):
@@ -36,9 +35,7 @@ class CachedRewriter(Rewriter):
         """
         self._get_rewrites(filepath)
 
-    def rewrite_query(
-        self, query: Query, context: Context = None
-    ) -> SparseQuery:
+    def rewrite_query(self, query: Query, context: Context = None) -> Query:
         """Returns a new query containing a rewrite.
 
         Args:
@@ -60,4 +57,4 @@ class CachedRewriter(Rewriter):
         self._rewrites = {}
         for line in FileParser.parse(filepath):
             _, _, qid, rewrite, original = line.split("\t")
-            self._rewrites[qid] = SparseQuery(qid, rewrite)
+            self._rewrites[qid] = Query(qid, rewrite)

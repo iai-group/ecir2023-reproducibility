@@ -5,7 +5,7 @@ from typing import List, Tuple
 
 import torch
 
-from treccast.core.query.query import Query
+from treccast.core.query import Query
 from treccast.core.ranking import Ranking
 
 Batch = Tuple[torch.Tensor, torch.Tensor, torch.Tensor]

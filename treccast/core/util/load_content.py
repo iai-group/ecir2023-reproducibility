@@ -6,7 +6,7 @@ from collections import defaultdict
 from typing import List
 
 from treccast.core.collection import ElasticSearchIndex
-from treccast.core.query.query import Query
+from treccast.core.query import Query
 from treccast.core.ranking import Ranking
 from treccast.core.topic import Topic
 from treccast.core.util.file_parser import FileParser

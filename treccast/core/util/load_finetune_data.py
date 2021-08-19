@@ -3,7 +3,7 @@ from collections import defaultdict
 from typing import List, Tuple
 
 from treccast.core.ranking import Ranking
-from treccast.core.query.sparse_query import SparseQuery
+from treccast.core.query import Query
 
 
 class FineTuneDataLoader:
@@ -35,7 +35,7 @@ class FineTuneDataLoader:
 
     def get_query_ranking_pairs(
         self,
-    ) -> Tuple[List[SparseQuery], List[Ranking]]:
+    ) -> Tuple[List[Query], List[Ranking]]:
         """Returns query, ranking parallel list.
 
         Returns:
@@ -46,7 +46,7 @@ class FineTuneDataLoader:
         for qid, (utterance_str, ranking_list) in enumerate(
             self._queries.items()
         ):
-            utterance_query = SparseQuery(str(qid), utterance_str)
+            utterance_query = Query(str(qid), utterance_str)
             r = Ranking(utterance_query)
             for doc_id, (doc, score) in enumerate(ranking_list):
                 r.add_doc(doc_id=str(doc_id), score=score, doc_content=doc)
