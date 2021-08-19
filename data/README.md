@@ -1,8 +1,14 @@
 # Data
 
-## Datasets
+*General rule*: small files (<1 MB) on git, large files on gustav1 (with their documentation under git!). 
 
-`$COLLECTIONS` refers to `gustav1:/data/collections`
+*Specifically*: 
+  * On git: topic files, qrels, config files, and annotation files (rewrites, answer types, topic turn detection, etc.).
+  * On gustav1: datasets, indices, and runfiles.
+    - `$COLLECTIONS` refers to `gustav1:/data/collections`
+    - `$DATA` refers to `gustav1:/data/scratch/trec-cast-2021/data`
+
+## Datasets
 
 ### Y2
 
@@ -58,6 +64,17 @@ Elasticsearch server in use is `gustav1.ux.uis.no:9204`
   * [qrels/2019.txt](qrels/2019.txt): 2019 test topics, judged on a five-point scale. Only 20 of the 50 test topics have judgments.
   * [qrels/2020.txt](qrels/2020.txt): 2020 test topics. Note: Turns with fewer than three relevant documents do not appear in the judgment file.
 
-## Rewrites
+## Annotations/rewrites
 
-  * Under `rewrites/2019` and `rewrites/2020` for Y1 and Y2, respectively.
+  * Answer type prediction results under `answer_types`
+  * Rewrites under `rewrites/{year}`, further documented [here](rewrites/README.md)  
+
+## Fine-tuning data and models
+ 
+  * Generated data for fine-tuning under `$DATA/finetuning` => [TODO](https://github.com/iai-group/trec-cast-2021/issues/162): document [here](fine_tuning/README.md)  
+  * Trained models under `$DATA/models` => [TODO](https://github.com/iai-group/trec-cast-2021/issues/163): document [here](models/README.md)
+
+## Runs
+
+  * First-pass retrieval results under `$DATA/first_pass/{year}`, further documented [here](first_pass/README.md)   
+  * Runfiles under `$DATA/runs/{year}`, further documented for [2020](runs/2020/README.md) and [2021](runs/2021/README.md)
