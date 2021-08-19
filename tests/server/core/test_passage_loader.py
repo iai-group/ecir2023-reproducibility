@@ -1,6 +1,5 @@
 """Tests PassageLoader class."""
 
-import pytest
 from treccast.core.util.passage_loader import PassageLoader
 
 

@@ -1,6 +1,5 @@
 """Tests Qrels class. Requires Elasticsearch instance to use PassageLoader."""
 
-import pytest
 from treccast.core.util.load_content import PassageLoader
 from treccast.core.qrel import Qrel
 

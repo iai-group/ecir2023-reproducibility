@@ -1,5 +1,6 @@
 # TREC CAsT 2021
 
+![CI build](https://github.com/iai-group/trec-cast-2021/actions/workflows/python-package-conda.yaml/badge.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 This repository contains the IAI group's participation at the TREC 2021 Conversational Assistance Track (CAsT).
