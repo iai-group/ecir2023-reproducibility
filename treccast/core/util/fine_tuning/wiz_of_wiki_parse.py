@@ -109,12 +109,12 @@ def parse_and_write_wow_data(input_file: str, output_file: str) -> None:
 
 
 if __name__ == "__main__":
-    TRAIN = "data/finetuning/wizard_of_wikipedia/train.json"
-    TRAIN_OUT = "data/finetuning/wizard_of_wikipedia/wow_finetune_train.tsv"
-    VAL = "data/finetuning/wizard_of_wikipedia/valid_random_split.json"
-    VAL_OUT = "data/finetuning/wizard_of_wikipedia/wow_finetune_val.tsv"
-    TEST = "data/finetuning/wizard_of_wikipedia/test_random_split.json"
-    TEST_OUT = "data/finetuning/wizard_of_wikipedia/wow_finetune_test.tsv"
-    parse_and_write_wow_data(TRAIN, TRAIN_OUT)
-    parse_and_write_wow_data(VAL, VAL_OUT)
-    parse_and_write_wow_data(TEST, TEST_OUT)
+    train = "fine_tuning/wizard_of_wikipedia/train.json"
+    train_out = "fine_tuning/wizard_of_wikipedia/wow_finetune_train.tsv"
+    val = "fine_tuning/wizard_of_wikipedia/valid_random_split.json"
+    val_out = "fine_tuning/wizard_of_wikipedia/wow_finetune_val.tsv"
+    test = "fine_tuning/wizard_of_wikipedia/test_random_split.json"
+    test_out = "data/fine_tuning/wizard_of_wikipedia/wow_finetune_test.tsv"
+    parse_and_write_wow_data(train, train_out)
+    parse_and_write_wow_data(val, val_out)
+    parse_and_write_wow_data(test, test_out)
