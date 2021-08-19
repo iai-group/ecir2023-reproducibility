@@ -17,11 +17,11 @@
 
 | *Method* | Rewrite | *recall@1000* | *MRR* |
 | -- | -- | -- | -- |
-| [BM25](config/bm25.yaml) | None | 0.1555 | 0.0212 |
-| [BM25](config/bm25_automatic.yaml) | Automatic | 0.3808 | 0.0497 |
-| [BM25](config/bm25_manual.yaml) | Manual | **0.4100** | 0.0503 |
-| [BM25 (k1=4.46, b=0.82)](config/bm25_k1_446_b_082_manual.yaml) | Manual | 0.3891 | 0.0305 |
-| [BM25 (body)](config/bm25_body_manual.yaml) | Manual | 0.3933 | 0.0417 |
-| [BM25 (body, k1=4.46, b=0.82)](config/bm25_body_k1_446_b_082_manual.yaml) | Manual | 0.3598 | 0.0316 |
+| [BM25](/config/bm25.yaml) | None | 0.1555 | 0.0212 |
+| [BM25](/config/bm25_automatic.yaml) | Automatic | 0.3808 | 0.0497 |
+| [BM25](/config/bm25_manual.yaml) | Manual | **0.4100** | 0.0503 |
+| [BM25 (k1=4.46, b=0.82)](/config/bm25_k1_446_b_082_manual.yaml) | Manual | 0.3891 | 0.0305 |
+| [BM25 (body)](/config/bm25_body_manual.yaml) | Manual | 0.3933 | 0.0417 |
+| [BM25 (body, k1=4.46, b=0.82)](/config/bm25_body_k1_446_b_082_manual.yaml) | Manual | 0.3598 | 0.0316 |
 | -- | -- | -- | -- |
-| [BM25 + T5](config/bm25_manual_rerank_t5.yaml) | Manual | **0.4100** | **0.1109** |
+| [BM25 + T5](/config/bm25_manual_rerank_t5.yaml) | Manual | **0.4100** | **0.1109** |
