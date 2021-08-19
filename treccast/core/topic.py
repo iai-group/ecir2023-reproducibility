@@ -26,6 +26,13 @@ class Turn:
     raw_utterance: str
     automatic_rewritten_utterance: str = None
     manual_rewritten_utterance: str = None
+    passage_id: str = None
+
+    def __post_init__(self):
+        if self.passage_id:
+            self.canonical_result_id = (
+                f"{self.canonical_result_id}-{self.passage_id}"
+            )
 
     # TODO: Extend with the text of the canonical result
     # See https://github.com/iai-group/trec-cast-2021/issues/17
@@ -202,6 +209,7 @@ class Topic:
                     manual_rewritten_utterance=raw_turn.get(
                         "manual_rewritten_utterance"
                     ),
+                    passage_id=raw_turn.get("passage_id"),
                 )
                 for raw_turn in raw_topic.get("turn")
             ]

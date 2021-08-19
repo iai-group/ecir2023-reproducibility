@@ -12,3 +12,16 @@
 ## Reranking
 
   * `bm25_manual_rerank_t5.trec` -> Manual rewrites, T5 reranker
+
+# Scores against pseudo qrels
+
+| *Method* | Rewrite | *recall@1000* | *MRR* |
+| -- | -- | -- | -- |
+| [BM25](scripts/2021/cast_bm25.sh) | None | 0.1555 | 0.0212 |
+| [BM25](scripts/2021/cast_bm25_automatic.sh) | Automatic | 0.3808 | 0.0497 |
+| [BM25](scripts/2021/cast_bm25_manual.sh) | Manual | **0.4100** | 0.0503 |
+| [BM25 (k1=4.46, b=0.82)](scripts/2021/cast_bm25_manual_k1_446_b_082.sh) | Manual | 0.3891 | 0.0305 |
+| [BM25 (body)](scripts/2021/cast_bm25_manual_body.sh) | Manual | 0.3933 | 0.0417 |
+| [BM25 (body, k1=4.46, b=0.82)](scripts/2021/cast_bm25_manual_body_k1_446_b_082.sh) | Manual | 0.3598 | 0.0316 |
+| -- | -- | -- | -- |
+| [BM25 + T5](scripts/2021/cast_bm25_manual_rerank_t5.sh) | Manual | **0.4100** | **0.1109** |
