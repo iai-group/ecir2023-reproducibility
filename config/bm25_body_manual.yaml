@@ -1,0 +1,21 @@
+# Input paths
+rewrite_path: "data/rewrites/2020/1_Original.tsv"
+bert_reranker_path: "nboost/pt-bert-base-uncased-msmarco"
+finetuned_checkpoint_path: null
+
+# Output
+output_name: "bm25_manual_body" # Ranking output name
+
+# Retrieval parameters
+year: "2021"
+query_rewrite: "manual"
+retrieval: True
+rewrite: False
+reranker: null
+
+# Elasticsearch
+host_name: "localhost:9204"
+es_index: "ms_marco_kilt_wapo_clean"
+es_k1: 1.2
+es_b: 0.75
+es_field: "body"

@@ -1,4 +1,4 @@
-base_path: "data/first_pass/2021"
+base_path: "/data/scratch/trec-cast-2021/data/first_pass/2021"
 input_files:
   [
     "bm25.tsv",
