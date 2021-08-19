@@ -1,4 +1,6 @@
 import csv
+import os
+
 from treccast.core.util.finetuning.wiz_of_wiki_parse import (
     parse_and_write_wow_data,
 )
@@ -25,3 +27,4 @@ def test_wiz_of_wiki_data_parse():
         in rows[0][3]
     )
     assert rows[0][4] == "1.0"
+    os.remove(SAMPLE_OUT)
