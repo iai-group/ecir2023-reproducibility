@@ -12,7 +12,7 @@ from treccast.core.util.passage_loader import PassageLoader
 
 
 def write_candidate_passages(output_path, year):
-    """Writes candidate passages and other passages in the same document to a 
+    """Writes candidate passages and other passages in the same document to a
     tsv file.
 
     Args:
