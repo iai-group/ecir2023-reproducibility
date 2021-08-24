@@ -113,9 +113,9 @@ def main(config):
         reranker = BERTReranker(model_name=config["bert_reranker_path"].get())
     if config["reranker"].get() == "t5":
         reranker = T5Reranker()
-    if config["reranker"] == "bert_finetuned":
+    if config["reranker"].get() == "bert_finetuned":
         reranker = BERTRerankerFinetuned(
-            checkpoint_path=config["finetuned_checkpoint_path"]
+            checkpoint_path=config["finetuned_checkpoint_path"].get()
         )
 
     if config["retrieval"].get():

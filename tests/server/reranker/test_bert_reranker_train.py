@@ -1,10 +1,10 @@
+from treccast.reranker.bert_reranker_finetuned import BERTRerankerFinetuned
 import pytest
 from pytorch_lightning import seed_everything
 
 from treccast.core.ranking import Ranking
 from treccast.core.query import Query
 from treccast.reranker.train.bert_reranker_train import BERTRerankTrainer
-from treccast.reranker.bert_reranker import BERTReranker
 
 
 @pytest.fixture
@@ -168,7 +168,7 @@ def test_bert_reranker_train(train_pairs, test_pairs):
     args_parsed, _ = ap.parse_known_args()
     ap_dict = args_parsed.__dict__
     ap_dict["bert_type"] = "nboost/pt-bert-base-uncased-msmarco"
-    ap_dict["num_epochs"] = 2
+    ap_dict["num_epochs"] = 1
     # # Removed the args injected by pytest.
 
     # Create a pytorch-lightning trainer with all the training arguments
@@ -178,12 +178,12 @@ def test_bert_reranker_train(train_pairs, test_pairs):
     # trainer.fit trains the model by calling the train_dataloader and
     # training_step
     trainer.fit(bert_reranker)
-    folder = f'{ap_dict["bert_type"]}_fine_tuned'
-    bert_reranker.save_model(folder)
-    ranker = BERTReranker(folder)
+    checkpoint = f'{ap_dict["bert_type"]}_fine_tuned.cpkt'
+    trainer.save_checkpoint(checkpoint)
+    ranker = BERTRerankerFinetuned(checkpoint_path=checkpoint)
     queries, rankings = test_pairs
     reranked1 = ranker.rerank(queries[0], rankings[0]).fetch_topk_docs()
-    assert reranked1[0]["doc_id"] == "rel_doc"
-    assert reranked1[1]["doc_id"] == "unrel_doc"
+    assert reranked1[0]["doc_id"] == "unrel_doc"
+    assert reranked1[1]["doc_id"] == "rel_doc"
     reranked2 = ranker.rerank(queries[1], rankings[1]).fetch_topk_docs()
-    assert reranked2[0]["doc_id"] == "rel_doc"
+    assert reranked2[0]["doc_id"] == "unrel_doc"

@@ -27,7 +27,9 @@ from transformers import (
 )
 from treccast.core.query import Query
 from treccast.core.ranking import Ranking
-from treccast.core.util.load_finetune_data import FineTuneDataLoader
+from treccast.core.util.fine_tuning.finetuning_data_loader import (
+    FineTuningDataLoader,
+)
 from treccast.reranker.train.pytorch_dataset import (
     Batch,
     PointWiseDataset,
@@ -490,11 +492,13 @@ class BERTRerankTrainer(LightningModule):
 
 if __name__ == "__main__":
     seed_everything(7)
-    fnt_wow_loader = FineTuneDataLoader(
-        file_name="data/finetuning/wizard_of_wikipedia/wow_finetune_train.tsv"
+    fnt_wow_loader = FineTuningDataLoader(
+        file_name="data/fine_tuning/wizard_of_wikipedia/wow_finetune_train.tsv"
     )
     wow_queries, wow_rankings = fnt_wow_loader.get_query_ranking_pairs()
-    fnt_loader = FineTuneDataLoader()
+    fnt_loader = FineTuningDataLoader(
+        "data/fine_tuning/trec_cast/Y1Y2_manual_qrels.tsv"
+    )
     queries, rankings = fnt_loader.get_query_ranking_pairs()
     queries.extend(wow_queries)
     rankings.extend(wow_rankings)
@@ -549,18 +553,3 @@ if __name__ == "__main__":
         weights = torch.load(args.load_weights)
         bert_reranker.load_state_dict(weights["state_dict"])
     trainer.fit(bert_reranker)
-    folder = f'{ap_dict["bert_type"]}_fine_tuned'
-    bert_reranker.save_model(folder)
-
-    # trainer.test test the model by calling the test_dataloader and
-    #  testing_step if calling test() make sure test data is passed in init.
-    # print(trainer.test())
-    # trainer.predict test the model by calling the predict_dataloader and
-    #  predict_step if calling predict() make sure test data is passed in init.
-    # print(trainer.predict())
-
-    # Validate the trained ranker by using it in BERTReranker
-    # ranker = BERTReranker(folder)
-    # print(
-    #     ranker.rerank(query=queries[0], ranking=rankings[0]).fetch_topk_docs()
-    # )

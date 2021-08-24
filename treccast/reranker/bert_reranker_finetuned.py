@@ -11,14 +11,14 @@ class BERTRerankerFinetuned(BERTReranker):
         self,
         max_seq_len: int = 512,
         batch_size: int = 512,
-        checkpoint_path="/data/scratch/trec-cast-2021/data/models/fine_tuned_models/epoch=2-step=3236.ckpt",
+        checkpoint_path="data/models/fine_tuned_models/bert_TRECY1Y2_WoW1.ckpt",
     ) -> None:
         """This class predicts the relevance for query, document pairs using
         model in the specified checkpoint.
 
         Args:
             max_seq_len: Max sequence length. Defaults to 512.
-            batch_size: Prediction batch size. Defaults to 32.
+            batch_size: Prediction batch size. Defaults to 512.
             checkpoint_path: Path to load checkpoint from.
         """
         super().__init__(max_seq_len=max_seq_len, batch_size=batch_size)
