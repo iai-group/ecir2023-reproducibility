@@ -166,3 +166,26 @@ class Ranking:
                     rankings[q_id] = Ranking(query_id=q_id)
                 rankings[q_id].add_doc(doc_id, float(score), content)
         return rankings
+
+    @staticmethod
+    def load_rankings_from_tsv_file(
+        filepath: str,
+    ) -> Dict[str, Ranking]:
+        """Creates a list of Ranking objects from a TSV runfile.
+
+        Args:
+            filepath: Path to the runfile.
+
+        Returns:
+            A dictionary of the Ranking objects built from the runfile.
+        """
+        rankings = {}
+        with open(filepath, "r") as f_in:
+            reader = csv.reader(f_in, delimiter="\t")
+            next(reader)
+            for line in reader:
+                q_id, _, doc_id, passage = line[:4]
+                if q_id not in rankings:
+                    rankings[q_id] = Ranking(query_id=q_id)
+                rankings[q_id].add_doc(doc_id, 0, passage)
+        return rankings

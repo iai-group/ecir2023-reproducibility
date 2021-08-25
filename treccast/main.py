@@ -13,6 +13,8 @@ from treccast.reranker.t5_reranker import T5Reranker
 from treccast.reranker.bert_reranker_finetuned import BERTRerankerFinetuned
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.collection import ElasticSearchIndex
+from treccast.core.ranking import Ranking
+
 
 DEFAULT_TOPIC_INPUT_PATH = (
     "data/topics-2020/automatic_evaluation_topics_annotated_v1.1.json"
@@ -31,6 +33,7 @@ def retrieve(
     retriever: Retriever = None,
     es_field: str = "body",
     reranker: Reranker = None,
+    first_pass_file: str = None,
 ) -> None:
     """Performs (first-pass) retrieval and saves the results to a TREC runfile.
     First pass retrieval results are also saved in a tsv file.
@@ -48,6 +51,13 @@ def retrieve(
     queries = Topic.load_queries_from_file(
         year, QueryRewrite[query_rewrite.upper()] if query_rewrite else None
     )
+
+    rankings = (
+        Ranking.load_rankings_from_tsv_file(first_pass_file)
+        if first_pass_file
+        else None
+    )
+
     with open(f"data/runs/{year}/{output_name}.trec", "w") as trec_out, open(
         f"data/first_pass/{year}/{output_name}.tsv", "w"
     ) as retrieval_out:
@@ -61,7 +71,12 @@ def retrieve(
             print(query.query_id)
             if rewriter:
                 query = Rewriter.rewrite_query(query)
-            ranking = retriever.retrieve(query, es_field)
+
+            if rankings:
+                ranking = rankings[query.query_id]
+            else:
+                ranking = retriever.retrieve(query, es_field)
+
             if reranker:
                 ranking = reranker.rerank(query, ranking)
             ranking.write_to_tsv_file(tsv_writer, query.question, k=1000)
@@ -133,6 +148,7 @@ def main(config):
             retriever=retriever,
             es_field=config["es_field"].get(),
             reranker=reranker,
+            first_pass_file=config["first_pass_file"].get(),
         )
 
 
