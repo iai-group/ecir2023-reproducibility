@@ -125,7 +125,10 @@ def main(config):
 
     reranker = None
     if config["reranker"].get() == "bert":
-        reranker = BERTReranker(model_name=config["bert_reranker_path"].get())
+        reranker = BERTReranker(
+            base_model=config["base_bert_model"].get(),
+            model_path=config["bert_reranker_path"].get(),
+        )
     if config["reranker"].get() == "t5":
         reranker = T5Reranker()
     if config["reranker"].get() == "bert_finetuned":

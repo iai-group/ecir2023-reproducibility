@@ -3,7 +3,9 @@
 import os
 import csv
 
-from treccast.core.util.finetune_data import generate_finetune_data
+from treccast.core.util.fine_tuning.generate_finetuning_data_cast_y1y2 import (
+    generate_finetuning_data_cast_y1y2,
+)
 from treccast.core.util.passage_loader import PassageLoader
 
 
@@ -12,7 +14,7 @@ def test_generate_finetune_data():
         hostname="gustav1.ux.uis.no:9204", index="ms_marco_trec_car_clean"
     )
     finetune_filepath = "data/finetuning/finetune-test.tsv"
-    generate_finetune_data(finetune_filepath, ploader)
+    generate_finetuning_data_cast_y1y2(finetune_filepath, ploader)
     assert os.path.isfile(finetune_filepath)
     target_q_id = "33_1"
     target_passage_id = "CAR_02c9a9536ba5edd76b1b7a1a20b49cf628a7c87e"

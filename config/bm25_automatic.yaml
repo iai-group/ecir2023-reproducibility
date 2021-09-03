@@ -12,6 +12,7 @@ query_rewrite: "automatic"
 retrieval: True
 rewrite: False
 reranker: null
+base_bert_model: "bert-base-uncased"
 
 # Elasticsearch
 host_name: "localhost:9204"

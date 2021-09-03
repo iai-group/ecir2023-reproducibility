@@ -9,7 +9,8 @@ from treccast.reranker.reranker import NeuralReranker, Batch
 class BERTReranker(NeuralReranker):
     def __init__(
         self,
-        model_name: str = "nboost/pt-bert-base-uncased-msmarco",
+        base_model: str = "bert-base-uncased",
+        model_path: str = "nboost/pt-bert-base-uncased-msmarco",
         max_seq_len: int = 512,
         batch_size: int = 128,
     ) -> None:
@@ -25,10 +26,11 @@ class BERTReranker(NeuralReranker):
         """
         super().__init__(max_seq_len, batch_size)
         self._tokenizer = AutoTokenizer.from_pretrained(
-            "bert-base-uncased", cache_dir="data/models", use_fast=True
+            base_model, cache_dir="data/models", use_fast=True
         )
+        print("loading the model, ", model_path)
         self._model = AutoModelForSequenceClassification.from_pretrained(
-            model_name, cache_dir="data/models"
+            model_path, cache_dir="data/models"
         )
 
         self._model.to(self._device, non_blocking=True)

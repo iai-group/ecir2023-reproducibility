@@ -1,18 +1,18 @@
 # Input paths
 rewrite_path: "data/rewrites/2020/1_Original.tsv"
-bert_reranker_path: "nboost/pt-bert-base-uncased-msmarco"
+bert_reranker_path: "data/models/finetuned_models/simpletransformers_bert_nboost_pt-bert-base-uncased-msmarco_both/best_model/"
 finetuned_checkpoint_path: "data/models/fine_tuned_models/bert_TRECY1Y2.ckpt"
-first_pass_file: "data/first_pass/2021/bm25_ensemble_manual.tsv"
+first_pass_file: "data/first_pass/2021/bm25_manual.tsv"
 # Output
-output_name: "bm25_ensamble_manual_bert_finetuned_msmarco_y1y2" # Ranking output name
+output_name: "bm25_manual_simpletransformers_bert_nboost_pt-bert-base-uncased-msmarco_both" # Ranking output name
 
 # Retrieval parameters
 year: "2021"
-utterance_type: "manual"
 query_rewrite: "manual"
 retrieval: True
 rewrite: False
-reranker: "bert_finetuned"
+reranker: "bert"
+base_bert_model: "bert-base-uncased"
 
 # Elasticsearch
 host_name: "localhost:9204"
