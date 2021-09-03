@@ -64,6 +64,25 @@ def test_fetch_topk_docs():
     }
 
 
+def test_fetch_topk_docs_unique():
+    ranking = Ranking("2")
+    ranking.add_doc("1", 50.62, "doc1 content")
+    ranking.add_doc("1", 1.52, "doc1 content")
+    ranking.add_doc("3", 80.22, "doc3 content")
+    topkdocs = ranking.fetch_topk_docs(unique=True)
+    assert len(topkdocs) == 2
+    assert topkdocs[0] == {
+        "doc_id": "3",
+        "score": 80.22,
+        "content": "doc3 content",
+    }
+    assert topkdocs[1] == {
+        "doc_id": "1",
+        "score": 50.62,
+        "content": "doc1 content",
+    }
+
+
 def test_write_to_tsv_file():
     outfile = StringIO()
     tsv_writer = csv.writer(outfile, delimiter="\t")

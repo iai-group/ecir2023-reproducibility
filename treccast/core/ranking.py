@@ -69,7 +69,9 @@ class Ranking:
         """
         self._scored_docs.extend(docs)
 
-    def fetch_topk_docs(self, k: int = 1000) -> List[Dict]:
+    def fetch_topk_docs(
+        self, k: int = 1000, unique: bool = False
+    ) -> List[Dict]:
         """Fetches the top-k docs based on their score.
 
             If k > len(self._scored_docs), the slicing automatically
@@ -78,14 +80,24 @@ class Ranking:
 
         Args:
             k: Number of docs to fetch.
+            unique: If unique is True returns unique unique documents. In case
+                of multiple documents with the same ID, returns the highest
+                scoring. Defaults to False
 
         Returns:
             Ordered list of dictionaries with doc_id, score, and (optional)
                 content fields.
         """
-        return sorted(
+        sorted_docs = sorted(
             self._scored_docs, key=lambda i: i["score"], reverse=True
-        )[:k]
+        )
+        if unique:
+            sorted_unique_docs = {}
+            for doc in sorted_docs:
+                if doc["doc_id"] not in sorted_unique_docs:
+                    sorted_unique_docs[doc["doc_id"]] = doc
+            sorted_docs = list(sorted_unique_docs.values())
+        return sorted_docs[:k]
 
     def write_to_tsv_file(self, writer, query: str, k: int = 1000) -> None:
         """Writes the results of ranking to a tsv file in the format:
