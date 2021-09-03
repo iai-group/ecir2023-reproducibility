@@ -8,8 +8,8 @@ dependencies:
   - pip
   - black
   - flake8
-  - pre-commit
   - pytest
+  - pytest-cov
   - confuse
   - ftfy=5.8
   - nltk=3.6.2
