@@ -115,7 +115,7 @@ class Ranking:
             query: The query/question content for which the passages are retrieved.
             k (optional): The number of documents to retrieve. Defaults to 1000.
         """
-        for doc in self.fetch_topk_docs(k):
+        for doc in self.fetch_topk_docs(k, unique=True):
             writer.writerow(
                 [
                     self.query_id,
@@ -136,7 +136,7 @@ class Ranking:
             run_id (optional): Run ID. Defaults to "Undefined".
             k (optional): Number of documents to output. Defaults to 1000.
         """
-        for rank, doc in enumerate(self.fetch_topk_docs(k)):
+        for rank, doc in enumerate(self.fetch_topk_docs(k, unique=True)):
             f_out.write(
                 " ".join(
                     [

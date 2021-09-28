@@ -10,7 +10,6 @@ from treccast.retriever.bm25_retriever import BM25Retriever
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.t5_reranker import T5Reranker
-from treccast.reranker.bert_reranker_finetuned import BERTRerankerFinetuned
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import Ranking
@@ -129,12 +128,8 @@ def main(config):
             base_model=config["base_bert_model"].get(),
             model_path=config["bert_reranker_path"].get(),
         )
-    if config["reranker"].get() == "t5":
+    elif config["reranker"].get() == "t5":
         reranker = T5Reranker()
-    if config["reranker"].get() == "bert_finetuned":
-        reranker = BERTRerankerFinetuned(
-            checkpoint_path=config["finetuned_checkpoint_path"].get()
-        )
 
     if config["retrieval"].get():
         retriever = _get_retriever(
