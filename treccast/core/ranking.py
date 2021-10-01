@@ -127,7 +127,11 @@ class Ranking:
             )
 
     def write_to_trec_file(
-        self, f_out: io.StringIO, run_id: str = "Undefined", k: int = 1000
+        self,
+        f_out: io.StringIO,
+        run_id: str = "Undefined",
+        k: int = 1000,
+        remove_passage_id: bool = False,
     ) -> None:
         """Writes the top-k documents into an output TREC runfile.
 
@@ -135,14 +139,27 @@ class Ranking:
             f_out: Text file object open for writing.
             run_id (optional): Run ID. Defaults to "Undefined".
             k (optional): Number of documents to output. Defaults to 1000.
+            remove_passage_id (optional): Removes passageID from the documentID
+                (separated by "-"). Defaults to False.
         """
+        doc_ids = set()
         for rank, doc in enumerate(self.fetch_topk_docs(k, unique=True)):
+            # Leave out passageID from the docID.
+            doc_id = (
+                doc["doc_id"].split("-")[0]
+                if remove_passage_id
+                else doc["doc_id"]
+            )
+            if doc_id in doc_ids:  # Igore duplicates
+                print(f"Duplicate document ID {doc_id} ignored")
+                continue
+
             f_out.write(
                 " ".join(
                     [
                         self._query_id,
                         "Q0",
-                        doc["doc_id"],
+                        doc_id,
                         str(rank + 1),
                         str(doc["score"]),
                         run_id,
@@ -150,6 +167,7 @@ class Ranking:
                 )
                 + "\n"
             )
+            doc_ids.add(doc_id)
 
     @staticmethod
     def load_rankings_from_runfile(

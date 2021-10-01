@@ -79,7 +79,12 @@ def retrieve(
             if reranker:
                 ranking = reranker.rerank(query, ranking)
             ranking.write_to_tsv_file(tsv_writer, query.question, k=1000)
-            ranking.write_to_trec_file(trec_out, run_id="BM25", k=1000)
+            ranking.write_to_trec_file(
+                trec_out,
+                run_id="BM25",
+                k=1000,
+                remove_passage_id=(year == "2021"),
+            )
 
 
 def _get_rewriter(path: str) -> Rewriter:
