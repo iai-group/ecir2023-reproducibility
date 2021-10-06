@@ -1,0 +1,18 @@
+# Output
+first_pass_file: null
+output_name: "bm25_clean_manual_10000" # Ranking output name
+
+# Retrieval parameters
+year: "2020"
+query_rewrite: "manual"
+retrieval: True
+rewrite: False
+reranker: null
+k: 10000
+
+# Elasticsearch
+host_name: "gustav1.ux.uis.no:9204"
+es_index: "ms_marco_trec_car_clean"
+es_k1: 1.2
+es_b: 0.75
+es_field: "body"

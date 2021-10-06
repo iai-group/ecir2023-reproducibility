@@ -6,19 +6,20 @@ import csv
 from typing import Dict, List
 from collections import defaultdict
 
-from treccast.core.util.load_content import PassageLoader
+from treccast.core.util.passage_loader import PassageLoader
 
 
-def binarize_relevance(rel: float) -> int:
+def binarize_relevance(rel: float, threshold: int = 2) -> int:
     """Turns 0-4 relevance label into a binary relevance label (0/1).
 
     Args:
         rel: Relevance label between 0.0 through 4.0.
+        threshold: Value at which to set the relevance to 1.
 
     Returns:
         Either 0 or 1.
     """
-    return 1 if rel >= 2 else 0
+    return 1 if rel >= threshold else 0
 
 
 class Qrel:
@@ -49,7 +50,7 @@ class Qrel:
         """
         return {
             doc["doc_id"]: doc.get("content")
-            for _, docs in self._judged_docs.items()
+            for docs in self._judged_docs.values()
             for doc in docs
         }
 
@@ -77,16 +78,13 @@ class Qrel:
             Unordered list of dictionaries with doc_id, score, and (optional)
                 content fields.
         """
-        if rel is not None:
+        if rel:
             return self._judged_docs[rel]
-        else:
-            return [
-                doc for _, docs in self._judged_docs.items() for doc in docs
-            ]
+        return [doc for docs in self._judged_docs.values() for doc in docs]
 
     @staticmethod
     def load_qrels_from_file(
-        filepath: str, ploader: PassageLoader
+        filepath: str, ploader: PassageLoader = None
     ) -> Dict[Qrel]:
         """Loads Qrels from TREC qrels file.
 
@@ -99,12 +97,10 @@ class Qrel:
         """
         qrels = {}
         with open(filepath, "r") as f_in:
-            reader = csv.reader(f_in, delimiter=" ")
-            for row in reader:
-                q_id, _, doc_id, rel = row
+            for q_id, _, doc_id, rel in csv.reader(f_in, delimiter=" "):
                 rel = binarize_relevance(int(rel))
                 if q_id not in qrels:
                     qrels[q_id] = Qrel(query_id=q_id)
-                passage = ploader.get(doc_id=doc_id)
+                passage = ploader.get(doc_id=doc_id) if ploader else None
                 qrels[q_id].add_doc(doc_id, rel, passage)
         return qrels

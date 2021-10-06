@@ -1,4 +1,5 @@
 # Input paths
+first_pass_file: null
 rewrite_path: "data/rewrites/2020/1_Original.tsv"
 bert_reranker_path: "nboost/pt-bert-base-uncased-msmarco"
 finetuned_checkpoint_path: null
@@ -14,8 +15,10 @@ rewrite: False
 reranker: null
 
 # Elasticsearch
-host_name: "localhost:9204"
+host_name: "gustav1.ux.uis.no:9204"
 es_index: "ms_marco_kilt_wapo_clean"
 es_k1: 1.2
 es_b: 0.75
 es_field: "catch_all"
+
+k: 1000

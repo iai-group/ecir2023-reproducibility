@@ -33,6 +33,7 @@ def retrieve(
     es_field: str = "body",
     reranker: Reranker = None,
     first_pass_file: str = None,
+    k: int = 1000,
 ) -> None:
     """Performs (first-pass) retrieval and saves the results to a TREC runfile.
     First pass retrieval results are also saved in a tsv file.
@@ -74,15 +75,15 @@ def retrieve(
             if rankings:
                 ranking = rankings[query.query_id]
             else:
-                ranking = retriever.retrieve(query, es_field)
+                ranking = retriever.retrieve(query, es_field, num_results=k)
 
             if reranker:
                 ranking = reranker.rerank(query, ranking)
-            ranking.write_to_tsv_file(tsv_writer, query.question, k=1000)
+            ranking.write_to_tsv_file(tsv_writer, query.question, k=k)
             ranking.write_to_trec_file(
                 trec_out,
                 run_id="BM25",
-                k=1000,
+                k=k,
                 remove_passage_id=(year == "2021"),
             )
 
@@ -152,6 +153,7 @@ def main(config):
             es_field=config["es_field"].get(),
             reranker=reranker,
             first_pass_file=config["first_pass_file"].get(),
+            k=config["k"].get(),
         )
 
 
