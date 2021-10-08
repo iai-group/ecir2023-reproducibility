@@ -1,6 +1,6 @@
 # Output
 first_pass_file: null
-output_name: "bm25_clean_manual_10000" # Ranking output name
+output_name: "bm25_clean_manual_10k" # Ranking output name
 
 # Retrieval parameters
 year: "2020"

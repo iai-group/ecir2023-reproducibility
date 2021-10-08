@@ -1,27 +1,22 @@
 """Main command line application."""
 
 import argparse
-import confuse
 import csv
+from collections import defaultdict
 
-from treccast.rewriter.rewriter import Rewriter, CachedRewriter
-from treccast.retriever.retriever import Retriever
-from treccast.retriever.bm25_retriever import BM25Retriever
-from treccast.reranker.reranker import Reranker
-from treccast.reranker.bert_reranker import BERTReranker
-from treccast.reranker.t5_reranker import T5Reranker
-from treccast.core.topic import QueryRewrite, Topic
+import confuse
+
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import Ranking
+from treccast.core.topic import QueryRewrite, Topic
+from treccast.reranker.bert_reranker import BERTReranker
+from treccast.reranker.reranker import Reranker
+from treccast.reranker.t5_reranker import T5Reranker
+from treccast.retriever.bm25_retriever import BM25Retriever
+from treccast.retriever.retriever import Retriever
+from treccast.rewriter.rewriter import CachedRewriter, Rewriter
 
-
-DEFAULT_TOPIC_INPUT_PATH = (
-    "data/topics-2020/automatic_evaluation_topics_annotated_v1.1.json"
-)
-DEFAULT_REWRITE_PATH = "data/rewrites/2020/1_Original.tsv"
-DEFAULT_RANKING_OUTPUT_PATH = "data/runs-2020/bm25.trec"
-DEFAULT_BERT_RERANKER_PATH = "nboost/pt-bert-base-uncased-msmarco"
-DEFAULT_BERT_CHECKPOINT = "data/models/fine_tuned_models/lightning_logs/version_96/checkpoints/epoch=2-step=3236.ckpt"
+DEFAULT_CONFIG_PATH = "config/{}.yaml"
 
 
 def retrieve(
@@ -34,6 +29,7 @@ def retrieve(
     reranker: Reranker = None,
     first_pass_file: str = None,
     k: int = 1000,
+    num_prev_turns: int = 0,
 ) -> None:
     """Performs (first-pass) retrieval and saves the results to a TREC runfile.
     First pass retrieval results are also saved in a tsv file.
@@ -58,6 +54,7 @@ def retrieve(
         else None
     )
 
+    ranking_cache = defaultdict(list)
     with open(f"data/runs/{year}/{output_name}.trec", "w") as trec_out, open(
         f"data/first_pass/{year}/{output_name}.tsv", "w"
     ) as retrieval_out:
@@ -69,13 +66,25 @@ def retrieve(
             # TODO: Replace print with logging.
             # See: https://github.com/iai-group/trec-cast-2021/issues/37
             print(query.query_id)
+
             if rewriter:
                 query = Rewriter.rewrite_query(query)
 
             if rankings:
+                # FIXME https://github.com/iai-group/trec-cast-2021/issues/228
+                # NB! TSV files do not contain score so we cannot fetch top k
+                # here
                 ranking = rankings[query.query_id]
             else:
                 ranking = retriever.retrieve(query, es_field, num_results=k)
+                if num_prev_turns:
+                    topic_id = query.query_id.split("_")[0]
+                    ranking_cache[topic_id].append(ranking.fetch_topk_docs(k))
+                    for rank in ranking_cache[topic_id][
+                        -num_prev_turns - 1 : -1
+                    ]:
+                        ranking.update(rank)
+                    print("Num docs:", len(ranking))
 
             if reranker:
                 ranking = reranker.rerank(query, ranking)
@@ -154,16 +163,20 @@ def main(config):
             reranker=reranker,
             first_pass_file=config["first_pass_file"].get(),
             k=config["k"].get(),
+            num_prev_turns=config["num_prev_turns"].get(),
         )
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="main.py")
-    parser.add_argument(
-        "-c", "--config-file", default="config/config_default.yaml"
-    )
+    parser.add_argument("-c", "--config-file")
+    parser.add_argument("-y", "--year")
     args = parser.parse_args()
     config = confuse.Configuration("treccast")
+    config.set_file(DEFAULT_CONFIG_PATH.format("defaults/config_default"))
+    config.set_file(DEFAULT_CONFIG_PATH.format(f"defaults/{args.year}"))
     config.set_file(args.config_file)
     print("Loading config from {}:\n".format(args.config_file), config)
+
+    config["year"] = args.year
     main(config)

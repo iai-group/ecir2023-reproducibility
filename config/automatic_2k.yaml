@@ -1,0 +1,6 @@
+# Output
+output_name: "automatic_2k"
+
+query_rewrite: "automatic"
+k: 2000
+

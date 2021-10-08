@@ -1,0 +1,5 @@
+# Output
+output_name: "automatic_prev_3"
+
+query_rewrite: "automatic"
+num_prev_turns: 3

@@ -1,0 +1,5 @@
+# Output
+output_name: "manual_1k"
+
+query_rewrite: "manual"
+

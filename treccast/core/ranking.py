@@ -69,6 +69,18 @@ class Ranking:
         """
         self._scored_docs.extend(docs)
 
+    def update(self, docs: List[Dict]) -> None:
+        """Adds multiple documents to the ranking uniquely.
+
+        Args:
+            docs: List of dictionaries, where the keys `doc_id` and
+                `score` are mandatory, and `content` is optional.
+        """
+        doc_ids, _ = self.documents()
+        self._scored_docs.extend(
+            [doc for doc in docs if doc["doc_id"] not in doc_ids]
+        )
+
     def fetch_topk_docs(
         self, k: int = 1000, unique: bool = False
     ) -> List[Dict]:
@@ -150,7 +162,7 @@ class Ranking:
                 if remove_passage_id
                 else doc["doc_id"]
             )
-            if doc_id in doc_ids:  # Igore duplicates
+            if doc_id in doc_ids:  # Ignore duplicates
                 print(f"Duplicate document ID {doc_id} ignored")
                 continue
 
