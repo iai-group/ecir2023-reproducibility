@@ -16,8 +16,6 @@
     - `$DATA/runs/2021/bm25_2021_raw.trec`
     - `$DATA/first_pass/2021/bm25_2021_automatic.tsv`
     - `$DATA/runs/2021/bm25_2021_automatic.trec`
-
-**New files**
     - `$DATA/{first_pass|runs}/{2020|2021}/{raw_{1|2|5|10}k.{trec|tsv}`
     - `$DATA/{first_pass|runs}/{2020|2021}/{manual_{1|2|5|10}k.{trec|tsv}`
     - `$DATA/{first_pass|runs}/{2020|2021}/{automatic_{1|2|5|10}k.{trec|tsv}`
