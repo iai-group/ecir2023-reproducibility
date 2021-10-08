@@ -166,7 +166,7 @@ if __name__ == "__main__":
     )
     wow_queries, wow_rankings = fnt_wow_loader.get_query_ranking_pairs()
     fnt_loader = FineTuningDataLoader(
-        "data/fine_tuning/trec_cast/Y1Y2_manual_qrels.tsv"
+        "data/fine_tuning/trec_cast/Y1_manual_qrels.tsv"
     )
     trec_queries, trec_rankings = fnt_loader.get_query_ranking_pairs()
 

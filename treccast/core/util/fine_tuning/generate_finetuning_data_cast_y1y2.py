@@ -33,7 +33,7 @@ def get_query_and_qrel_dicts(
         )
     queries = []
     qrels_dict = {}
-    for year in ["2019", "2020"]:
+    for year in ["2019"]:
         queries.extend(Topic.load_queries_from_file(year, query_rewrite))
         filepath = f"data/qrels/{year}.txt"
         qrels_dict.update(Qrel.load_qrels_from_file(filepath, ploader))
@@ -76,9 +76,6 @@ def generate_finetuning_data_cast_y1y2(
 if __name__ == "__main__":
     # Generate fine-tuning data and write to file (on g1):
     ploader = PassageLoader()
-    finetune_filepath = (
-        "/data/scratch/trec-cast-2021/data/fine_tuning/"
-        "finetune-manual-2019_and_2020.tsv"
-    )
+    finetune_filepath = "data/fine_tuning/trec_cast/Y1_manual_qrels.tsv"
     generate_finetuning_data_cast_y1y2(finetune_filepath, ploader)
     print("Finished writing fine-tuning data to file.")
