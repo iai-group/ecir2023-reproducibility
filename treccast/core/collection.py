@@ -99,7 +99,10 @@ class ElasticSearchIndex(Collection):
             Dictionary with index settings with BM25 similarity using custom
             parameters.
         """
-        return {"similarity": {"default": {"type": "BM25", "b": b, "k1": k1}}}
+        return {
+            "similarity": {"default": {"type": "BM25", "b": b, "k1": k1}},
+            "max_result_window": 100000,
+        }
 
     def _get_analysis_settings(self) -> Dict[str, Any]:
         """Elasticsearch analyzer. Should be overwritten if needed.

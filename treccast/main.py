@@ -88,11 +88,12 @@ def retrieve(
 
             if reranker:
                 ranking = reranker.rerank(query, ranking)
-            ranking.write_to_tsv_file(tsv_writer, query.question, k=k)
+            num_to_save = 100000 if num_prev_turns else k
+            ranking.write_to_tsv_file(tsv_writer, query.question, k=num_to_save)
             ranking.write_to_trec_file(
                 trec_out,
                 run_id="BM25",
-                k=k,
+                k=num_to_save,
                 remove_passage_id=(year == "2021"),
             )
 
@@ -123,7 +124,7 @@ def _get_retriever(index_name: str, host_name: str, **kwargs) -> Retriever:
             Currently only supports BM25.
     """
     # Can be expanded with more arguments
-    esi = ElasticSearchIndex(index_name, hostname=host_name, timeout=30)
+    esi = ElasticSearchIndex(index_name, hostname=host_name, timeout=120)
     return BM25Retriever(esi, **kwargs)
 
 

@@ -1,0 +1,4 @@
+# Output
+output_name: "raw_prev_all"
+
+num_prev_turns: 100

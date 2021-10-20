@@ -2,6 +2,7 @@
 import json
 from collections import defaultdict
 from typing import Dict, List, Set, Union
+import argparse
 
 from treccast.core.qrel import Qrel
 from treccast.core.ranking import Ranking
@@ -10,13 +11,7 @@ from treccast.core.util.file_parser import FileParser
 
 DependencyList = List[Union[str, Dict[str, Union[int, str]]]]
 
-PATH_RUNFILE = (
-    "/data/scratch/trec-cast-2021/data/runs/2020/bm25_clean_{}_10k.trec"
-)
 CONFIG_RECALL = "config/analysis/recall.json"
-
-ANALYSIS_RECALL = "data/analysis/recall.json"
-ANALYSIS_DOCUMENT_APPEARANCE = "data/analysis/relevant_documents.json"
 
 
 def get_dependencies() -> Dict[str, DependencyList]:
@@ -83,7 +78,9 @@ def get_retrieved_docs_for_turn(
             retrieved_doc_ids.update(
                 [
                     doc["doc_id"]
-                    for doc in rankings[rewrite][qid].fetch_topk_docs(k)
+                    for doc in rankings[rewrite]
+                    .get(qid, Ranking(""))
+                    .fetch_topk_docs(k)
                 ]
             )
 
@@ -137,11 +134,31 @@ def get_document_appearance(
                     rankings,
                     previous_cache[full_name],
                 )
-                for did in relevant_documents[topic.topic_id][turn.turn_id]:
-                    if did in retrieved_doc_ids:
+                for doc_id in relevant_documents[topic.topic_id][turn.turn_id]:
+                    if doc_id in retrieved_doc_ids:
                         relevant_documents[topic.topic_id][turn.turn_id][
-                            did
+                            doc_id
                         ].append(full_name)
+
+            # Add only prev
+            full_name = "raw_prev_all"
+            previous_docs = {
+                el for lst in previous_cache[full_name] for el in lst
+            }
+            for doc_id in relevant_documents[topic.topic_id][turn.turn_id]:
+                if doc_id in previous_docs:
+                    relevant_documents[topic.topic_id][turn.turn_id][
+                        doc_id
+                    ].append(full_name)
+
+            retrieved_doc_ids = [
+                doc["doc_id"]
+                for doc in rankings["raw"]
+                .get(qid, Ranking(""))
+                .fetch_topk_docs(1000)
+            ]
+            previous_cache[full_name].append(retrieved_doc_ids.copy())
+
     return relevant_documents
 
 
@@ -215,7 +232,9 @@ def get_recalls(
                         "turn": turn.turn_id,
                         "recall": recall,
                         "num_candidates": num_candidates,
-                        "topic_shift": topic_shifts.get(qid),
+                        "topic_shift": topic_shifts.get(qid)
+                        if topic_shifts
+                        else None,
                     }
                 )
                 if not relevant_doc_ids:
@@ -255,27 +274,50 @@ def get_recalls(
     return recalls
 
 
-if __name__ == "__main__":
-    qrel_path = "data/qrels/2020.txt"
-    topic_shifts_path = "data/topics/2020/2020_topic_shift_labels.tsv"
+def parse_cmd_line_args():
+    """Parses command line arguments"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-y", "--year")
+    args = parser.parse_args()
 
-    topics: List[Topic] = Topic.load_topics_from_file(2020)
-    qrels: Dict[str, Qrel] = Qrel.load_qrels_from_file(qrel_path)
+    args.PATH_QREL = f"data/qrels/{args.year}.txt"
+    args.PATH_TOPIC_SHITFS = (
+        f"data/topics/{args.year}/{args.year}_topic_shift_labels.tsv"
+    )
+    args.ANALYSIS_RECALL = f"data/analysis/{args.year}_recall.json"
+    args.ANALYSIS_DOCUMENT_APPEARANCE = (
+        f"data/analysis/{args.year}_relevant_documents.json"
+    )
+    args.PATH_RUNFILE = "/data/scratch/trec-cast-2021/data/runs/{}/{}_10k.trec"
+    return args
+
+
+if __name__ == "__main__":
+    args = parse_cmd_line_args()
+    topics: List[Topic] = Topic.load_topics_from_file(args.year)
+    qrels: Dict[str, Qrel] = Qrel.load_qrels_from_file(args.PATH_QREL)
     rankings: Dict[str, Dict[str, Ranking]] = {
-        name: Ranking.load_rankings_from_runfile(PATH_RUNFILE.format(name))
+        name: Ranking.load_rankings_from_runfile(
+            args.PATH_RUNFILE.format(args.year, name)
+        )
         for name in ["raw", "automatic", "manual"]
     }
-    topic_shifts = {
-        qid: bool(int(shift))
-        for qid, _, shift in (
-            line.split("\t") for line in FileParser.parse(topic_shifts_path)
-        )
-    }
+    topic_shifts = (
+        {
+            qid: bool(int(shift))
+            for qid, _, shift in (
+                line.split("\t")
+                for line in FileParser.parse(args.PATH_TOPIC_SHITFS)
+            )
+        }
+        if args.year == "2020"
+        else None
+    )
 
     recalls = get_recalls(topics, qrels, rankings, topic_shifts)
-    with open(ANALYSIS_RECALL, "w") as f:
+    with open(args.ANALYSIS_RECALL, "w") as f:
         f.write(json.dumps(recalls))
 
     relevant_documents = get_document_appearance(topics, qrels, rankings)
-    with open(ANALYSIS_DOCUMENT_APPEARANCE, "w") as f:
+    with open(args.ANALYSIS_DOCUMENT_APPEARANCE, "w") as f:
         f.write(json.dumps(relevant_documents))
