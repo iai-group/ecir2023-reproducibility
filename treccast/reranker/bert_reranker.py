@@ -12,7 +12,7 @@ class BERTReranker(NeuralReranker):
         base_model: str = "bert-base-uncased",
         model_path: str = "nboost/pt-bert-base-uncased-msmarco",
         max_seq_len: int = 512,
-        batch_size: int = 128,
+        batch_size: int = 256,
     ) -> None:
         """BERT reranker. Currently only supports BERT type architecture.
 

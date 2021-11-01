@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import csv
 import io
+import sys
 from typing import Dict, List, Tuple
 
 from treccast.core.util.passage_loader import PassageLoader
 
+# This is needed since some of the passages are too long.
+csv.field_size_limit(sys.maxsize)
 
 class Ranking:
     def __init__(self, query_id: str, scored_docs: List[Dict] = None) -> None:
@@ -163,7 +166,6 @@ class Ranking:
                 else doc["doc_id"]
             )
             if doc_id in doc_ids:  # Ignore duplicates
-                print(f"Duplicate document ID {doc_id} ignored")
                 continue
 
             f_out.write(

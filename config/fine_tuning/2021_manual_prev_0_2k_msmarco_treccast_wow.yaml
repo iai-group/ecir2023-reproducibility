@@ -1,9 +1,9 @@
 # Input paths
 rewrite_path: "data/rewrites/2020/1_Original.tsv"
-bert_reranker_path: "data/models/finetuned_models/simpletransformers_bert_nboost_pt-bert-base-uncased-msmarco_both_y1/best_model/"
-first_pass_file: "data/first_pass/2021/bm25_ensemble_manual.tsv"
+bert_reranker_path: "data/models/finetuned_models/simpletransformers_bert_nboost_pt-bert-base-uncased-msmarco_both_y1y2/best_model/"
+first_pass_file: "data/first_pass/2021/manual_2k.tsv"
 # Output
-output_name: "bm25_ensemble_manual_msmarco_treccast_wow" # Ranking output name
+output_name: "cast_2021_manual_2k" # Ranking output name
 
 # Retrieval parameters
 year: "2021"
@@ -19,3 +19,5 @@ es_index: "ms_marco_kilt_wapo_clean"
 es_k1: 1.2
 es_b: 0.75
 es_field: "catch_all"
+
+k: 2000

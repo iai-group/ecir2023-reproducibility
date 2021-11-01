@@ -102,7 +102,7 @@ class SimpleTransformersTrainer:
             "overwrite_output_dir": True,
             "num_train_epochs": 10,
             "save_eval_checkpoints": False,
-            "train_batch_size": 64,
+            "train_batch_size": 32,
             "save_model_every_epoch": False,
             "best_model_dir": model_dir + "/best_model",
             "n_gpu": 2,
@@ -139,6 +139,15 @@ def arg_parser() -> argparse.ArgumentParser:
         nargs="?",
     )
     parser.add_argument(
+        "--treccast_years",
+        type=str,
+        help="If treccast or both datasets are choosen in --dataset specific y1 (2019) or y2 (2020) or both",
+        choices=["y1", "y1y2"],
+        default="y1y2",
+        const=1,
+        nargs="?",
+    )
+    parser.add_argument(
         "--base_bert_type",
         type=str,
         help="Base BERT type",
@@ -165,9 +174,14 @@ if __name__ == "__main__":
         file_name="data/fine_tuning/wizard_of_wikipedia/wow_finetune_train.tsv"
     )
     wow_queries, wow_rankings = fnt_wow_loader.get_query_ranking_pairs()
-    fnt_loader = FineTuningDataLoader(
-        "data/fine_tuning/trec_cast/Y1_manual_qrels.tsv"
-    )
+    if args.treccast_years == "y1":
+        fnt_loader = FineTuningDataLoader(
+            "data/fine_tuning/trec_cast/Y1_manual_qrels.tsv"
+        )
+    elif args.treccast_years == "y1y2":
+        fnt_loader = FineTuningDataLoader(
+            "data/fine_tuning/trec_cast/Y1Y2_manual_qrels.tsv"
+        )
     trec_queries, trec_rankings = fnt_loader.get_query_ranking_pairs()
 
     if args.dataset == "treccast":
@@ -181,8 +195,8 @@ if __name__ == "__main__":
     else:
         raise ValueError("Either treccast, wow or both are supported.")
     model_name = args.bert_model_path.replace("/", "_")
-    model_dir = f"data/models/finetuned_models/simpletransformers_{args.base_bert_type}_{model_name}_{args.dataset}/"
-
+    model_dir = f"data/models/finetuned_models/simpletransformers_{args.base_bert_type}_{model_name}_{args.dataset}_{args.treccast_years}/"
+    print(model_dir)
     st_trainer = SimpleTransformersTrainer(
         train_args=SimpleTransformersTrainer.get_default_simpletransformers_args(
             model_dir
