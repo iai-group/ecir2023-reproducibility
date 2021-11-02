@@ -10,6 +10,8 @@ $ {TREC_EVAL_PATH}/trec_eval -m all_trec -l2 data/qrels/2020.txt data/runs-2020/
 There should be a script corresponding to each table row containing the exact parameterization.
 Scripts are to be run from root.
 
+**NOTE:** Some of these results below are not evaluated using the `-l2` flag!
+
 | *Method* | *Query rewriting* | *recall@1000* | *MAP* | *MRR* | *NDCG* | *NDCG@5* |
 | -- | -- | -- | -- | -- | -- | -- |
 | [BM25](scripts/2020/cast_bm25_default.sh) | None (raw) | 0.2133 | 0.0306 | 0.1145 | 0.1272 | 0.0642 |
