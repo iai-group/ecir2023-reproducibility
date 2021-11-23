@@ -1,9 +1,10 @@
 from typing import List
 
 import torch
-from transformers import T5ForConditionalGeneration, AutoTokenizer
 from ftfy import fix_text
-from treccast.reranker.reranker import NeuralReranker, Batch
+from transformers import AutoTokenizer, T5ForConditionalGeneration
+
+from treccast.reranker.reranker import Batch, NeuralReranker
 
 
 class T5Reranker(NeuralReranker):

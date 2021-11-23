@@ -11,6 +11,7 @@ dependencies:
   - flake8
   - pre-commit
   - pytest
+  - pytest-helpers-namespace
   - confuse
   - ftfy=5.8
   - nltk=3.6.2

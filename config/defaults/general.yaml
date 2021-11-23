@@ -4,10 +4,13 @@ rewrite_path: null
 bert_reranker_path: null
 finetuned_checkpoint_path: null
 
+# Output path
+output_name: raw_1k
+
 # Retrieval parameters
+year: 2021
 query_rewrite: null
 rewrite: False
-retrieval: True
 reranker: null
 
 # Number of documents to retrieve at each turn
@@ -15,6 +18,8 @@ k: 1000
 num_prev_turns: 0
 
 # Elasticsearch
-host_name: "gustav1.ux.uis.no:9204"
-es_k1: 1.2
-es_b: 0.75
+es:
+ host_name: "gustav1.ux.uis.no:9204"
+ k1: 1.2
+ b: 0.75
+

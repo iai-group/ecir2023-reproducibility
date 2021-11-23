@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import io
 import sys
+from collections import defaultdict
 from typing import Dict, List, Tuple
 
 from treccast.core.util.passage_loader import PassageLoader
@@ -234,3 +235,37 @@ class Ranking:
                     rankings[q_id] = Ranking(query_id=q_id)
                 rankings[q_id].add_doc(doc_id, 0, passage)
         return rankings
+
+
+class CachedRanking:
+    def __init__(self, num_prev_turns: int, k: int = 1000) -> None:
+        """Caches rankings for each topic in a list. Elements of the list are
+        lists of documents retrieved at previous turns.
+
+        Args:
+            num_prev_turns: Number of previous turns to consider when expanding
+                the candidate pool size.
+            k (optional): Number of documents to cache at each turn. Defaults to
+                1000.
+        """
+        self._num_prev_turns = num_prev_turns
+        self._k = k
+        self._cache = defaultdict(list)
+
+    def add_previous_turns(self, topic_id: str, ranking: Ranking) -> Ranking:
+        """Appends documents in ranking to cache for given topic. Updates
+        ranking with previous turns documents.
+
+        Args:
+            topic_id: Topic to use for caching.
+            ranking: Ranking that should be cached and updated with previous
+                turns documents.
+
+        Returns:
+            Updated ranking.
+        """
+        self._cache[topic_id].append(ranking.fetch_topk_docs(self._k))
+        for rank in self._cache[topic_id][-self._num_prev_turns - 1 : -1]:
+            ranking.update(rank)
+        print(f"Number of docs in ranking: {len(ranking)}")
+        return ranking

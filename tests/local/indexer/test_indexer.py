@@ -1,5 +1,7 @@
 import pytest
-from treccast.indexer.indexer import Indexer
+
+with pytest.helpers.mock_expensive_imports():
+    from treccast.indexer.indexer import Indexer
 
 MS_MARCO_PASSAGE_DATASET_GZ = "tests/data/ms_marco_passage_sample.tar.gz"
 MS_MARCO_PASSAGE_DATASET = "tests/data/ms_marco_passage_sample.tsv"

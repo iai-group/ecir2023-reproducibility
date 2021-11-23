@@ -1,2 +1,3 @@
-es_index: "ms_marco_kilt_wapo_clean"
-es_field: "catch_all"
+es:
+  index_name: "ms_marco_kilt_wapo_clean"
+  field: "catch_all"
