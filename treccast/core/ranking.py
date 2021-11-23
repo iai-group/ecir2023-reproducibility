@@ -12,6 +12,7 @@ from treccast.core.util.passage_loader import PassageLoader
 # This is needed since some of the passages are too long.
 csv.field_size_limit(sys.maxsize)
 
+
 class Ranking:
     def __init__(self, query_id: str, scored_docs: List[Dict] = None) -> None:
         """Instantiates a Ranking object using the query_id and a list of scored
