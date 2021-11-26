@@ -1,160 +1,241 @@
-query_id,recip_rank,recall_1000,ndcg_cut_3
-111_4,0.9897,0.125,1.0
-127_4,0.9878,0.8695,1.0
-127_3,0.8889,0.6976,1.0
-118_6,1.0,0.5455,1.0
-129_8,0.9474,0.25,0.8827
-117_4,0.9744,0.25,0.8707
-124_8,0.6667000000000001,0.28570000000000007,0.8240000000000001
-127_9,0.8571,0.33330000000000004,0.8131
-124_9,0.8889,0.554,0.8087000000000001
-115_7,0.9444,0.4,0.7654
-110_7,0.9985,0.8182,0.7654
-115_6,1.0,0.6667,0.7346
-128_3,0.8,0.2388,0.7118
-131_6,0.9167,0.5,0.7039
-129_6,0.8,0.8667,0.7039
-124_7,0.6667000000000001,0.16399999999999992,0.6913
-107_4,0.9979,0.7241000000000001,0.6913
-111_2,0.9974,0.9167,0.6667
-115_2,0.8889,0.5,0.6646
-118_4,0.9962,0.39999999999999997,0.6481
-110_3,0.6667000000000001,0.5357000000000001,0.6481
-110_4,0.8333,-0.03700000000000003,0.6173
-111_9,-0.6667000000000001,0.04540000000000011,-0.5885
-118_1,0.9444,0.6111,0.5885
-124_4,0.9375,0.6,0.5885
-110_9,0.8571,0.45000000000000007,0.5885
-106_7,-0.5,0.0,-0.5559000000000001
-119_2,0.9,0.19999999999999996,0.5475
-117_6,1.0,0.5,0.5317
-113_5,0.0,0.16660000000000008,0.5307999999999999
-124_6,0.16670000000000001,0.11370000000000002,0.5307000000000001
-113_7,0.5,0.8421,0.5307
-116_6,0.0,0.0,-0.5307
-119_1,0.19260000000000002,0.7142,0.5
-112_2,1.0,0.9091,0.5
-121_8,0.0833,1.0,0.4791
-111_7,0.0,0.0,0.4693
-112_3,-0.6667000000000001,-0.07689999999999997,-0.46869999999999995
-131_4,0.75,0.0,0.44639999999999996
-115_4,0.0,0.0,0.42990000000000006
-113_6,0.0,0.09299999999999997,0.4134
-117_5,-0.3571,0.0,-0.4061
-112_9,0.9286,0.16669999999999996,0.3911
-121_3,0.3,-0.0625,0.3838
-113_4,0.4825,0.5217,0.3827
-108_3,0.9444,0.29410000000000003,0.3559
-113_3,-0.8333,0.19999999999999996,-0.352
-129_3,0.0,0.3333,0.352
-107_3,0.6667000000000001,0.5216999999999999,0.34420000000000006
-117_9,0.0,0.0,-0.3179
-106_10,-0.1666,-0.16669999999999996,-0.3116
-128_2,0.0,0.5625,0.3087
-106_1,0.5,0.0,0.30860000000000004
-108_4,-0.5,0.31820000000000004,0.306
-110_8,0.0,0.4545,0.29610000000000003
-117_3,0.0,0.0,0.2961
-127_8,0.5,0.05259999999999998,0.2819
-124_1,-0.8,-0.08340000000000003,-0.27799999999999997
-116_8,0.5,-0.09519999999999995,0.2719
-111_3,0.4821,0.0,0.26530000000000004
-125_3,0.5,0.0,0.25450000000000006
-121_2,0.5,-0.125,0.25139999999999996
-106_2,0.4773,0.5455000000000001,0.23739999999999997
-125_6,-0.5,0.0,-0.2358
-113_2,-0.1666,-0.12,-0.2346
-131_1,-0.5,0.0,-0.23459999999999998
-131_5,0.0,0.0,0.21500000000000008
-110_2,0.0,0.0,-0.20390000000000008
-112_5,0.0,0.07409999999999994,-0.20290000000000002
-115_9,0.0,0.0,0.1883999999999999
-112_6,0.5,0.10520000000000007,0.17600000000000005
-131_10,0.0,0.0,-0.17070000000000007
-all,0.17510000000000003,0.14100000000000001,0.16390000000000005
-116_5,0.0,0.0,0.1597
-115_10,0.0,0.0,0.1597
-107_7,0.0,0.0,0.14800000000000002
-115_8,-0.5,0.0,0.14480000000000004
-119_6,0.0,-0.11109999999999998,-0.1352
-121_1,-0.08329999999999999,0.0,0.13290000000000002
-112_1,0.0,0.0,-0.13269999999999993
-121_4,0.0,0.0,0.11750000000000005
-131_8,0.0,0.0,-0.11730000000000007
-124_10,0.5,0.11630000000000007,0.11730000000000007
-115_3,0.0,0.0,-0.11730000000000007
-108_6,-0.6667000000000001,0.0,-0.11730000000000002
-124_5,0.19690000000000002,0.36360000000000003,0.1173
-116_4,-0.2155,-0.6000000000000001,-0.1173
-116_7,-0.0232,0.16660000000000008,0.1173
-112_7,0.5,1.0,0.10470000000000002
-124_2,0.0,-0.1311,-0.10189999999999999
-118_8,0.0,0.1613,0.09870000000000001
-111_8,0.5,0.37039999999999995,0.08660000000000001
-111_1,0.0,-0.29089999999999994,-0.08530000000000004
-107_5,-0.5,0.0,-0.08489999999999998
-108_7,0.0,0.5,0.08479999999999999
-125_5,-0.5,0.045499999999999985,-0.08209999999999995
-131_2,0.0,0.0,-0.0786
-119_3,0.0,0.4074,-0.07820000000000005
-118_2,0.0,0.0,-0.07820000000000005
-107_6,0.08329999999999999,0.0,0.07819999999999999
-108_5,0.0,0.054099999999999926,0.06770000000000004
-108_2,-0.5,-0.1482,-0.06259999999999999
-131_7,0.0,0.0,0.06230000000000002
-111_5,-0.9231,-0.125,-0.05890000000000001
-106_6,0.0,-0.16669999999999996,-0.05860000000000004
-116_3,0.5,0.0,-0.049800000000000066
-119_4,0.5,-0.09089999999999998,-0.03259999999999996
-121_7,0.16670000000000001,0.0,0.030700000000000005
-124_11,0.0,-0.04349999999999998,-0.020499999999999963
-127_2,0.5,-0.10000000000000009,0.01679999999999998
-112_4,-0.5,-0.10520000000000007,0.0028000000000000247
-128_1,0.0,0.0,0.0
-107_1,0.0,0.0,0.0
-129_7,0.0,0.0,0.0
-107_2,0.0,0.0,0.0
-129_5,0.0,-0.01760000000000006,0.0
-127_5,0.0,0.0,0.0
-127_6,0.0,0.08110000000000006,0.0
-127_7,0.0,0.0,0.0
-108_1,0.0,0.0,0.0
-107_8,0.0,0.07689999999999997,0.0
-129_4,0.0,0.030299999999999994,0.0
-129_2,0.0,0.0,0.0
-129_1,0.0,0.0,0.0
-131_3,0.0,0.0,0.0
-106_5,0.0,0.0,0.0
-106_4,0.0,0.0,0.0
-106_3,0.08339999999999999,0.5,0.0
-106_8,0.005899999999999999,0.6,0.0
-124_3,0.0,0.0,0.0
-125_4,0.0,0.05560000000000004,0.0
-116_2,0.0,0.0,0.0
-116_1,0.0,0.0,0.0
-117_1,0.0,0.0,0.0
-131_9,0.0,0.0,0.0
-117_2,0.16670000000000001,0.0,0.0
-115_5,0.0,-0.14279999999999993,0.0
-115_11,0.0,0.0,0.0
-117_8,0.0,0.0,0.0
-115_1,0.0,0.0,0.0
-118_3,0.0,0.0,0.0
-113_8,0.0,0.13789999999999997,0.0
-118_5,0.08330000000000001,-0.5,0.0
-127_1,0.0,0.0,0.0
-113_1,0.0,0.0,0.0
-119_5,-0.052399999999999995,-0.2,0.0
-119_7,0.0,0.055499999999999994,0.0
-119_8,0.0,-0.21739999999999993,0.0
-121_5,0.0,0.0,0.0
-121_6,-0.1974,0.0,0.0
-111_6,0.0,0.125,0.0
-110_6,0.04440000000000001,0.0,0.0
-110_5,0.0,0.0,0.0
-110_1,0.0,0.0,0.0
-108_8,0.0,0.0,0.0
-125_1,0.0,-0.34779999999999994,0.0
-125_2,0.0,0.0,0.0
-118_7,0.0,0.0,0.0
-117_10,-0.15669999999999998,0.5,0.0
+query_id,manual_recip_rank,delta_recip_rank,manual_recall_1000,delta_recall_1000,manual_ndcg_cut_3,delta_ndcg_cut_3,raw_query,automatic_query,manual_query
+127_4,1.0,0.9878,0.913,0.8695,1.0,1.0,I live in Seattle and have a big lawn. How big should it be? How much can I save?,How much can I save on Seattle's lawn?,How much rainwater can I collect with a rain barrel?
+111_4,1.0,0.9897,1.0,0.125,1.0,1.0,"No, I meant the Lotus.","No, I meant the Lotus.",How fast can the Lotus Elise/Exige go?
+118_6,1.0,1.0,0.5455,0.5455,1.0,1.0,I’ll consider those. How about my options for my other interest?,How about my options for my other interest besides fashion design?,I’ll consider those. How about my career options for my other interest in animals?
+127_3,1.0,0.8889,0.9302,0.6976,1.0,1.0,Maybe I could collect it for my garden. I’d like to learn more about using a barrel.  What should I consider?,What should I consider when collecting stormwater for my garden?,Maybe I could collect it for my garden. I’d like to learn more about using a barrel.  What should I consider when picking a rain barrel?
+129_8,1.0,0.9474,0.8214,0.25,1.0,0.8827,Can a person have both at the same time?,Can a person have both the catecholamine theory of mood and depression at the same time?,Can a person have mania and depression at the same time?
+117_4,1.0,0.9744,1.0,0.25,0.8707,0.8707,How did the international community respond?,How did the international community respond to the crisis in Nigeria?,How did the international community respond to the EndSars protests in Nigeria?
+124_8,1.0,0.6667000000000001,0.8393,0.28570000000000007,1.0,0.8240000000000001,And the last?,What was the dinosaur era like on Earth?,What was characteristic about the Cretaceous Period?
+127_9,1.0,0.8571,0.5833,0.33330000000000004,0.8131,0.8131,I’ll try the garden too. What are some native plants for my area that I could use?,What are some native plants for my area that I could use in a rain garden?,I’ll try the rain garden too. What are some native plants for the Seattle areas that I could use?
+124_9,1.0,0.8889,0.8243,0.554,0.926,0.8087000000000001,What happened to dinosaurs after then?,What happened to dinosaurs after Tyrannosaurus Rex was killed?,What happened to dinosaurs after the Cretaceous period ended?
+115_7,1.0,0.9444,0.8,0.4,0.7654,0.7654,"Wow. Besides these values, what other factors could cause stigmatization?","Besides paternalistic approach, what other factors could cause stigmatization in Africa?","Wow. Besides Asian cultural values, what other factors could cause stigmatization of mental illness in the region of Asia?"
+110_7,1.0,0.9985,0.9091,0.8182,0.7654,0.7654,I’m going to bake some cookies. Which one would be the best to use?,Which one would be the best to use for my cookies?,I’m going to bake some cookies. Which vegan milk is best for baking cookies?
+115_6,1.0,1.0,0.6667,0.6667,0.7346,0.7346,Is there a relationship between these values and mental illness in the region?,Is there a relationship between African Traditional Medicine and mental illness in the region?,Is there a relationship between Asian cultural values and mental illness?
+128_3,1.0,0.8,0.4925,0.2388,0.7118,0.7118,Who is at high risk?,Who is at high risk for addiction?,Who is at high risk for alcohol addiction?
+131_6,1.0,0.9167,1.0,0.5,0.7039,0.7039,How many years will it take to recoup the investment?,How many years will it take to recoup the investment in a heat pump?,How many years will it take to recoup the investment in a geothermal heat pump?
+129_6,1.0,0.8,1.0,0.8667,0.7039,0.7039,Can these drugs alleviate depression?,Can catecholamines alleviate depression?,Can stimulant drugs alleviate depression?
+124_7,1.0,0.6667000000000001,0.8361,0.16399999999999992,1.0,0.6913,What about the second?,What about the second dinosaur era?,What was characteristic about the Jurassic Period?
+107_4,1.0,0.9979,0.7586,0.7241000000000001,0.6913,0.6913,Who knew?  Which is more environmentally friendly?,Who knew that rock salt was more environmentally friendly?,Which type of driveway is more environmentally friendly?
+111_2,1.0,0.9974,1.0,0.9167,0.6667,0.6667,What is the first based on?,What is the first car based on?,What is Hennessey Venom GT based on?
+115_2,1.0,0.8889,1.0,0.5,0.6646,0.6646,What are the causes of stigma in Africa?,What are the causes of stigma in Africa?,What are the causes of mental health stigma in Africa?
+118_4,1.0,0.9962,0.6,0.39999999999999997,0.7654,0.6481,Okay. What does the portfolio usually consist of?,Okay. What does the portfolio usually consist of?,Okay. What does the Bachelor of Fine Arts degree in fashion portfolio usually consist of?
+110_3,1.0,0.6667000000000001,0.9643,0.5357000000000001,0.7654,0.6481,Which is healthiest?,Which milk is healthiest?,"Which of the milk options (almond, oat, hemp or rice milk) is the healthiest?"
+110_4,1.0,0.8333,0.4074,-0.03700000000000003,0.6173,0.6173,"No, the vegan ones. Which of those alternatives is healthiest?",Which of the vegan alternatives is healthiest?,"No, the vegan ones. Which of the vegan alternative milk options is healthiest?"
+124_4,1.0,0.9375,0.8571,0.6,0.5885,0.5885,What was it like during the time dinosaurs were on earth?,What was it like during the time dinosaurs were on earth?,What was earth's landmass like during the Mesozoic era?
+118_1,1.0,0.9444,0.7222,0.6111,0.8436,0.5885,I like fashion and animals. What career options should I consider?,What career options should I consider?,I like fashion and animals. What career options should I consider?
+110_9,1.0,0.8571,0.8,0.45000000000000007,0.5885,0.5885,What is the best in my morning latte?,What is the best in my morning latte?,What vegan milk is best in my morning latte?
+119_2,1.0,0.9,0.6,0.19999999999999996,0.5475,0.5475,I just checked and there’s swelling in the outer portion. What could it be?,What could the swelling in the outer portion of the ear canal be?,I just checked my dog’s ears and there’s swelling in the outer portion. What could it be a symptom of?
+117_6,1.0,1.0,0.5,0.5,0.5317,0.5317,Did that help?,"Did the international teams from the U.S., U.K., China, France and Israel help with the hunt for the 276 girls still missing in Nigeria?",Did international support from the US help with the EndSars movement?
+113_5,1.0,0.0,0.8333,0.16660000000000008,0.7654,0.5307999999999999,That’s not what I wanted. How about recent developments in gene therapy to treat those defects?,How about recent developments in gene therapy to treat chromosome defects?,That’s not what I wanted. How about recent developments in gene therapy to treat chromosome defects that cause Down Syndrome?
+124_6,0.5,0.16670000000000001,0.8182,0.11370000000000002,0.648,0.5307000000000001,Okay. You mentioned three periods in the Dinosaur era. What was characteristic about the first one?,What was characteristic about the first dinosaur period?,Okay. You mentioned three periods in the Mesosoic Era. What was characteristic about the Triassic Period?
+113_7,0.5,0.5,0.8421,0.8421,0.5307,0.5307,"No, I meant in humans.","No, I meant in humans.","No, What long-term effects are researchers worried about with CRISPR editing in human germ-line cells?"
+112_2,1.0,1.0,0.9091,0.9091,0.5,0.5,What were Ziegler’s improvements?,What were Ziegler’s improvements?,Utterance: What were Ziegler’s improvements to the use of anabolic steroids in athletes?
+119_1,0.2,0.19260000000000002,0.8571,0.7142,0.5,0.5,My dog has been shaking and tilting its head a lot recently. What could be wrong?,What could be wrong with my dog?,My dog has been shaking and tilting its head a lot recently. What could be wrong?
+121_8,0.0833,0.0833,1.0,1.0,0.4791,0.4791,How did all these affect global consumption?,How did rust affect global consumption?,How did the drought in Brazil and the coffee rust disease in Latin America affect global coffee consumption?
+111_7,0.0,0.0,0.0,0.0,0.4693,0.4693,How fast did it go?,How fast did the Tesla Roadster go in 1966?,How fast did the first funny car go?
+131_4,1.0,0.75,1.0,0.0,0.7232,0.44639999999999996,A heat pump seems very suitable for my house. How much does it cost to install one?,How much does it cost to install a heat pump in my home in Washington?,A heat pump seems very suitable for my house. How much does it cost to install one?
+115_4,1.0,0.0,1.0,0.0,0.81,0.42990000000000006,How effective are these methods and could they be combined with Western medicine?,How effective are the traditional methods of treating mental illness and could they be combined with Western medicine?,How effective are traditional African methods for treating mental health issues and could they be combined with Western medicine?
+113_6,1.0,0.0,0.7442,0.09299999999999997,1.0,0.4134,What are they worried about?,What are researchers worried about with CRISPR?,What long-term effects are researchers worried about with CRISPR editing in human germ-line cells?
+112_9,1.0,0.9286,0.6667,0.16669999999999996,0.4693,0.3911,I heard it even affects card players. Didn't bridge also have a problem?,Didn't bridge also have a problem with card players?,I heard it even affects card players. Didn't the game of bridge also have a problem with drug use?
+121_3,0.5,0.3,0.625,-0.0625,0.3838,0.3838,I also heard that other Latin American countries had coffee production issues. Was the disruption widespread?,Was the disruption of coffee production in other Latin American countries widespread?,I also heard that other Latin American countries had coffee production issues. Was the disruption due to the drought widespread?
+113_4,0.5,0.4825,0.5652,0.5217,0.3827,0.3827,You missed the second type of disease.  What was that?,What was the second type of disease that you missed?,You missed the second type of genetic disease.  What was that?
+108_3,1.0,0.9444,0.3235,0.29410000000000003,0.3559,0.3559,Cool name!  What are other fire-followers?,What are other fire-followers in addition to whispering bells?,Cool name! What are other organisms besides whispering bells that have adapted to exploit natural wildfires?
+129_3,1.0,0.0,0.6444,0.3333,0.5866,0.352,How can I balance it?,How can I balance dopamine and endorphins?,How can I balance serotonin?
+107_3,1.0,0.6667000000000001,0.7826,0.5216999999999999,0.7344,0.34420000000000006,Really?  What type of product?,What type of product is the wrong de-icing product?,What type of de-icing product can damage concrete driveways?
+128_2,1.0,0.0,0.6667,0.5625,0.8087,0.3087,What are the causes of it?,What are the causes of dopamine release in the reward center?,What are the causes of alcoholism?
+106_1,1.0,0.5,0.9231,0.0,0.648,0.30860000000000004,I just had a breast biopsy for cancer. What are the most common types?,What are the most common types of cancer in regards to breast biopsy?,I just had a breast biopsy for cancer. What are the most common types of breast cancer?
+108_4,0.5,-0.5,0.6591,0.31820000000000004,0.5765,0.306,"Let’s talk about other environmental influences besides fire. More broadly, what are the effects of agriculture?",What are the effects of agriculture on the longleaf pine ecosystem besides fire?,Let’s talk about other environmental influences besides fire. How does agriculture affect an ecosystem?
+110_8,1.0,0.0,1.0,0.4545,0.8827,0.29610000000000003,What would be second best?,What would be second best for vegan buttermilk?,Which vegan milk besides soy is best for baking?
+117_3,1.0,0.0,1.0,0.0,0.7654,0.2961,What's an example of those reasons?,What's an example of Nigerian police officers searching phones at random and detaining people for outrageous reasons?,What's an example of the reasons why (Special Anti-Robbery Squad) SARS officers detain people?
+127_8,1.0,0.5,0.7368,0.05259999999999998,0.6261,0.2819,You also mentioned rain gardens earlier. How do they compare?,How do rain gardens compare to residential rain gardens?,You mentioned rain gardens earlier. How do they compare to rain barrels?
+116_8,1.0,0.5,0.5238,-0.09519999999999995,0.568,0.2719,Did Biblical poetry have a similar impact?,Did Biblical poetry have a similar impact?,Did Biblical poetry have a similar impact on other kinds of religious poetry?
+111_3,0.5,0.4821,1.0,0.0,0.648,0.26530000000000004,How fast can the unmodified base car go?,How fast can the unmodified base car of Hennessey Venom GT go?,How fast can the unmodified base Lotus Elise/Exige go?
+125_3,1.0,0.5,1.0,0.0,0.8303,0.25450000000000006,Has that been effective?,Has the photos of goliath frogs with people at Queensland Frog Society been effective?,Has the Equatorial Guinean government's conservation measures to protect Goliath frogs been effective?
+121_2,1.0,0.5,0.625,-0.125,0.7039,0.25139999999999996,What caused the drought?,What caused the drought in Brazil last month?,What caused the drought in Brazil’s coffee belt region?
+106_2,0.5,0.4773,0.8788,0.5455000000000001,0.2961,0.23739999999999997,"Once it breaks out, how likely is it to spread?","Once the cancer breaks out, how likely is it to spread?","Once it breaks out, how likely is lobular carcinoma breast cancer to spread?"
+131_5,1.0,0.0,1.0,0.0,0.81,0.21500000000000008,Which type is better in terms of efficiency?,Which type of heat pump is better in terms of efficiency?,"Which type of heat pump is better in terms of efficiency, a geothermal heat pump or an air-source heat pump?"
+115_9,1.0,0.0,0.9,0.0,0.9501,0.1883999999999999,Hmm. What has the Alliance done to help?,What has the National Alliance on Mental Illness done to help people with mental illness?,Hmm. What has the National Alliance on Mental Illness done to help people with mental illness in America?
+112_6,1.0,0.5,0.8947,0.10520000000000007,0.75,0.17600000000000005,What is the NFL policy?,What is the NFL policy regarding steroid use?,What is the NFL policy about steroids?
+all,0.7326,0.17510000000000003,0.7729,0.14100000000000001,0.5611,0.16390000000000005,,,
+115_10,0.0,0.0,0.0,0.0,0.1597,0.1597,I found the Indian student's approach to treating depression interesting. Have their approaches been tried elsewhere?,Have the Indian student's approaches to treating depression been tried elsewhere?,I found the Indian student's approach to treating depression through social support and spiritual reflection or relaxation interesting. Have their approaches been tried elsewhere?
+116_5,0.0,0.0,0.0,0.0,0.1597,0.1597,Okay. How does the use of rhyme in Biblical poetry compare?,Okay. How does the use of rhyme in Biblical poetry compare to today?,Okay. How does the use of rhyme in Biblical poetry compare to the use of rhyme in Islamic poetry?
+107_7,1.0,0.0,0.9722,0.0,1.0,0.14800000000000002,Really? What about asphalt?,What about asphalt driveways?,Really? How long does an asphalt driveway last?
+115_8,0.5,-0.5,0.7778,0.0,0.5249,0.14480000000000004,What about the causes in North America?,What about the causes of mental illness in North America?,What about the causes of mental health stigmatisation in North America?
+121_1,0.25,-0.08329999999999999,1.0,0.0,0.3987,0.13290000000000002,I remember there was a global coffee shortage some time ago. Can you tell me more about that?,Can you tell me more about the global coffee shortage?,I remember there was a global coffee shortage some time ago. Can you tell me more about that?
+121_4,1.0,0.0,0.8571,0.0,0.8647,0.11750000000000005,It sounds like they are not related. What are its origins? And how did it spread?,What are the origins of coffee rust in Brazil? And how did it spread?,It sounds like the reduction in coffee production in Latin America and the drought in Brazil are not related. What are the origins of coffee rust? And how did it spread?
+124_10,1.0,0.5,0.8605,0.11630000000000007,0.6327,0.11730000000000007,How do the evolution of dinosaurs across the three periods compare?,How do the evolution of dinosaurs across the three periods compare?,How do the evolution of dinosaurs across the three periods in the Mesozoic era compare?
+116_7,0.0435,-0.0232,0.8333,0.16660000000000008,0.1173,0.1173,"Ahh, it seems like rhyming and parallelism share similar functions. How did both types of poetry influence other kinds of poetry?",How did rhyming and parallelism influence other kinds of poetry?,"Ahh, it seems like rhyming and parallelism share similar functions. How did Islamic and Biblical poetry influence other kinds of poetry?"
+124_5,0.2,0.19690000000000002,0.4545,0.36360000000000003,0.1173,0.1173,That's really cool. Could such a continent form again?,What is the age of dinosaurs on earth like?,That's really cool. Could such a huge continent like Pangaea form again?
+112_7,0.5,0.5,1.0,1.0,0.3547,0.10470000000000002,Isn’t that speed?,Isn’t that speed with which the Ravens are without Haloti Ngata?,Is Adderall Speed?
+118_8,1.0,0.0,0.6452,0.1613,0.8436,0.09870000000000001,How do I become a vet?,How do I become a vet?,How do I become a veterinarian?
+111_8,1.0,0.5,1.0,0.37039999999999995,0.852,0.08660000000000001,"No, I meant the funny car.  But, that’s interesting. I heard it has a ludicrous mode. How does its quickness compare to the Venom?",How does the Tesla Roadster Sport's quickness compare to the Venom?,"No, I meant the funny car.  But, that’s interesting. I heard it has ludicrous mode.  How does the Tesla Roadster Sport’s quickness compare to the Hennessey Venom GT?"
+108_7,0.5,0.0,0.9375,0.5,0.5535,0.08479999999999999,That sounds like organic farming.  How are they related?,How are organic farming and agroecology related?,"Permaculture sounds like organic farming, how are they related?"
+107_6,0.3333,0.08329999999999999,0.9062,0.0,0.4115,0.07819999999999999,And most low-maintenance?,And most low-maintenance driveways?,Which type of driveway is the most low-maintenance?
+108_5,0.5,0.0,0.973,0.054099999999999926,0.5089,0.06770000000000004,Can it cause desertification?,Can fire cause desertification?,Can agriculture cause desertification?
+131_7,1.0,0.0,0.96,0.0,0.3739,0.06230000000000002,That’s great. What makes it so efficient?,What makes geothermal heat pumps so efficient?,That’s great. What makes a geothermal heat pump so efficient?
+121_7,0.5,0.16670000000000001,0.6667,0.0,0.4134,0.030700000000000005,Okay. What did big coffee companies do? How did they try to help?,What did big coffee companies do to help with the global coffee rust epidemic?,Okay. What did big coffee companies do? How did they try to help with the coffee rust epidemic?
+127_2,1.0,0.5,0.7,-0.10000000000000009,0.4693,0.01679999999999998,What practices could I use at home to help?,What practices could I use at home to reduce the effects of urban runoff?,What best management practices could I use at home to reduce runoff?
+112_4,0.5,-0.5,0.7895,-0.10520000000000007,0.5894,0.0028000000000000247,Are there visible signs?,Are there visible signs of anabolic steroids being banned in the US?,Are there visible signs that someone is using steroids?
+124_3,1.0,0.0,0.625,0.0,0.8231,0.0,Can you tell me more about the fossil records and the theory?,Can you tell me more about the fossil records and the theory of plate tectonics?,Can you tell me more about the fossil records and the theory of plate tectonics?
+125_2,1.0,0.0,1.0,0.0,0.8148,0.0,What's been done to protect them?,What's been done to protect Goliath frogs?,What has been done to protect Goliath frogs?
+107_8,1.0,0.0,1.0,0.07689999999999997,1.0,0.0,Is sealing worth it?,Is sealing a driveway worth it?,Is sealing an asphalt driveway worth it?
+125_4,1.0,0.0,0.3889,0.05560000000000004,0.4693,0.0,How can I help?,How can I help the conservation of Goliath frogs?,How can I help with protecting Goliath frogs?
+127_1,1.0,0.0,0.9268,0.0,0.8436,0.0,Why is it important to reduce runoff in urban areas?,Why is reducing runoff in urban areas important?,Why is it important to reduce runoff in urban areas?
+108_1,1.0,0.0,0.8929,0.0,0.7971,0.0,How can fires help an ecosystem?,How can fires help an ecosystem?,How can fires help an ecosystem?
+108_8,1.0,0.0,0.8696,0.0,0.8827,0.0,"Does organic farming reduce global warming, and if so, how?","Does organic farming reduce global warming, and if so, how?","Does organic farming reduce global warming, and if so, how?"
+121_5,0.0,0.0,0.0,0.0,0.0,0.0,Okay. The US government tried to help the situation. What did they do to help?,What did the US government do to help So Paulo?,Okay. The US government tried to help eliminate the fungus in order to prevent the economic situation of Latin American countries from deteriorating. What did they do to help?
+125_1,1.0,0.0,0.4783,-0.34779999999999994,1.0,0.0,I’d like to learn more about frogs. What’s the biggest one?,What’s the biggest frog in the world?,I’d like to learn more about frogs. What’s the biggest one?
+113_8,0.25,0.0,0.5517,0.13789999999999997,0.0,0.0,It sounds like it could be used in many places. What other types of organisms has it been tried on?,What other types of organisms has CRISPR been tried on besides humans?,"It sounds like it could be used in many places. What types of organisms besides humans, mosquitos, mice, and microbes has gene editing been tried on?"
+110_1,1.0,0.0,0.5455,0.0,0.7067,0.0,What are the benefits of cow milk?,What are the benefits of cow milk?,What are the benefits of cow milk?
+106_3,0.1667,0.08339999999999999,0.8,0.5,0.0,0.0,How deadly is it?,How deadly is LCIS?,How deadly is lobular carcinoma in situ?
+106_4,1.0,0.0,1.0,0.0,0.4693,0.0,"What? No, I want to know about the deadliness of lobular carcinoma in situ.",What is the deadliness of lobular carcinoma in situ?,"What? No, I want to know about the deadliness of lobular carcinoma in situ."
+131_3,0.25,0.0,0.8889,0.0,0.0,0.0,What are the pros and cons between a gas furnace and a heat pump?,What are the pros and cons between a gas furnace and a heat pump?,What are the pros and cons between a gas furnace and a heat pump?
+106_5,0.5,0.0,1.0,0.0,0.3394,0.0,"Wow, that's better than I thought.  What are common treatments?",What are common treatments for lobular carcinoma in situ?,"Wow, that's better than I thought. What are common treatments for lobular carcinoma in situ?"
+129_7,1.0,0.0,0.9231,0.0,0.7654,0.0,Does this theory explain the cause of depression?,Does the catecholamine theory of mood explain the cause of depression?,Does the catecholamine theory explain the cause of depression?
+129_5,1.0,0.0,0.9649,-0.01760000000000006,1.0,0.0,How does the phenylalanine convert to tyrosine?,How does the phenylalanine convert to tyrosine in the brain?,How does the phenylalanine convert to tyrosine?
+127_5,1.0,0.0,0.8333,0.0,0.9218,0.0,That sounds like a lot of water. How big are normal barrels? And what material should I get? What are the pros and cons of different materials?,What are the pros and cons of different materials for a rain barrel?,What are the pros and cons of different rain barrel materials?
+129_4,1.0,0.0,0.9394,0.030299999999999994,1.0,0.0,What foods boost it?,What foods boost dopamine production?,What foods boost dopamine?
+129_1,1.0,0.0,0.5952,0.0,0.6453,0.0,What are the mechanisms of depression?,What are the mechanisms of depression?,What are the mechanisms of depression?
+106_8,0.0208,0.005899999999999999,1.0,0.6,0.0,0.0,"For the first stage, what are the alternatives to surgery?","For the first stage of IdC, what are the alternatives to surgery?","For the first stage, what are the alternatives to surgery for invasive lobular cancer?"
+107_1,0.5,0.0,0.9677,0.0,0.648,0.0,How do I build a cheap driveway?,How do I build a cheap driveway?,How do I build a cheap driveway?
+128_1,0.25,0.0,0.5172,0.0,0.1913,0.0,What’s the science behind why we drink alcohol?,What’s the science behind why we drink alcohol?,What’s the science behind why we drink alcohol?
+107_2,1.0,0.0,0.9706,0.0,0.926,0.0,Which is cheaper: concrete or asphalt?,Which is cheaper: concrete or asphalt driveways?,Which is cheaper way to build a driveway: concrete or asphalt?
+127_7,1.0,0.0,0.8621,0.0,1.0,0.0,What else should I consider when installing it?,What else should I consider when installing a rain barrel other than the size and materials?,What else should I consider when installing a rain barrel?
+129_2,1.0,0.0,0.9268,0.0,0.648,0.0,What is the role of serotonin?,What is the role of serotonin in depression?,What is the role of serotonin in depression?
+127_6,1.0,0.0,0.9189,0.08110000000000006,0.8591,0.0,Is it safe to use on my garden?,Is a rain barrel safe to use on my garden?,Is the collected water from a rain barrel safe enough to water my garden?
+121_6,0.0526,-0.1974,0.5,0.0,0.0,0.0,"No, I want to know what they did to help with the coffee rust epidemic in Latin America.",What did the Greater Washington initiative do to help with the coffee rust epidemic in Latin America?,"No, I want to know what the United States did to help with the coffee rust epidemic in Latin America."
+119_8,1.0,0.0,0.6087,-0.21739999999999993,0.81,0.0,How can I protect them?,How can I protect my dog from the coronavirus infection?,How can I protect my pets from the coronavirus?
+115_1,0.5,0.0,0.7895,0.0,0.5307,0.0,How are mental health disorders perceived and addressed around the world?,How are mental health disorders perceived and addressed around the world?,How are mental health disorders perceived and addressed around the world?
+115_11,0.0,0.0,0.0,0.0,0.0,0.0,Can you tell me more about Chibanda's approach? How effective has it been?,Can you tell me more about Chibanda's approach to treating mental illness? How effective has it been?,Can you tell me more about Chibanda's approach to treating mental illness? How effective has it been?
+113_1,0.1111,0.0,0.5,0.0,0.1913,0.0,How do genes work?,How do genes work?,How do genes work?
+115_5,0.3333,0.0,0.7143,-0.14279999999999993,0.31,0.0,"Okay. Now, what about the causes in Asia?",Okay. Now what about the causes of mental illness in Asia?,"Okay. Now, what about the causes of mental health stigma in Asia?"
+116_1,1.0,0.0,0.8667,0.0,0.6667,0.0,How are literary devices used in Biblical poetry?,How are literary devices used in Biblical poetry?,How are literary devices used in Biblical poetry?
+116_2,1.0,0.0,1.0,0.0,1.0,0.0,That's interesting. How is it defined?,How is Christian poetry defined?,That's interesting. How is Christian poetry defined?
+117_1,1.0,0.0,1.0,0.0,1.0,0.0,A friend said there were massive protests in Nigeria towards the end of 2020. What happened?,What happened when a friend said there were massive protests in Nigeria towards the end of 2020?,A friend said there were massive protests in Nigeria towards the end of 2020. What happened?
+131_9,0.1111,0.0,0.3182,0.0,0.0,0.0,Tell me about AC systems.,Tell me about AC systems.,Tell me about AC systems.
+117_2,0.25,0.16670000000000001,1.0,0.0,0.0,0.0,Why was the Squad established in the first place?,Why was the Squad of Nigerian federal police established in the first place?,Why was the Special Anti-Robbery Squad (SARS) established in the first place?
+117_8,1.0,0.0,1.0,0.0,0.63,0.0,That's cool. Tell me more about them.,What is the Feminist Coalition?,That's cool. Tell me more about the Feminist Coalition.
+111_6,1.0,0.0,0.875,0.125,0.81,0.0,What is the origin of funny cars? Why do they call them that?,What is the origin of funny cars? Why do people call them that?,What is the origin of funny cars? Why do they call them funny cars?
+118_3,1.0,0.0,1.0,0.0,0.3827,0.0,How can I get a degree in it?,How can I get a degree in fashion design?,How can I get a fashion design degree?
+118_5,0.25,0.08330000000000001,0.5,-0.5,0.0,0.0,What are the common entry requirements for the degree?,What are the common entry requirements for the degree in fashion design?,What are the common entry requirements for a Bachelor of Fine Arts program?
+117_10,0.01,-0.15669999999999998,1.0,0.5,0.0,0.0,What role did women play in that?,What role did women play in #EndSARS protests?,What role did women play in the BlackLivesMatter protests?
+119_5,0.0385,-0.052399999999999995,0.2,-0.2,0.0,0.0,My cat is also having similar symptoms. Would that work for her as well?,How can I treat dog swollen ear at home?,My cat is also having similar symptoms to my dog. Would the home remedy work for her as well?
+119_7,1.0,0.0,0.9444,0.055499999999999994,0.4911,0.0,"Okay, but I also heard that a few have been reported to be infected.",I also heard that a few dogs have been reported to be infected with the coronavirus.,"Okay, but I also heard that a few animals have been reported to be infected with the coronavirus."
+118_7,1.0,0.0,0.6765,0.0,1.0,0.0,Not quite. I want to know about career opportunities related to animals.,I want to know about career opportunities related to animals.,Not quite. I want to know about career opportunities related to animals.
+110_6,0.1,0.04440000000000001,0.5,0.0,0.0,0.0,Oat seems popular now.  Why?,Why does oat seem popular now?,Oat seems popular now.  Why?
+110_5,1.0,0.0,1.0,0.0,0.852,0.0,Can I make it at home?,Can I make soy milk at home?,Can I make soy milk at home?
+124_11,1.0,0.0,0.7391,-0.04349999999999998,0.7244,-0.020499999999999963,That's interesting. How scientifically accurate was the movie?,How scientifically accurate was the movie Jurassic Park?,That's interesting. How scientifically accurate was the first Jurassic Park movie?
+119_4,1.0,0.5,0.8182,-0.09089999999999998,0.5772,-0.03259999999999996,I live in a remote area. How can I treat it at home?,How can I treat dog swollen ear at home?,I live in a remote area. How can I treat my dog’s ear infection at home?
+116_3,1.0,0.5,1.0,0.0,0.69,-0.049800000000000066,How did those traditions affect them?,How did traditions of Greek and Latin poetry affect Christian poets?,How did the existing traditions of Greek and Latin poetry affect Christian Poets?
+106_6,1.0,0.0,0.5,-0.16669999999999996,0.4693,-0.05860000000000004,How does it behave differently from PLCIS?,How does LCIS behave differently from ALH and LCIS?,How does LCIS behave differently from PLCIS?
+111_5,0.0769,-0.9231,0.875,-0.125,0.2605,-0.05890000000000001,Can any go over 300 mph?,Can the Venom GT go over 300 mph?,Can any super car go over 300 mph?
+108_2,0.5,-0.5,0.4074,-0.1482,0.4687,-0.06259999999999999,Give me some examples.,Give me some examples of how fires help an ecosystem.,Give me some examples of organisms that have adapted to exploit natural wildfire.
+118_2,1.0,0.0,1.0,0.0,0.7654,-0.07820000000000005,Becoming a fashion designer sounds interesting. What's the job outlook?,What's the job outlook for Becoming a fashion designer?,Becoming a fashion designer sounds interesting. What's the job outlook?
+119_3,1.0,0.0,1.0,0.4074,0.6667,-0.07820000000000005,How dangerous could these be?,How dangerous could dog hematomas be?,How dangerous could the inflammation or canine ear hematoma in my dog’s ears be?
+131_2,1.0,0.0,0.8276,0.0,0.3902,-0.0786,What are some other choices to heat my home?,What are some other choices to heat my home in Brazos Valley besides a heat pump?,What are some other choices besides a heat pump to heat my home?
+125_5,0.5,-0.5,1.0,0.045499999999999985,0.5443,-0.08209999999999995,"Okay, that’s the biggest.  What is the smallest?","Okay, that’s the biggest goliath frog. What is the smallest?",What is the smallest frog?
+107_5,0.5,-0.5,0.75,0.0,0.5535,-0.08489999999999998,No.  Which type of driveway is better for the environment?,Which type of driveway is better for the environment?,No. Which type of driveway is better for the environment?
+111_1,1.0,0.0,0.4182,-0.29089999999999994,0.7794,-0.08530000000000004,"I saw a Tesla Roadster today which made me wonder, what is the world’s fastest car?",What is the world’s fastest car?,"I saw a Tesla Roadster today which made me wonder, what is the world’s fastest car?"
+124_2,1.0,0.0,0.8197,-0.1311,0.3827,-0.10189999999999999,Hmm. What else was characteristic about that era?,What else was characteristic about the Mesozoic Era besides dinosaurs living up to the end of the Cretaceous period?,Hmm. What else was characteristic about the Mesozoic Era asides the existence of Dinosaurs?
+116_4,0.0345,-0.2155,0.3,-0.6000000000000001,0.1173,-0.1173,That's interesting about Christianity. How are devices used in Islamic ones?,How are devices used in Islamic poetry?,That's interesting about Christianity. How are literary devices used in Islamic poetry?
+108_6,0.3333,-0.6667000000000001,0.6667,0.0,0.4693,-0.11730000000000002,What does it mean to be tired?,What does desertification mean to be tired?,What does it mean for soil to be tired?
+131_8,1.0,0.0,1.0,0.0,0.6173,-0.11730000000000007,Cool science. But I’ve heard some horror stories about air-source ones.,I’ve heard some horror stories about air-source heat pumps.,Cool science. But I’ve heard some horror stories about air-source heat pumps.
+115_3,0.5,0.0,1.0,0.0,0.5307,-0.11730000000000007,Could you expand on some of these methods?,Could you expand on some of the traditional methods of treating mental illness in Southeast Africa?,Could you expand on some of these Southeast African traditional and cultural methods of dealing with mental health issues?
+112_1,1.0,0.0,0.8889,0.0,0.4413,-0.13269999999999993,What’s the history of steroid use in sports in the US?,What’s the history of steroid use in sports in the US?,Utterance: What’s the history of steroid use in sports in the US?
+119_6,1.0,0.0,0.7778,-0.11109999999999998,0.5089,-0.1352,Thanks. I am also worried that they are susceptible to the coronavirus.,I am also worried that cats are susceptible to the coronavirus.,Thanks. I am also worried that my pets are susceptible to the coronavirus.
+131_10,1.0,0.0,0.8235,0.0,0.4065,-0.17070000000000007,How is it different from a heat pump?,How is an AC compressor different from a heat pump?,How is an AC system different from a heat pump?
+112_5,1.0,0.0,0.8519,0.07409999999999994,0.4412,-0.20290000000000002,That sounds easy to spot.  How do they get away with it?,How do athletes get away with anabolic steroids?,That sounds easy to spot. How do athletes get away with using steroids?
+110_2,1.0,0.0,0.9667,0.0,0.5307,-0.20390000000000008,What about an alternative. I’ve heard it's also made from almonds?,I’ve heard cow milk is also made from almonds?,What about an alternative. How is milk made from almonds?
+131_1,0.5,-0.5,0.9512,0.0,0.2654,-0.23459999999999998,I saw an online ad for a house with descriptions saying it has a heat pump. What is that?,What is a heat pump in an online ad for a house?,I saw an online ad for a house with descriptions saying it has a heat pump. What is that?
+113_2,0.1667,-0.1666,0.68,-0.12,0.0,-0.2346,What other diseases are caused by a single change?,"Besides sickle cell anemia, what other diseases are caused by a single change in a single gene?",What diseases besides sickle cell anemia are caused by single change in a gene?
+125_6,0.5,-0.5,1.0,0.0,0.403,-0.2358,Why would leaf litter affect its size?,Why would leaf litter affect Goliath frog size?,Why would leaf litter affect the size of a frog?
+124_1,0.2,-0.8,0.7222,-0.08340000000000003,0.074,-0.27799999999999997,I just watched the first Jurassic Park movie and I got interested in dinosaurs and their time on earth. Can you tell me about the time when dinosaurs actually existed?,Can you tell me about the time when dinosaurs actually existed?,I just watched the Jurassic Park movie and I got interested in dinosaurs. Can you tell me about the time when dinosaurs actually existed?
+106_10,0.1667,-0.1666,0.5,-0.16669999999999996,0.0,-0.3116,Does freezing work?,Does freezing work for breast cancer?,Does freezing tumors work as an alternative to surgery for stage 1 invasive lobular cancer?
+117_9,0.0,0.0,0.0,0.0,0.0,-0.3179,There was mention of the protection of Black lives earlier. How is it related to this movement?,How is the protection of Black lives mentioned earlier related to the #EndSARS movement?,There was mention of the protection of Black lives earlier. How are they related?
+113_3,0.1667,-0.8333,0.6333,0.19999999999999996,0.0,-0.352,What are the other types of diseases?,"Besides sickle cell anemia and cystic fibrosis, what are the other types of diseases?",What are the other types of human genetic diseases besides monogenic?
+117_5,0.1429,-0.3571,1.0,0.0,0.1697,-0.4061,"Okay, but I meant their response to the EndSars protests.","Okay, but I meant the response to the EndSars protests.","Okay, but I meant the international community's response to the EndSars protests."
+112_3,0.3333,-0.6667000000000001,0.9231,-0.07689999999999997,0.2545,-0.46869999999999995,Why are they banned?,Why are steroid use banned in the US?,Why are steroids banned in sports?
+116_6,1.0,0.0,1.0,0.0,0.4693,-0.5307,Why didn't it use rhymes as much?,Why did't Biblical poetry use rhymes as much?,Why didn't Biblical poetry use rhymes as extensively as Arabic?
+106_7,0.5,-0.5,1.0,0.0,0.2961,-0.5559000000000001,What makes lobular cancer distinct?,What makes lobular cancer distinct from PLCIS?,What makes lobular cancer distinct?
+111_9,0.3333,-0.6667000000000001,0.7727,0.04540000000000011,0.1564,-0.5885,It sounds like the Tesla is very competitive.  What makes its engine unique compared with gas ones?,What makes the Tesla Roadster engine unique compared with gas ones?,It sounds like the Tesla is very competitive.  What makes its electric engine unique compared with gas ones?
+106_9,,,,,,,"No, I meant for lobular.","No, I meant for lobular carcinoma.","No, I meant - what are the alternatives to surgery for stage 1 invasive lobular cancer."
+109_1,,,,,,,Why do cats eat plastic?,Why do cats eat plastic?,Why do cats eat plastic?
+109_2,,,,,,,Will it kill him?,Will pica kill a cat?,Will eating plastic kill a cat?
+109_3,,,,,,,What?  No.  Will eating plastic kill my cat?,Will eating plastic kill my cat?,What?  No. Will eating plastic kill my cat?
+109_4,,,,,,,How do I get him to stop?,How do I get my cat to stop eating non-food items?,How do I get a cat to stop eating plastic?
+109_5,,,,,,,Should I get a second one?,Should I get a second cat with pica behavior?,Should I get a second cat to ease my cat’s boredom or loneliness?
+109_6,,,,,,,What are his desires?,What are your cat's desires?,What are my cat’s desires?
+109_7,,,,,,,What does the slow blink mean?,What does the slow blink mean for cats?,What does a cat’s slow blink mean?
+110_10,,,,,,,"I didn’t expect that. Really, hemp? Say more.","I didn’t expect hemp milk to contain any micronutrients in significant amounts. Really, hemp? Say more.","I didn’t expect that. Really, hemp? Say more about hemp milk for coffee."
+111_10,,,,,,,I heard they’ve been working on something even faster.,I heard Tesla have been working on something even faster.,I’ve heard Tesla’s been working on a new car that is faster than ludicrous mode.
+111_11,,,,,,,Is the Roadster related to the other super cars we’ve talked about?,Is the Tesla Roadster related to the other super cars we’ve talked about besides the Venom GT?,"Is the Tesla Roadster related to the other super cars, like the Hennessey Venom GT or Lotus Elise?"
+112_8,,,,,,,What is the difference between the two policies?,What is the difference between the NFL and its performance-enhancing drug policy?,What is the difference between the NFL’s recreational drug and performance enhancing drug policies?
+112_10,,,,,,,I know what bridge is. I heard there was a drug scandal recently.,I heard there was a drug scandal recently in the NFL.,I know what bridge is. I heard there was a drug scandal in bridge recently.
+112_11,,,,,,,Does the article have more about it?,Does the article have more about the doping scandal in addition to the suspension of Geir Helgemo?,Tell me more about the suspension of Geir Helgemo for doping by the World Bridge Federation.
+113_9,,,,,,,I’ve heard a lot about RNA recently. Can it be used to edit that too?,I’ve heard a lot about RNA recently. Can it be used to edit that too?,I’ve heard a lot about RNA recently. Can CRISPR be used to edit RNA?
+113_10,,,,,,,What’s the difference between the types you mentioned?,What’s the difference between the types you mentioned and CRISPR/Cas9?,What’s the difference between the CRISPR CRISPRi and CAS13b systems?
+113_11,,,,,,,"That’s too basic, I’d like a more scientific explanation.","Is CRISPR too basic, I’d like a more scientific explanation?","That’s too basic, I’d like a more scientific explanation. What’s the difference between the CRISPR-CAS9 and CRISPR-CAS13 systems?"
+113_12,,,,,,,The developments sound exciting. What are the commercial issues using it?,What are the commercial issues using CRISPR?,The developments sound exciting. What are the commercial issues using CRISPR for genetic diseases?
+113_13,,,,,,,What are the alternatives to avoid licensing issues?,What are the alternatives to avoid licensing issues for CRISPR?,What are the alternatives to CRISPR-CAS9 to avoid patent licensing issues?
+114_1,,,,,,,I’m a runner and I’ve been feeling tired. My doctor said my ferritin count is slightly low. What should I do next?,What should I do next if my ferritin count is slightly low?,I’m a runner and I’ve been feeling tired. My doctor said my ferritin count is slightly low. What should I do next?
+114_2,,,,,,,"How about my diet, what should I consider changing?","How about my diet, what should I consider changing?","How about my diet, what should I consider changing to increase my iron?"
+114_3,,,,,,,"No, I meant to help my ferritin specifically.","No, I meant to help my ferritin specifically.","No, I meant what should I consider changing in my diet to help my ferritin levels specifically."
+114_4,,,,,,,What is the difference between the two types?,What is the difference between animal foods and plants that contain non-heme iron?,What is the difference between heme and non-heme iron?
+114_5,,,,,,,"I’m vegetarian. So, what can I do to improve it and increase my levels?","I’m vegetarian. So, what can I do to improve my levels of ferritin?",I’m vegetarian. What can I do to improve absorption for non-heme iron and increase my level of ferritin?
+114_6,,,,,,,I heard eating eggs might help.,I heard eating eggs might help.,I heard eating eggs might help improve my ferritin levels.
+114_7,,,,,,,I’m also a woman over 50. How many do I need to eat to get the recommended amount?,How many eggs do I need to eat to get the recommended amount of iron?,I’m a female vegetarian runner over 50. How many eggs do I need to eat to get the recommended amount of iron in my diet?
+114_8,,,,,,,"I’m starting to train for a marathon, what should I consider?","I’m starting to train for a marathon, what should I consider?","I’m starting to train for a marathon, what should I consider in my vegetarian diet?"
+114_9,,,,,,,"No, I’m starting to train for a marathon, what is a one week diet?","I’m starting to train for a marathon, what is a one week diet?","No, I’m starting to train for a marathon, what is a one week vegetarian diet?"
+117_7,,,,,,,My friend also mentioned that women were instrumental to the movement. What was their role?,What was the role of women in the EndSars movement?,My friend also mentioned that women were instrumental to the EndSars movement. What was their role?
+118_9,,,,,,,What are the other steps?,What are the other steps to becoming a veterinarian besides completing a bachelor's degree program?,What are the other steps to become a veterinarian?
+118_10,,,,,,,I understand that licenses are required. Tell me more about that.,I understand that licenses are required for veterinary medicine. Tell me more about that.,I understand that licenses are required to work as a veterinarian in the US. Tell me more about that.
+118_11,,,,,,,What about a way to combine both of my interests?,What about a way to combine both of my interests to become a veterinarian?,What about a way to combine my interests in fashion and animals?
+119_9,,,,,,,Ok. But what about my dog?,What about my dog?,Ok. But what about protecting my dog from the coronavirus?
+120_1,,,,,,,Why did Michael Jackson go so far to alter his appearance?,Why did Michael Jackson go so far to alter his appearance?,Why did Michael Jackson go so far to alter his appearance?
+120_2,,,,,,,What else was it about?,"In addition to Michael Jackson altering his appearance, what else was Knopper’s book ""MJ: The Genius of Michael Jackson "" about?",What else was Michael Jackson’s vexed relationship to his skin about?
+120_3,,,,,,,Okay. Did the diet help?,Okay. Did the diet help Michael Jackson fight acne scarring?,Okay. Did the Jacksons vegetarian diet help to fight their acne?
+120_4,,,,,,,Never mind. Tell me more about the Pepsi commercial.,What did the Pepsi commercial do for Michael Jackson?,Never mind. Tell me more about the Pepsi commercial where Michael Jackson burned his skin.
+120_5,,,,,,,How so?,How did Michael Jackson depend on drugs and other potions to ease the pain on his scalp?,How did Michael Jackson’s dependence on medicine lead to his death?
+120_6,,,,,,,Okay. How did it affect his art and legacy?,Okay. How did the burns affect Michael Jackson art and legacy?,Okay. How did Michael Jackson’s skin conditions affect his art and legacy?
+121_9,,,,,,,"That’s interesting, consumption is not very elastic. Would investing in it make sense?",Would investing in rust-resistant coffee varieties make sense?,"That’s interesting, coffee consumption is not very elastic. Would investing in coffee make sense?"
+122_1,,,,,,,I heard Bernie Sanders was ill recently. What happened?,I heard Bernie Sanders was ill recently. What happened?,I heard Bernie Sanders was ill recently. What happened?
+122_2,,,,,,,What did the doctors do?,What did the doctors do to Sen. Bernie Sanders?,What did the doctors do to treat Bernie Sanders when he had a heart attack?
+122_3,,,,,,,How did it affect the campaign?,How did the stroke affect Bernie Sanders’ campaign?,How did the heart attack affect Bernie Sanders’ presidential campaign?
+122_4,,,,,,,How did he attempt to regain the public's confidence?,How did Sen. Bernie Sanders attempt to regain the public's confidence after suffering a heart attack?,How did Bernie Sanders attempt to regain the public's confidence after recovering from his heart attack?
+122_5,,,,,,,Okay. What did the records say?,What did the records of Sen. Bernie Sanders say?,Okay. What did Bernie Sanders’ health records released after his heart attack say?
+122_6,,,,,,,"Okay, I'd like to know more about his decision.","Okay, I'd like to know more about Bernie Sanders'decision to release his medical records.",Okay. I'd like to know more about Bernie Sanders' decision not to release his medical records after his heart attack.
+122_7,,,,,,,What about the other candidates? Did they release theirs?,What about the other candidates besides Bernie Sanders? Did they release theirs?,"What about the other Democratic presidential candidates, did they release their health records?"
+122_8,,,,,,,Should there be an age limit on the presidency?,Should there be an age limit on the presidency for Sanders?,Should there be an age limit on the presidency of the United States?
+123_1,,,,,,,I'm about to become a dad and I want to get fit before it gets too hard. How do I get started?,How do I get started as a dad?,I'm about to become a dad and I want to get fit before it gets too hard. How do I get started?
+123_2,,,,,,,Okay. Should I try CrossFit?,Okay. Should I try CrossFit?,Okay. Should I try CrossFit to get fit?
+123_3,,,,,,,That sounds very intense but useful for me. How does it compare with just weightlifting?,How do CrossFit workouts compare with just weightlifting?,That sounds very intense but useful to me. How does CrossFit compare with just weightlifting to get fit?
+123_4,,,,,,,I would rather be safe. Do the positives outweigh the negatives?,Do the positives outweigh the negatives of CrossFit?,I would rather be safe. Do the positives of Crossfit outweigh the negatives?
+123_5,,,,,,,I’ve got four weeks. What about cardio?,What about cardio in CrossFit?,I’ve got four weeks. What about cardio for getting fit?
+123_6,,,,,,,Okay. What role will diet play?,What role will diet play in reducing rhabdomyolysis?,Okay. What role will diet play in getting fit?
+123_7,,,,,,,What other meal frequencies can I try?,What other meal frequencies can I try besides eating before you exercise?,What other meal frequencies can I try to boost my metabolism?
+123_8,,,,,,,Which one’s better?,Which of the following is better for you?,Which one’s better between eating six meals a day and intermittent fasting?
+123_9,,,,,,,Okay. I would eventually like to spend time with my baby while working out too. Do you have any ideas for that?,Do you have any ideas for spending time with my baby while working out?,Okay. I would eventually like to spend time with my baby while working out too. Do you have any ideas for that?
+126_1,,,,,,,I want to go on vacation somewhere in Europe with good food. What are some beautiful places?,What are some beautiful places to go on vacation somewhere in Europe with good food?,I want to go on vacation somewhere in Europe with good food. What are some beautiful places?
+126_2,,,,,,,"Yes, it'll be my first time. Where should I consider?",Where should I consider for my first time in Europe?,"Yes, it'll be my first time in Europe. Where should I consider visiting in Italy?"
+126_3,,,,,,,What should I not miss on the Coast?,What should I not miss on the Coast of the Amalfi Coast?,What should I not miss on the Amalfi Coast?
+126_4,,,,,,,What food is it known for?,What food is Amalfi known for?,What food is the Amalfi known for?
+126_5,,,,,,,Duomo?  What’s that?,What’s the Duomo in Italy known for?,What is the Duomo on the Amalfi Coast?
+126_6,,,,,,,Cool!  What kinds of innovations?,What kinds of innovations did the cities in Amalfi undergo?,What were the technological innovations in Italian cathedrals or catholic churches (the Duomo)?
+128_4,,,,,,,What is a safe amount to drink daily?,What is a safe amount to drink daily for teens with addiction?,What is a safe amount of alcohol to drink daily?
+128_5,,,,,,,What do the guidelines say for pregnant women? Why?,What do the guidelines say for pregnant women?,What do the U.S government guidelines say about pregnant women drinking alcoholic beverages? Why?
+128_6,,,,,,,But I’ve heard that pregnant women in France drink wine with dinner. Is that true?,I’ve heard that pregnant women in France drink wine with dinner. Is that true?,But I’ve heard that pregnant women in France drink wine with dinner. Is that true?
+128_7,,,,,,,So you mean that the US suggestion may be too strict? What is the French government's attitude?,So you mean that the US suggestion may be too strict? What is the French government's attitude?,So you mean that the US suggestion which prohibits pregnant women from drinking alcohol may be too strict? What is the French government's attitude towards pregnant women drinking?
+128_8,,,,,,,Tell me about the findings from the Lancet study you mentioned. What advice did it give for safety?,What advice did the Lancet study give for safety?,Tell me about the findings from the Lancet study you mentioned. What did  advise on safe consumption levels of alcohol?
+128_9,,,,,,,I’d like to stop. What are some treatment options?,What are some treatment options for light drinking during pregnancy?,I’d like to stop. What are some treatment options for alcoholism?
+128_10,,,,,,,"No, I meant drinking alcohol. What are some rehab treatment options to consider?",What are some rehab treatment options to consider after stopping smoking?,"No, I meant drinking alcohol. What are some alcohol rehab treatment options to consider?"
+129_9,,,,,,,"No, I meant mania and depression.","No, I meant mania and depression.","No, I meant mania and depression."
+129_10,,,,,,,What are the types of bipolar?,What are the types of bipolar depression?,What are the types of bipolar disorder?
+130_1,,,,,,,Who are the greatest catchers of all time?,Who are the greatest catchers of all time?,Who are the greatest catchers of all time?
+130_2,,,,,,,What was he known for?,What was Johnny Bench known for?,What was Johnny Bench known for?.
+130_3,,,,,,,Who won his award?,Who won Johnny Bench Award?,Who won the Johnny Bench Award?
+130_4,,,,,,,Who was the next Rookie of the Year for the team after him?,Who was the next Rookie of the Year for the Cincinnati Reds after Johnny Lee Bench?,Who was the next Rookie of the Year for the Cincinnati Reds after Johnny Bench?
+130_5,,,,,,,Did Bench make it into Cooperstown?,Did Johnny Lee Bench make it into Cooperstown?,Did Johnny Lee Bench make it into Cooperstown?
+130_6,,,,,,,Was he married?,Was Johnny Lee Bench married?,Was Johnny Bench married?
+130_7,,,,,,,I’d like to know about the first two marriages.,I’d like to know about the first two marriages of Johnny Lee Bench.,I’d like to know about Johnny Bench’s first two marriages.
+130_8,,,,,,,Does Bobby play baseball?,Does Bobby play baseball?,Does Bobby Binger Bench play baseball?
+130_9,,,,,,,Interesting. How old was he when they got divorced?,How old was Johnny Bench when he got divorced?,Interesting. How old was Bobby Binger Bench when Johnny Bench and Laura Cwikowski got divorced?
