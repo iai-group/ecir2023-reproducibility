@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from treccast.core.collection import Collection
-from treccast.core.query import Query
+from treccast.core.base import Query
 from treccast.core.ranking import Ranking
 
 

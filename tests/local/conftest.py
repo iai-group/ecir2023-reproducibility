@@ -8,7 +8,9 @@ import pytest
 TO_MOCK = ["elasticsearch", "torch", "transformers"]
 
 
-def import_mock(name: str, *args, **kwargs) -> Union[mock.Mock, ModuleType]:
+def import_mock(
+    name: str, *args, **kwargs
+) -> Union[mock.MagicMock, ModuleType]:
     """Returns mocked module if module name is in TO_MOCK.
 
     Args:
@@ -19,7 +21,7 @@ def import_mock(name: str, *args, **kwargs) -> Union[mock.Mock, ModuleType]:
         module.
     """
     if any(skip in name for skip in TO_MOCK):
-        return mock.Mock()
+        return mock.MagicMock()
     return importlib.__import__(name, *args, **kwargs)
 
 

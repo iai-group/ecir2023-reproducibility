@@ -19,7 +19,7 @@ from treccast.core.qrel import Qrel
 from treccast.core.ranking import Ranking
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.util.passage_loader import PassageLoader
-from treccast.core.query import Query
+from treccast.core.base import Query
 
 
 class Debugger(object):

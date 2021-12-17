@@ -11,6 +11,7 @@ class PassageLoader(object):
         self,
         hostname: str = "localhost:9204",
         index: str = "ms_marco_trec_car_clean",
+        field: str = "body",
     ) -> None:
         """Loads passage content from an ElasticSearch index.
 
@@ -18,8 +19,9 @@ class PassageLoader(object):
             hostname: Name of host and port number of Elasticsearch service.
             index: Name of index/collection on Elasticsearch service.
         """
+        self._collection = ElasticSearchIndex(index, hostname=hostname)
         self._index = index
-        self._es = ElasticSearchIndex(self._index, hostname=hostname).es
+        self._field = field
         self._cache = dict()
 
     def get(self, doc_id: str) -> str:
@@ -32,9 +34,9 @@ class PassageLoader(object):
             The content of the indexed passage.
         """
         if doc_id not in self._cache:
-            self._cache[doc_id] = self._es.get(self._index, doc_id)["_source"][
-                "body"
-            ]
+            self._cache[doc_id] = self._collection.es.get(self._index, doc_id)[
+                "_source"
+            ][self._field]
         return self._cache[doc_id]
 
     def mget(self, doc_ids: List[str]) -> List[str]:
@@ -52,10 +54,10 @@ class PassageLoader(object):
         missing_doc_ids = [
             doc_id for doc_id in doc_ids if doc_id not in self._cache
         ]
-        result_dicts = self._es.mget(
+        result_dicts = self._collection.es.mget(
             index=self._index, body={"ids": missing_doc_ids}
         )["docs"]
-        results = [result["_source"]["body"] for result in result_dicts]
+        results = [result["_source"][self._field] for result in result_dicts]
         for doc_id, result in zip(missing_doc_ids, results):
             self._cache[doc_id] = result
         return [self._cache[doc_id] for doc_id in doc_ids]

@@ -4,7 +4,7 @@ from unittest import mock
 
 import confuse
 import pytest
-from treccast.core.query import Query
+from treccast.core.base import Query
 
 with pytest.helpers.mock_expensive_imports():
     from treccast import main

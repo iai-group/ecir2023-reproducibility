@@ -3,7 +3,7 @@ from collections import defaultdict
 from typing import List, Tuple
 
 from treccast.core.ranking import Ranking
-from treccast.core.query import Query
+from treccast.core.base import Query
 
 
 class FineTuningDataLoader:

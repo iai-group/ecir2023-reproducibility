@@ -1,7 +1,7 @@
 import pytest
 
 from treccast.rewriter.rewriter import CachedRewriter
-from treccast.core.query import Query
+from treccast.core.base import Query
 
 REWRITES = "data/rewrites/2020/11_Human.tsv"
 

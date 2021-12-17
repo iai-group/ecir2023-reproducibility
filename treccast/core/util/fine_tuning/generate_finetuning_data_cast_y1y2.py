@@ -7,7 +7,7 @@ from collections import defaultdict
 from typing import Dict, Tuple
 
 from treccast.core.qrel import Qrel
-from treccast.core.query import Query
+from treccast.core.base import Query
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.util.passage_loader import PassageLoader
 

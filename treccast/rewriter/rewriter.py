@@ -2,8 +2,7 @@
 
 from abc import ABC, abstractmethod
 
-from treccast.core.context import Context
-from treccast.core.query import Query
+from treccast.core.base import Query, Context
 from treccast.core.util.file_parser import FileParser
 
 
@@ -51,10 +50,14 @@ class CachedRewriter(Rewriter):
     def _get_rewrites(self, filepath: str) -> None:
         """Loads rewrites from a file and stores them into a dictionary.
 
+        The rewrite file should be a TSV file with the following fields:
+        Topic ID, Turn ID, Query ID, Rewrite, Original query
+
+
         Args:
             filepath: Path to the file containing rewrites.
         """
         self._rewrites = {}
         for line in FileParser.parse(filepath):
-            _, _, qid, rewrite, original = line.split("\t")
+            _, _, qid, rewrite, _ = line.split("\t")
             self._rewrites[qid] = Query(qid, rewrite)

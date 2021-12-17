@@ -1,7 +1,7 @@
 """BM25 retrieval using ElasticSearch."""
 
 from treccast.core.collection import ElasticSearchIndex
-from treccast.core.query import Query
+from treccast.core.base import Query
 from treccast.core.ranking import Ranking
 from treccast.retriever.retriever import Retriever
 

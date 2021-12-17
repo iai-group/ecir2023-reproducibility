@@ -3,7 +3,7 @@ from typing import List
 import torch
 from ftfy import fix_text
 from transformers import AutoTokenizer, T5ForConditionalGeneration
-
+from treccast.core import NEURAL_MODEL_CACHE_DIR
 from treccast.reranker.reranker import Batch, NeuralReranker
 
 
@@ -27,13 +27,15 @@ class T5Reranker(NeuralReranker):
         super().__init__(max_seq_len, batch_size)
 
         self._tokenizer = AutoTokenizer.from_pretrained(
-            "t5-base", cache_dir="data/models"
+            "t5-base", cache_dir=NEURAL_MODEL_CACHE_DIR
         )
-        self._model = T5ForConditionalGeneration.from_pretrained(
-            model_name, cache_dir="data/models"
+        self._model = (
+            T5ForConditionalGeneration.from_pretrained(
+                model_name, cache_dir=NEURAL_MODEL_CACHE_DIR
+            )
+            .to(self._device, non_blocking=True)
+            .eval()
         )
-
-        self._model.to(self._device, non_blocking=True)
 
     def _get_logits(
         self, query: str, documents: List[str]

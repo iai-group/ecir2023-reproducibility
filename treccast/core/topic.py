@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
-from treccast.core.query import Query
+from treccast.core.base import Query
 
 
 class QueryRewrite(Enum):

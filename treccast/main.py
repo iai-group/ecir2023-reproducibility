@@ -7,7 +7,7 @@ from typing import List
 import confuse
 
 from treccast.core.collection import ElasticSearchIndex
-from treccast.core.query import Query
+from treccast.core.base import Query
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.ranking import CachedRanking
 from treccast.reranker.bert_reranker import BERTReranker

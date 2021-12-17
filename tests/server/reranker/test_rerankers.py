@@ -1,6 +1,6 @@
 """Tests for BERT and T5 rerankers."""
 from treccast.core.ranking import Ranking
-from treccast.core.query import Query
+from treccast.core.base import Query
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.t5_reranker import T5Reranker
 from treccast.reranker.simpletransformers_reranker_trainer import (

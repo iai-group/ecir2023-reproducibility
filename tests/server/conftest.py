@@ -1,7 +1,7 @@
 import pytest
 
 from treccast.core.ranking import Ranking
-from treccast.core.query import Query
+from treccast.core.base import Query
 
 
 @pytest.fixture

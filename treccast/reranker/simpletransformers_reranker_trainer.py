@@ -8,7 +8,7 @@ from simpletransformers.classification import (
     ClassificationModel,
 )
 from sklearn.model_selection import train_test_split
-from treccast.core.query import Query
+from treccast.core.base import Query
 from treccast.core.ranking import Ranking
 from treccast.core.util.fine_tuning.finetuning_data_loader import (
     FineTuningDataLoader,
