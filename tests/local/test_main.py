@@ -49,8 +49,9 @@ def queries() -> List[Query]:
 
 @pytest.fixture(params=["2020", "2021"])
 def default_config(request) -> confuse.Configuration:
-    yield main.load_config(["-y", request.param])
-    os.remove(f"data/runs/{request.param}/raw_1k.meta.yaml")
+    args = main.parse_args(["-y", request.param, "-o", "test"])
+    yield main.load_config(args)
+    os.remove(f"data/runs/{request.param}/test.meta.yaml")
 
 
 @pytest.mark.parametrize(
@@ -63,7 +64,8 @@ def default_config(request) -> confuse.Configuration:
     ],
 )
 def test_load_config_default_year(year, key, value):
-    config = main.load_config(["-y", year])
+    args = main.parse_args(["-y", year, "-o", "test"])
+    config = main.load_config(args)
     assert config["es"][key].get() == value
 
 
@@ -92,7 +94,7 @@ def test_main(
 
     mock_run.assert_called_with(
         queries=queries,
-        output_name="raw_1k",
+        output_name="test",
         retriever=mock_retriever(),
         rewriter=None,
         reranker=None,

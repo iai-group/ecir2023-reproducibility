@@ -10,7 +10,7 @@ class BERTReranker(NeuralReranker):
     def __init__(
         self,
         base_model: str = "bert-base-uncased",
-        model_path: str = "nboost/pt-bert-base-uncased-msmarco",
+        model_path: str = None,
         max_seq_len: int = 512,
         batch_size: int = 256,
     ) -> None:
@@ -25,15 +25,19 @@ class BERTReranker(NeuralReranker):
                 to 128.
         """
         super().__init__(max_seq_len, batch_size)
+        model_path = model_path or "nboost/pt-bert-base-uncased-msmarco"
+
         self._tokenizer = AutoTokenizer.from_pretrained(
             base_model, cache_dir="data/models", use_fast=True
         )
         print("loading the model, ", model_path)
-        self._model = AutoModelForSequenceClassification.from_pretrained(
-            model_path, cache_dir="data/models"
+        self._model = (
+            AutoModelForSequenceClassification.from_pretrained(
+                model_path, cache_dir="data/models"
+            )
+            .to(self._device, non_blocking=True)
+            .eval()
         )
-
-        self._model.to(self._device, non_blocking=True)
 
     def _get_logits(
         self, query: str, documents: List[str]

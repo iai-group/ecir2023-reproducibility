@@ -20,46 +20,6 @@ from treccast.rewriter.rewriter import CachedRewriter, Rewriter
 DEFAULT_CONFIG_PATH = "config/defaults/{}.yaml"
 
 
-def load_config(args: List[str] = None) -> confuse.Configuration:
-    """Loads config from config file and command line parameters.
-
-    Loads default values from `config/defaults/config_default.yaml`. Values are
-    then updated with any value specified in the command line arguments.
-
-    Args:
-        args: List of arguments simulating command line arguments. It is
-            useful for tests or if this file is executed programatically.
-    """
-    # parse command line arguments
-    # TODO https://github.com/iai-group/trec-cast-2021/issues/256
-    parser = argparse.ArgumentParser(prog="main.py")
-    parser.add_argument("-c", "--config-file")
-    parser.add_argument("-y", "--year")
-    args = parser.parse_args(args)
-
-    # Load default config
-    config = confuse.Configuration("treccast")
-    config.set_file(DEFAULT_CONFIG_PATH.format("general"))
-
-    # Load year specific config
-    year = args.year or config["year"].get()
-    config.set_file(DEFAULT_CONFIG_PATH.format(year))
-
-    # Load additional config (update defaults).
-    if args.config_file:
-        config.set_file(args.config_file)
-
-    # Update config from command line arguments
-    config.set_args(args, dots=True)
-
-    # Save run config to metadata file
-    output_name = config["output_name"].get()
-    with open(f"data/runs/{year}/{output_name}.meta.yaml", "w") as f:
-        f.write(config.dump())
-
-    return config
-
-
 def main(config: confuse.Configuration):
     """Executes the specified configuration.
 
@@ -225,8 +185,8 @@ def _get_reranker(config: confuse.Configuration) -> Reranker:
     reranker = config["reranker"].get()
     if reranker == "bert":
         return BERTReranker(
-            base_model=config["base_bert_model"].get(),
-            model_path=config["bert_reranker_path"].get(),
+            base_model=config["bert"]["base_model"].get(),
+            model_path=config["bert"]["reranker_path"].get(),
         )
     elif reranker == "t5":
         return T5Reranker()
@@ -234,6 +194,155 @@ def _get_reranker(config: confuse.Configuration) -> Reranker:
         raise ValueError('Unsupported re-ranker. Use "bert" or "t5".')
 
 
+def parse_args(args: List[str] = None) -> argparse.Namespace:
+    """Defines accepted arguments and returns the parsed values.
+
+    Args:
+        args: List of arguments simulating command line arguments. It is
+            useful for tests or if this file is executed programatically.
+
+    Returns:
+        Object with a property for each argument.
+    """
+    parser = argparse.ArgumentParser(prog="main.py")
+    # General config
+    parser.add_argument(
+        "-c",
+        "--config-file",
+        help="Path to configuration file to overwrite default values. "
+        "Defaults to None",
+    )
+    parser.add_argument(
+        "-y",
+        "--year",
+        choices=["2020", "2021"],
+        help='Year for which to run the program. Defaults to "2021".',
+    )
+    parser.add_argument(
+        "-k",
+        help="Specifies the number of documents to retrieve at each stage. "
+        "Defaults to 1000.",
+    )
+    parser.add_argument(
+        "--num_prev_turns",
+        help="Specifies the number of previous turns that should be added to the"
+        " current candidate pool. Defaults to 0.",
+    )
+    parser.add_argument(
+        "-o",
+        "--output_name",
+        help='Specifies the output name for the ranking. Defaults to "raw_1k"',
+    )
+
+    # Rewriter specific config
+    rewrite_group = parser.add_argument_group("Rewrite")
+    rewrite_group.add_argument(
+        "--query_rewrite",
+        choices=["automatic", "manual"],
+        help="Uses query rewrite of chosen type if specified. Defaults to None.",
+    )
+    rewrite_group.add_argument(
+        "-w",
+        "--rewrite",
+        action="store_const",
+        const=True,
+        help="Rewrites queries if specified. Defaults to False.",
+    )
+    rewrite_group.add_argument(
+        "--rewrite_path",
+        help="Specifies the path for rewritten queries. Defalts to None.",
+    )
+
+    # First-pass retrieval specific config
+    retrieval_group = parser.add_argument_group(
+        "Retrieval",
+        "Retrieval is always performed, either with direct querying against the "
+        "index or by loading rankings from a previous run.",
+    )
+    retrieval_group.add_argument(
+        "--es.host_name",
+        dest="es.host_name",
+        help='Elasticsearch host name. Defaults to "gustav1.ux.uis.no:9204".',
+    )
+    retrieval_group.add_argument(
+        "--es.index_name",
+        dest="es.index_name",
+        help='Elasticsearch index name. Defaults to "ms_marco_kilt_wapo_clean".',
+    )
+    retrieval_group.add_argument(
+        "--es.field",
+        dest="es.field",
+        help='Elasticsearch field to query. Defaults to "catch_all".',
+    )
+    retrieval_group.add_argument(
+        "--es.k1",
+        dest="es.k1",
+        help="Elasticsearch BM25 k1 parameter. Defaults to 1.2.",
+    )
+    retrieval_group.add_argument(
+        "--es.b",
+        dest="es.b",
+        help="Elasticsearch BM25 b parameter. Defaults to 0.75.",
+    )
+
+    # Reranking specific config
+    reranker_group = parser.add_argument_group(
+        "Retrieval",
+        "Retrieval is always performed, either with direct querying against the "
+        "index or by loading rankings from a previous run.",
+    )
+    reranker_group.add_argument(
+        "--reranker",
+        choices=["bert", "t5"],
+        help="Performs re-ranking if specified. Defaults to None.",
+    )
+    reranker_group.add_argument(
+        "--bert.base_model",
+        dest="bert.base_model",
+        help='Base bert model to use. Defaults to "bert-base-uncased".',
+    )
+    reranker_group.add_argument(
+        "--bert.reranker_path",
+        dest="bert.reranker_path",
+        help="Uses fine-tuned models from the specified path. Currently "
+        'applicable only to "bert" re-ranker. Defaults to None.',
+    )
+    return parser.parse_args(args)
+
+
+def load_config(args: argparse.Namespace) -> confuse.Configuration:
+    """Loads config from config file and command line parameters.
+
+    Loads default values from `config/defaults/config_default.yaml`. Values are
+    then updated with any value specified in the command line arguments.
+
+    Args:
+        args: Arguments parsed with argparse.
+    """
+    # Load default config
+    config = confuse.Configuration("treccast")
+    config.set_file(DEFAULT_CONFIG_PATH.format("general"))
+
+    # Load year specific config
+    year = args.year or config["year"].get()
+    config.set_file(DEFAULT_CONFIG_PATH.format(year))
+
+    # Load additional config (update defaults).
+    if args.config_file:
+        config.set_file(args.config_file)
+
+    # Update config from command line arguments
+    config.set_args(args, dots=True)
+
+    # Save run config to metadata file
+    output_name = config["output_name"].get()
+    with open(f"data/runs/{year}/{output_name}.meta.yaml", "w") as f:
+        f.write(config.dump())
+
+    return config
+
+
 if __name__ == "__main__":
-    config = load_config()
+    args = parse_args()
+    config = load_config(args)
     main(config)
