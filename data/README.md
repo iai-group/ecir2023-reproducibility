@@ -29,7 +29,10 @@
 
 ## Indices
 
-Elasticsearch server in use is `gustav1.ux.uis.no:9204`
+Elasticsearch server in use is `gustav1.ux.uis.no:9204`.
+
+If the connection from gorina to the index on gustav1 fails, the workaround is to make a ssh connection with port forwarding using the following command:
+`ssh -L 9204:gustav1.ux.uis.no:9204 -N -f gustav1.ux.uis.no`
 
 ### Y2
 
