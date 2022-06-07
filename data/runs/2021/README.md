@@ -33,3 +33,14 @@
 | [BM25 (Ensemble) + BERT MSMarco (finetuned on Wizard of Wikipedia)](/config/fine_tuning/bm25_ensemble_manual_msmarco_wow.yaml) | Manual | **0.4686** | 0.0703 |
 | [BM25 (Ensemble) +  BERT MSMarco (finetuned on treccast(Y1Y2) + Wizard of Wikipedia)](/config/fine_tuning/bm25_ensemble_manual_msmarco_treccast_wow.yaml) | Manual | **0.4854** | 0.0725 |
 | [BM25 + T5](/config/bm25_manual_rerank_t5.yaml) | Manual | **0.4100** | **0.1109** |
+
+
+# Reproduced results
+
+All the runfiles with metadata config files are placed under `$DATA/runs/2021`. First-pass retrieval output is placed under `$DATA/first_pass/2021`. Additionally metadata config files are added to `/data/runs/2021` on git.
+
+| *Method* | *Query rewriting* | *recall@1000* | *MAP* | *MRR* | *NDCG* | *NDCG@5* |
+| -- | -- | -- | -- | -- | -- | -- |
+| [BM25 (ms_marco_kilt_wapo_clean) + T5](/scripts/reproduce/raw_2021.sh) | None (raw) | 0.3497 | 0.1217 | 0.2875 | 0.2605 | 0.2041 |
+| [BM25 (ms_marco_kilt_wapo_clean) + T5](/scripts/reproduce/manual_2021.sh) | Manual | 0.7729 | 0.3858 | 0.7326 | 0.6291 | 0.5654 |
+| [BM25 (ms_marco_kilt_wapo_clean) + T5](/scripts/reproduce/automatic_2021.sh) | Automatic | 0.6319 | 0.2684 | 0.5575 | 0.4842 | 0.3969 |

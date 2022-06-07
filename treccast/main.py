@@ -287,9 +287,9 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
 
     # Reranking specific config
     reranker_group = parser.add_argument_group(
-        "Retrieval",
-        "Retrieval is always performed, either with direct querying against the "
-        "index or by loading rankings from a previous run.",
+        "Reranking",
+        "Reranking can be performed either using bert or T5 model. By default "
+        "the reranking module is not used.",
     )
     reranker_group.add_argument(
         "--reranker",

@@ -1,7 +1,7 @@
 """BM25 retrieval using ElasticSearch."""
 
-from treccast.core.collection import ElasticSearchIndex
 from treccast.core.base import Query
+from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import Ranking
 from treccast.retriever.retriever import Retriever
 
@@ -73,11 +73,13 @@ class BM25Retriever(Retriever):
 
 if __name__ == "__main__":
     # Example usage.
-    esi = ElasticSearchIndex("ms_marco", hostname="localhost:9204")
+    esi = ElasticSearchIndex(
+        "ms_marco_kilt_wapo_clean", hostname="localhost:9204"
+    )
     bm25 = BM25Retriever(esi)
     query = Query(
         "81_1", "How do you know when your garage door opener is going bad?"
     )
     ranking = bm25.retrieve(query)
-    for doc_id, score in ranking.fetch_topk_docs(10):
-        print(f"{doc_id}: {score}")
+    for doc in ranking.fetch_topk_docs(5):
+        print(f'{doc["doc_id"]}: {doc["score"]}')
