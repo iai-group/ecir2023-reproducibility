@@ -2,8 +2,8 @@
 import csv
 from io import StringIO
 
-from treccast.core.ranking import Ranking
 from treccast.core.base import ScoredDocument
+from treccast.core.ranking import Ranking
 
 
 def test_empty_ranking():
@@ -41,6 +41,35 @@ def test_add_docs():
     assert doc_ids == ["001", "003", "002"]
     assert contents == [
         None,
+        None,
+        None,
+    ]
+
+
+def test_update():
+    ranking = Ranking("1")
+    ranking.add_docs(
+        [
+            {"doc_id": "001", "score": 10, "content": "test content doc 1"},
+            {"doc_id": "003", "score": 1},
+        ]
+    )
+    assert len(ranking) == 2
+    ranking.update(
+        [
+            {
+                "doc_id": "001",
+                "score": 3,
+                "content": "test duplicate content doc 1",
+            },
+            {"doc_id": "004", "score": 5},
+        ]
+    )
+    assert len(ranking) == 3
+    doc_ids, contents = ranking.documents()
+    assert doc_ids == ["001", "003", "004"]
+    assert contents == [
+        "test content doc 1",
         None,
         None,
     ]
@@ -115,12 +144,16 @@ def test_write_to_trec_file():
             {"doc_id": "001", "score": 10},
             {"doc_id": "003", "score": 1},
             {"doc_id": "002", "score": 5},
+            {"doc_id": "002", "score": 6},
         ],
     )
-    ranking.write_to_trec_file(outfile, "test", k=2)
+    ranking.write_to_trec_file(outfile, "test", k=3)
     outfile.seek(0)
     content = outfile.read()
-    assert content == "123 Q0 001 1 10 test\n123 Q0 002 2 5 test\n"
+    assert (
+        content
+        == "123 Q0 001 1 10 test\n123 Q0 002 2 6 test\n123 Q0 003 3 1 test\n"
+    )
 
 
 def test_document_dataclass():
@@ -155,3 +188,11 @@ def test_load_rankings_from_tsv_file_passage_text():
     ids, contents = rankings["002"].documents()
     assert ids == ["002", "004", "005"]
     assert contents == ["test passage 2", "test passage 4", "test passage 5"]
+
+
+def test_load_rankings_from_runfile():
+    path = "tests/data/ranking_sample_1.trec"
+    rankings = Ranking.load_rankings_from_runfile(path)
+    ids, contents = rankings["123"].documents()
+    assert ids == ["001", "002", "003"]
+    assert contents == [None] * 3
