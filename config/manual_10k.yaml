@@ -1,6 +1,0 @@
-# Output
-output_name: "manual_10k"
-
-query_rewrite: "manual"
-k: 10000
-

@@ -1,5 +1,0 @@
-# Output
-output_name: "manual_prev_all"
-
-query_rewrite: "manual"
-num_prev_turns: 100

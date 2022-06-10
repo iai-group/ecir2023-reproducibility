@@ -18,3 +18,19 @@ Our system follows a conventional conversational passage retrieval pipeline (see
   * [Retriever](treccast/retriever): First-pass retrieval (BM25)
   * [Reranker](treccast/reranker): Neural reranker (BERT or T5)
   * [Rewriter](treccast/rewriter): Query rewriter (optional, can be applied to first-pass retrieval and/or reranking)
+
+
+## Running
+
+To set the desired parameters create a config file as described [here](config/README.md) then run:
+
+```
+python -m treccast.main --config <path_to_config> --year <2020|2021>
+```
+
+
+Alternatively, use command line arguments. For help issue command:
+
+```
+python -m treccast.main -h
+```

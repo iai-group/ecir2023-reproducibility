@@ -1,0 +1,7 @@
+# Output
+output_name: "automatic_rerank_t5"
+
+query_rewrite: "automatic"
+reranker: "t5"
+
+

@@ -1,5 +1,0 @@
-# Output
-output_name: "automatic_10k"
-
-query_rewrite: "automatic"
-k: 10000

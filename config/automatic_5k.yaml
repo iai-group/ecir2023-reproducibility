@@ -1,6 +1,0 @@
-# Output
-output_name: "automatic_5k"
-
-query_rewrite: "automatic"
-k: 5000
-

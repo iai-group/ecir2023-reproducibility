@@ -1,5 +1,0 @@
-# Output
-output_name: "automatic_prev_5"
-
-query_rewrite: "automatic"
-num_prev_turns: 5

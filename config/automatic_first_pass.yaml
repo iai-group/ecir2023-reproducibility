@@ -1,5 +1,5 @@
 # Output
-output_name: "automatic_1k"
+output_name: "automatic_first_pass"
 
 query_rewrite: "automatic"
 
