@@ -74,7 +74,7 @@ If the connection from gorina to the index on gustav1 fails, the workaround is t
 
 ## Fine-tuning data and models
  
-  * Generated data for fine-tuning under `$DATA/finetuning` => [TODO](https://github.com/iai-group/trec-cast-2021/issues/162): document [here](fine_tuning/README.md)  
+  * Generated data for fine-tuning under `$DATA/fine_tuning` => [TODO](https://github.com/iai-group/trec-cast-2021/issues/162): document [here](fine_tuning/README.md)  
   * Trained models under `$DATA/models` => [TODO](https://github.com/iai-group/trec-cast-2021/issues/163): document [here](models/README.md)
 
 ## Runs

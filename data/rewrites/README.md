@@ -12,3 +12,16 @@ The best performing rewriting methods:
 | Reranking (BM25+BERT) | 7_Self_learn_Q_QuReTeC_QnA | 0.5667 | 0.2220 | 0.5128 | 0.4457 | 0.3625 |
 | Initial (BM25) | 11_Human | 0.7070 | 0.1439 | 0.3777 | 0.4232 | 0.2431 |
 | Reranking (BM25+BERT) | 11_Human | 0.7070 | 0.3269 | 0.6912 | 0.5830 | 0.5116 |
+
+# Generating query rewrites
+
+You can generate query rewrites with chosen model as described in [data/fine_tuning/README.md](../fine_tuning/README.md). 
+
+# Query rewritten with fine-tuned models
+
+The following files contain rewrites generated with T5 model fine-tuned using different datasets:
+  * `12_T5_QReCC.tsv` - T5 fine-tuned using QReCC.
+  * `12_T5_QReCC_st.tsv` - T5 fine-tuned using QReCC (implementation based on Simple Transformers).
+They are all located under `data/rewrites/2020` and `data/rewrites/2021`.
+
+Performance of the rewriting methods in the whole retrieval-reranking pipeline is reported in [data/runs/2020/README.md](../runs/2020/README.md) and [data/runs/2021/README.md](../runs/2021/README.md). (TODO)
