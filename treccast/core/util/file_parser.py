@@ -97,6 +97,7 @@ class TrecwebParser(HTMLParser):
             "TITLE",
             "BODY",
             "passage",
+            "PASSAGE",
         ]
         self.reset()
 
@@ -211,7 +212,7 @@ class TrecwebParser(HTMLParser):
                 values.
         """
 
-        if tag == "passage":
+        if tag == "passage" or tag == "PASSAGE":
             # Each attribute is a tuple of key-value pairs
             # There should be only id as a single attribute
             if len(attrs) != 1:
@@ -229,7 +230,7 @@ class TrecwebParser(HTMLParser):
         Args:
             tag: Lowercased tag name.
         """
-        if tag == "passage":
+        if tag == "passage" or tag == "PASSAGE":
             self._next_passage = True
         if tag == "doc":
             self._doc_count += 1
@@ -241,7 +242,7 @@ class TrecwebParser(HTMLParser):
         Args:
             data: Text between opening and closing tags.
         """
-        if self.lasttag == "passage":
+        if self.lasttag == "passage" or self.lasttag == "PASSAGE":
             self._passage += data
         elif self.lasttag == "title":
             self._title += data
