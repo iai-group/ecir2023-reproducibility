@@ -1,8 +1,7 @@
 """Tests for Topic."""
 
-from treccast.core.topic import QueryRewrite, Topic
-
 import pytest
+from treccast.core.topic import Context, Document, QueryRewrite, Topic
 
 
 def test_get_filepath():
@@ -108,3 +107,28 @@ def test_get_query_automatic_rewrite_via_queries(queries_2020_automatic):
     query = queries_2020_automatic[1]
     assert query.query_id == "81_2"
     assert query.question == "Why did garage door opener stop working?"
+
+
+@pytest.mark.parametrize(
+    "topics, query_rewrite",
+    [
+        ("topics_2020_raw", None),
+        ("topics_2020_manual", QueryRewrite.MANUAL),
+        ("topics_2020_automatic", QueryRewrite.AUTOMATIC),
+    ],
+)
+def test_get_context_raw(topics, query_rewrite, request):
+    topic = request.getfixturevalue(topics)[0]
+    query_1 = topic.get_query(1, query_rewrite)
+    canonical_response_id_1 = topic.turns[0].canonical_result_id
+    query_2 = topic.get_query(2, query_rewrite)
+    canonical_response_id_2 = topic.turns[1].canonical_result_id
+    contexts = topic.get_contexts(query_rewrite)
+    assert contexts[0] is None
+    context_2 = Context()
+    context_2.history = [(query_1, Document(canonical_response_id_1))]
+    assert contexts[1] == context_2
+    context_3 = Context()
+    context_3.history = context_2.history
+    context_3.history.append((query_2, Document(canonical_response_id_2)))
+    assert contexts[2] == context_3

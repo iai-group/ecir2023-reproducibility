@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
-from treccast.core.base import Query
+from treccast.core.base import Context, Document, Query
 
 
 class QueryRewrite(Enum):
@@ -133,6 +133,31 @@ class Topic:
             self.get_query(turn.turn_id, query_rewrite) for turn in self.turns
         ]
 
+    def get_contexts(self, query_rewrite: QueryRewrite = None) -> List[Context]:
+        """Gets a list of contexts for each turn.
+
+        Args:
+            query_rewrite (optional): Query rewrite variant to include in context
+              (auto/manual). Defaults to None (i.e., raw).
+
+        Returns:
+            List of Contexts corresponding to every turn with canonical
+            responses included.
+        """
+        queries = self.get_queries(query_rewrite)[:-1]
+        canonical_response_ids = [
+            turn.canonical_result_id for turn in self.turns
+        ][:-1]
+        contexts = [None]
+        for (query, canonical_response) in zip(queries, canonical_response_ids):
+            context = Context()
+            context.history = (
+                contexts[-1].history.copy() if len(contexts) > 1 else []
+            )
+            context.history.append((query, Document(canonical_response)))
+            contexts.append(context)
+        return contexts
+
     @staticmethod
     def get_filepath(year: str, query_rewrite: QueryRewrite = None) -> str:
         """Returns file path to topic file to be used based on year and query
@@ -234,4 +259,25 @@ class Topic:
             query
             for topic in Topic.load_topics_from_file(year, query_rewrite)
             for query in topic.get_queries(query_rewrite)
+        ]
+
+    @staticmethod
+    def load_contexts_from_file(
+        year: str, query_rewrite: QueryRewrite = None
+    ) -> List[Context]:
+        """Loads a list of Context objects for topics from a given year.
+
+        Args:
+            year: Year.
+            query_rewrite (optional): Query rewrite variant to include in context
+              (auto/manual). Defaults to None (i.e., raw).
+
+        Returns:
+            List of Context objects for each question in each topic in a given
+            year.
+        """
+        return [
+            context
+            for topic in Topic.load_topics_from_file(year, query_rewrite)
+            for context in topic.get_contexts(query_rewrite)
         ]
