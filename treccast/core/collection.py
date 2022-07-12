@@ -3,21 +3,16 @@
 from abc import ABC
 from typing import Any, Dict
 
+import h5py
 from elasticsearch.client import Elasticsearch
+from h5py._hl.dataset import Dataset
+from h5py._hl.files import File
 
 
 class Collection(ABC):
-    def __init__(self, index_name: str) -> None:
-        """Initializes collection (abstract) superclass.
-
-        Args:
-            index_name: Index name.
-        """
-        self._index_name = index_name
-
-    @property
-    def index_name(self) -> str:
-        return self._index_name
+    def __init__(self) -> None:
+        """Initializes collection (abstract) superclass."""
+        pass
 
 
 class ElasticSearchIndex(Collection):
@@ -33,12 +28,17 @@ class ElasticSearchIndex(Collection):
             **kwargs: Additional keyword arguments to be provided to the
                 Elasticsearch instance.
         """
-        super().__init__(index_name)
+        super().__init__()
+        self._index_name = index_name
         self._es = Elasticsearch(hostname, **kwargs)
 
     @property
     def es(self) -> Elasticsearch:
         return self._es
+
+    @property
+    def index_name(self) -> str:
+        return self._index_name
 
     def create_index(self, use_analyzer: bool = True) -> None:
         """Create new index if it does not exist.
@@ -112,3 +112,38 @@ class ElasticSearchIndex(Collection):
         """
 
         return {"analysis": {}}
+
+
+class EmbeddingCollection(Collection):
+    def __init__(self, filepath: str) -> None:
+        """Initializes a collection of text embeddings.
+
+        Args:
+            filepath: File path to embeddings.
+        """
+        super().__init__()
+        self._embeddings = self.load_embeddings(filepath)
+
+    @property
+    def embeddings(self) -> Dataset:
+        """Dataset of embedding vectors."""
+        return self._embeddings["embeddings"]
+
+    @property
+    def passage_ids(self) -> Dataset:
+        """Dataset of passage ids."""
+        return self._embeddings["passage_ids"]
+
+    def load_embeddings(self, filepath: str) -> File:
+        """Loads text embeddings.
+
+        Args:
+            filepath: File path to embeddings.
+
+        Returns:
+            File with embeddings and passage ids datasets.
+        """
+        if not filepath.endswith(".hdf5"):
+            raise ValueError("File type not supported. Supported type: .hdf5")
+
+        return h5py.File(filepath, "r")
