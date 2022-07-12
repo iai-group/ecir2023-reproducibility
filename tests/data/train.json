@@ -1,0 +1,155 @@
+{
+    "version": "0.1.0",
+    "data": [
+        {
+            "Context": [],
+            "Question": "What can you tell me about Gary Cherone?",
+            "Rewrite": "What can you tell me about Gary Cherone?",
+            "Answer": "Gary Francis Caine Cherone is an American rock singer and songwriter, known for his work as the lead vocalist of Extreme and for his short stint for Van Halen.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 1,
+            "Turn_no": 1,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "What can you tell me about Gary Cherone?",
+                "Gary Francis Caine Cherone is an American rock singer and songwriter, known for his work as the lead vocalist of Extreme and for his short stint for Van Halen."
+            ],
+            "Question": "Did Gary sing well?",
+            "Rewrite": "Did Gary Cherone sing well?",
+            "Answer": "Yes, Gary Cherone is also known for his work as the lead vocalist of the Boston rock group Extreme.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 1,
+            "Turn_no": 2,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "What can you tell me about Gary Cherone?",
+                "Gary Francis Caine Cherone is an American rock singer and songwriter, known for his work as the lead vocalist of Extreme and for his short stint for Van Halen.",
+                "Did Gary Cherone sing well?",
+                "Yes, Gary Cherone is also known for his work as the lead vocalist of the Boston rock group Extreme."
+            ],
+            "Question": "What significant fact can you tell me about Gary that you liked?",
+            "Rewrite": "What significant fact can you tell me about Gary Cherone that you liked?",
+            "Answer": "I like that Gary Cherone remained in contact and on good terms with Van Halen.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 1,
+            "Turn_no": 3,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "What can you tell me about Gary Cherone?",
+                "Gary Francis Caine Cherone is an American rock singer and songwriter, known for his work as the lead vocalist of Extreme and for his short stint for Van Halen.",
+                "Did Gary Cherone sing well?",
+                "Yes, Gary Cherone is also known for his work as the lead vocalist of the Boston rock group Extreme.",
+                "What significant fact can you tell me about Gary Cherone that you liked?",
+                "I like that Gary Cherone remained in contact and on good terms with Van Halen."
+            ],
+            "Question": "What did Cherone do after Van Halen?",
+            "Rewrite": "What did Gary Cherone do after Van Halen?",
+            "Answer": "After his departure from Van Halen, Gary Cherone returned to Boston and put together a new project, Tribe of Judah.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 1,
+            "Turn_no": 4,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "What can you tell me about Gary Cherone?",
+                "Gary Francis Caine Cherone is an American rock singer and songwriter, known for his work as the lead vocalist of Extreme and for his short stint for Van Halen.",
+                "Did Gary Cherone sing well?",
+                "Yes, Gary Cherone is also known for his work as the lead vocalist of the Boston rock group Extreme.",
+                "What significant fact can you tell me about Gary Cherone that you liked?",
+                "I like that Gary Cherone remained in contact and on good terms with Van Halen.",
+                "What did Gary Cherone do after Van Halen?",
+                "After his departure from Van Halen, Gary Cherone returned to Boston and put together a new project, Tribe of Judah."
+            ],
+            "Question": "Did they release any albums during that time frame?",
+            "Rewrite": "Did they release any albums after Gary Cherone left?",
+            "Answer": "After Gary Cherone, Eddie Van Halen recovered from his hip surgery in November 1999, and no official statements were made by Van Halen and no music was released.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 1,
+            "Turn_no": 5,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "What can you tell me about Gary Cherone?",
+                "Gary Francis Caine Cherone is an American rock singer and songwriter, known for his work as the lead vocalist of Extreme and for his short stint for Van Halen.",
+                "Did Gary Cherone sing well?",
+                "Yes, Gary Cherone is also known for his work as the lead vocalist of the Boston rock group Extreme.",
+                "What significant fact can you tell me about Gary Cherone that you liked?",
+                "I like that Gary Cherone remained in contact and on good terms with Van Halen.",
+                "What did Gary Cherone do after Van Halen?",
+                "After his departure from Van Halen, Gary Cherone returned to Boston and put together a new project, Tribe of Judah.",
+                "Did they release any albums after Gary Cherone left?",
+                "After Gary Cherone, Eddie Van Halen recovered from his hip surgery in November 1999, and no official statements were made by Van Halen and no music was released."
+            ],
+            "Question": "What are some other interesting aspects of the article?",
+            "Rewrite": "What are some other interesting aspects of the article?",
+            "Answer": "During that era, a single taken from 1988's OU812, When It's Love, reached the Top Five, peaking at No. 5. In addition, Van Halen was nominated for two Grammy Awards.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 1,
+            "Turn_no": 6,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [],
+            "Question": "How did Van Halen reunite with Roth?",
+            "Rewrite": "How did Van Halen reunite with David Lee Roth?",
+            "Answer": "David Lee Roth called Eddie Van Halen to discuss what tracks would be included on a planned Van Halen compilation. Shortly afterwards, Roth re-entered the studio with the band.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 2,
+            "Turn_no": 1,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "How did Van Halen reunite with David Lee Roth?",
+                "David Lee Roth called Eddie Van Halen to discuss what tracks would be included on a planned Van Halen compilation. Shortly afterwards, Roth re-entered the studio with the band."
+            ],
+            "Question": "Did Roth re-join the band?",
+            "Rewrite": "Did David Lee Roth re-join the band?",
+            "Answer": "Van Halen's appearance fueled reunion speculation. But several weeks after the awards show, it was discovered that David Lee Roth was out of Van Halen again.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 2,
+            "Turn_no": 2,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "How did Van Halen reunite with David Lee Roth?",
+                "David Lee Roth called Eddie Van Halen to discuss what tracks would be included on a planned Van Halen compilation. Shortly afterwards, Roth re-entered the studio with the band.",
+                "Did David Lee Roth re-join the band?",
+                "Van Halen's appearance fueled reunion speculation. But several weeks after the awards show, it was discovered that David Lee Roth was out of Van Halen again."
+            ],
+            "Question": "Why was it only temporary?",
+            "Rewrite": "Why was David Lee Roth's renion only temporary?",
+            "Answer": "David Lee Roth released a statement in which he stated that he was an unwitting participant in a publicity stunt by manager Ray Danniels.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 2,
+            "Turn_no": 3,
+            "Conversation_source": "quac"
+        },
+        {
+            "Context": [
+                "How did Van Halen reunite with David Lee Roth?",
+                "David Lee Roth called Eddie Van Halen to discuss what tracks would be included on a planned Van Halen compilation. Shortly afterwards, Roth re-entered the studio with the band.",
+                "Did David Lee Roth re-join the band?",
+                "Van Halen's appearance fueled reunion speculation. But several weeks after the awards show, it was discovered that David Lee Roth was out of Van Halen again.",
+                "Why was David Lee Roth's renion only temporary?",
+                "David Lee Roth released a statement in which he stated that he was an unwitting participant in a publicity stunt by manager Ray Danniels."
+            ],
+            "Question": "Did they release any songs during the time they were reunited?",
+            "Rewrite": "Did Van Halen release any songs during the time they were reunited?",
+            "Answer": "Two songs from those reunion sessions were added to the band's Best Of \u2013 Volume I album and released as singles to promote it.",
+            "Answer_URL": "https://en.wikipedia.org/wiki/Van_Halen",
+            "Conversation_no": 2,
+            "Turn_no": 4,
+            "Conversation_source": "quac"
+        }
+    ]
+}
