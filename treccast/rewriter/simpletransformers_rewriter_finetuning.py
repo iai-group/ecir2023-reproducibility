@@ -80,7 +80,8 @@ class SimpleTransformersRewriterFinetuning:
         """Constructs input data for the model from the provided data sample.
 
         Args:
-            context: List of rewritten questions and answers from previous turns.
+            context: List of rewritten questions and answers from previous
+                turns.
             question: The original question from the current turn.
             separator: Special token to separate input sequences.
 
@@ -305,19 +306,19 @@ def main():
         "assistants are medical providers who are licensed to diagnose and\n"
         "treat illness and disease and to prescribe medication for patients.\n"
         "<sep>What are the educational requirements required to become one?",
-        "rewrite_question: When did the 21st edition of the Commonwealth Games\n"
-        "start<sep>The 2018 Commonwealth Games, officially known as the XXI\n"
-        "Commonwealth Game were held on the Gold Coast, Queensland, Australia,\n"
-        "between 4 and 15 April 2018.<sep>When were the original first games\n"
-        "held",
-        "rewrite_question: Who played the original jason in friday the 13th\n"
-        "<sep>Ari Lehman is the actor/singer who has the unique honor of having\n"
-        "played the role of the First Jason Voorhees in the Paramount Classic\n"
-        "Horror Film Friday the 13th\u201c<sep>Besides Ari Lehman what other\n"
-        "actor played the role of jason in friday the 13th.<sep>Steve Dash was\n"
-        "the stuntman/actor who played Jason in nearly every scene of  Friday\n"
-        "The 13th part 2 the movie, except the unmasked jump scare at the end.\n"
-        "<sep>Any other",
+        "rewrite_question: When did the 21st edition of the Commonwealth"
+        " Games\nstart<sep>The 2018 Commonwealth Games, officially known as the"
+        " XXI\nCommonwealth Game were held on the Gold Coast, Queensland,"
+        " Australia,\nbetween 4 and 15 April 2018.<sep>When were the original"
+        " first games\nheld",
+        "rewrite_question: Who played the original jason in friday the"
+        " 13th\n<sep>Ari Lehman is the actor/singer who has the unique honor of"
+        " having\nplayed the role of the First Jason Voorhees in the Paramount"
+        " Classic\nHorror Film Friday the 13th\u201c<sep>Besides Ari Lehman"
+        " what other\nactor played the role of jason in friday the"
+        " 13th.<sep>Steve Dash was\nthe stuntman/actor who played Jason in"
+        " nearly every scene of  Friday\nThe 13th part 2 the movie, except the"
+        " unmasked jump scare at the end.\n<sep>Any other",
     ]
     preds = fine_tuned_model.predict(to_predict)
 

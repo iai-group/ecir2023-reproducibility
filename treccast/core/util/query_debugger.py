@@ -6,20 +6,20 @@ as well as the runfile to interact with a simple prompt.
 Typical usage:
 
 python -m treccast.core.util.query_debugger --year 2020 \
-  --runfile /data/scratch/trec-cast-2021/data/runs/2020/org_baselines/y2_manual_results_500.v1.0.run \
+  --runfile /data/scratch/trec-cast-2021/data/runs/2020/org_baselines/y2_manual_results_500.v1.0.run \ 
   --hostname gustav1.ux.uis.no:9204
-"""
+"""  # noqa E501 long path
 
 import argparse
 from typing import Dict, List, Tuple
 
 import pandas as pd
 from pandas.core.frame import DataFrame
+from treccast.core.base import Query
 from treccast.core.qrel import Qrel
 from treccast.core.ranking import Ranking
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.util.passage_loader import PassageLoader
-from treccast.core.base import Query
 
 
 class Debugger(object):
@@ -51,7 +51,7 @@ class Debugger(object):
         self._ranking_dict = ranking_dict
 
     def repl(self):
-        """Runs a read-evaluate-print loop, looks up passages given a query ID."""
+        """Runs a read-eval-print loop, looks up passages given a query ID."""
         query_id = "start"
         while query_id != "":
             try:

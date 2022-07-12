@@ -129,7 +129,8 @@ class Ranking:
             writer: CSV writer that writes the tsv file.
                 It should have delimiter="\t", and a header should be written
                 before passing the writer to this function if required.
-            query: The query/question content for which the passages are retrieved.
+            query: The query/question content for which the passages are
+                retrieved.
             k (optional): The number of documents to retrieve. Defaults to 1000.
         """
         for doc in self.fetch_topk_docs(k, unique=True):

@@ -1,12 +1,10 @@
 """Class to fine-tune BERT models using simpletransformers library."""
 
 import argparse
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import pandas as pd
-from simpletransformers.classification import (
-    ClassificationModel,
-)
+from simpletransformers.classification import ClassificationModel
 from sklearn.model_selection import train_test_split
 from treccast.core.base import Query
 from treccast.core.ranking import Ranking
@@ -141,7 +139,10 @@ def arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--treccast_years",
         type=str,
-        help="If treccast or both datasets are choosen in --dataset specific y1 (2019) or y2 (2020) or both",
+        help=(
+            "If treccast or both datasets are choosen in --dataset specific y1"
+            " (2019) or y2 (2020) or both"
+        ),
         choices=["y1", "y1y2"],
         default="y1y2",
         const=1,
@@ -195,12 +196,13 @@ if __name__ == "__main__":
     else:
         raise ValueError("Either treccast, wow or both are supported.")
     model_name = args.bert_model_path.replace("/", "_")
-    model_dir = f"data/models/finetuned_models/simpletransformers_{args.base_bert_type}_{model_name}_{args.dataset}_{args.treccast_years}/"
+    model_dir = f"data/models/finetuned_models/simpletransformers_{args.base_bert_type}_{model_name}_{args.dataset}_{args.treccast_years}/"  # noqa E501 long path
     print(model_dir)
+    train_args = SimpleTransformersTrainer.get_default_simpletransformers_args(
+        model_dir
+    )
     st_trainer = SimpleTransformersTrainer(
-        train_args=SimpleTransformersTrainer.get_default_simpletransformers_args(
-            model_dir
-        ),
+        train_args=train_args,
         base_model=args.base_bert_type,
         bert_type=args.bert_model_path,
     )

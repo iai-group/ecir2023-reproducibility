@@ -43,11 +43,11 @@ class Turn:
 
         Args:
             query_rewrite (optional): Query rewrite variant to load
-                (auto/manual). Defaults to None (i.e., raw).
+              (auto/manual). Defaults to None (i.e., raw).
 
         Raises:
             ValueError: If the specified query rewrite is unavailable (this
-                likely means that wrong topic file is used).
+              likely means that wrong topic file is used).
 
         Returns:
             Utterance string.
@@ -110,7 +110,7 @@ class Topic:
         Args:
             turn_id: Turn ID.
             query_rewrite (optional): Query rewrite variant to load
-                (auto/manual). Defaults to None (i.e., raw).
+              (auto/manual). Defaults to None (i.e., raw).
 
         Returns:
             Query object.
@@ -124,7 +124,7 @@ class Topic:
 
         Args:
             query_rewrite (optional): Query rewrite variant to load
-                (auto/manual). Defaults to None (i.e., raw).
+              (auto/manual). Defaults to None (i.e., raw).
 
         Returns:
             List of Query objects.
@@ -137,8 +137,8 @@ class Topic:
         """Gets a list of contexts for each turn.
 
         Args:
-            query_rewrite (optional): Query rewrite variant to include in context
-              (auto/manual). Defaults to None (i.e., raw).
+            query_rewrite (optional): Query rewrite variant to include in
+              context (auto/manual). Defaults to None (i.e., raw).
 
         Returns:
             List of Contexts corresponding to every turn with canonical
@@ -149,7 +149,7 @@ class Topic:
             turn.canonical_result_id for turn in self.turns
         ][:-1]
         contexts = [None]
-        for (query, canonical_response) in zip(queries, canonical_response_ids):
+        for query, canonical_response in zip(queries, canonical_response_ids):
             context = Context()
             context.history = (
                 contexts[-1].history.copy() if len(contexts) > 1 else []
@@ -166,7 +166,7 @@ class Topic:
         Args:
             year: Year (2019_train, 2019, 2020, or 2021).
             query_rewrite (optional): Query rewrite variant to load
-                (auto/manual). Defaults to None (i.e., raw).
+              (auto/manual). Defaults to None (i.e., raw).
 
         Returns:
             Topic file path (relative to repo root).
@@ -194,7 +194,7 @@ class Topic:
         Args:
             year: Year.
             query_rewrite (optional): Query rewrite variant to load
-                (auto/manual). Defaults to None (i.e., raw).
+              (auto/manual). Defaults to None (i.e., raw).
 
         Returns:
             Extracted Topics.
@@ -250,7 +250,7 @@ class Topic:
         Args:
             year: Year.
             query_rewrite (optional): Query rewrite variant to load
-                (auto/manual). Defaults to None (i.e., raw).
+              (auto/manual). Defaults to None (i.e., raw).
 
         Returns:
             List of Query objects.
@@ -269,8 +269,8 @@ class Topic:
 
         Args:
             year: Year.
-            query_rewrite (optional): Query rewrite variant to include in context
-              (auto/manual). Defaults to None (i.e., raw).
+            query_rewrite (optional): Query rewrite variant to include in
+              context (auto/manual). Defaults to None (i.e., raw).
 
         Returns:
             List of Context objects for each question in each topic in a given

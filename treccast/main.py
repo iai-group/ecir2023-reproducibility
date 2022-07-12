@@ -6,10 +6,10 @@ from typing import List
 
 import confuse
 
-from treccast.core.collection import ElasticSearchIndex
 from treccast.core.base import Query
-from treccast.core.topic import QueryRewrite, Topic
+from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import CachedRanking
+from treccast.core.topic import QueryRewrite, Topic
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.t5_reranker import T5Reranker
@@ -209,8 +209,10 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     parser.add_argument(
         "-c",
         "--config-file",
-        help="Path to configuration file to overwrite default values. "
-        "Defaults to None",
+        help=(
+            "Path to configuration file to overwrite default values. "
+            "Defaults to None"
+        ),
     )
     parser.add_argument(
         "-y",
@@ -220,13 +222,17 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "-k",
-        help="Specifies the number of documents to retrieve at each stage. "
-        "Defaults to 1000.",
+        help=(
+            "Specifies the number of documents to retrieve at each stage. "
+            "Defaults to 1000."
+        ),
     )
     parser.add_argument(
         "--num_prev_turns",
-        help="Specifies the number of previous turns that should be added to the"
-        " current candidate pool. Defaults to 0.",
+        help=(
+            "Specifies the number of previous turns that should be added to "
+            "the current candidate pool. Defaults to 0."
+        ),
     )
     parser.add_argument(
         "-o",
@@ -239,7 +245,9 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     rewrite_group.add_argument(
         "--query_rewrite",
         choices=["automatic", "manual"],
-        help="Uses query rewrite of chosen type if specified. Defaults to None.",
+        help=(
+            "Uses query rewrite of chosen type if specified. Defaults to None."
+        ),
     )
     rewrite_group.add_argument(
         "-w",
@@ -256,8 +264,8 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     # First-pass retrieval specific config
     retrieval_group = parser.add_argument_group(
         "Retrieval",
-        "Retrieval is always performed, either with direct querying against the "
-        "index or by loading rankings from a previous run.",
+        "Retrieval is always performed, either with direct querying against "
+        "the index or by loading rankings from a previous run.",
     )
     retrieval_group.add_argument(
         "--es.host_name",
@@ -267,7 +275,9 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     retrieval_group.add_argument(
         "--es.index_name",
         dest="es.index_name",
-        help='Elasticsearch index name. Defaults to "ms_marco_kilt_wapo_clean".',
+        help=(
+            'Elasticsearch index name. Defaults to "ms_marco_kilt_wapo_clean".'
+        ),
     )
     retrieval_group.add_argument(
         "--es.field",
@@ -304,8 +314,10 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     reranker_group.add_argument(
         "--bert.reranker_path",
         dest="bert.reranker_path",
-        help="Uses fine-tuned models from the specified path. Currently "
-        'applicable only to "bert" re-ranker. Defaults to None.',
+        help=(
+            "Uses fine-tuned models from the specified path. Currently "
+            'applicable only to "bert" re-ranker. Defaults to None.'
+        ),
     )
     return parser.parse_args(args)
 

@@ -19,11 +19,14 @@ def test_wiz_of_wiki_data_parse():
     assert rows[0][0] == "0"
     assert (
         rows[0][1]
-        == "I agree. One of my favorite forms of science fiction is anything related to time travel! I find it fascinating."
+        == "I agree. One of my favorite forms of science fiction is anything"
+        " related to time travel! I find it fascinating."
     )
     assert rows[0][2] == "0"
     assert (
-        "Time travel is a common theme in fiction and has been depicted in a variety of media, such as literature, television, film, and advertisements."
+        "Time travel is a common theme in fiction and has been depicted in a"
+        " variety of media, such as literature, television, film, and"
+        " advertisements."
         in rows[0][3]
     )
     assert rows[0][4] == "1.0"

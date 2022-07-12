@@ -3,8 +3,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from treccast.core.collection import Collection
 from treccast.core.base import Query
+from treccast.core.collection import Collection
 from treccast.core.ranking import Ranking
 
 
@@ -63,8 +63,8 @@ class CachedRetriever(Retriever):
             num_results: Number of documents to fetch. This is not in use in
                 this class at the moment. see
                 https://github.com/iai-group/trec-cast-2021/issues/228.
-                Due to backward compatibility, we do not load scores so we cannot
-                rank results.
+                Due to backward compatibility, we do not load scores so we
+                cannot rank results.
 
         Returns:
             Ranking for a given query.

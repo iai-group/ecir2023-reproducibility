@@ -38,8 +38,8 @@ class ScoredDocument(Document):
 @dataclass
 class Context:
     """Represents conversation context. It is a list of previous query-document
-    tuples where document is either the canonical answer or the top-ranked system
-    response.
+    tuples where document is either the canonical answer or the top-ranked
+    system response.
     """
 
     history: List[Tuple[Query, Document]] = field(default_factory=list)

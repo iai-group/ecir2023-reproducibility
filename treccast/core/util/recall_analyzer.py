@@ -1,8 +1,8 @@
 """Calculates changes in recall between turns in a conversation."""
+import argparse
 import json
 from collections import defaultdict
 from typing import Dict, List, Set, Union
-import argparse
 
 from treccast.core.qrel import Qrel
 from treccast.core.ranking import Ranking
@@ -97,7 +97,8 @@ def get_document_appearance(
 
     Args:
         topics: List of topics (conversations).
-        qrels: Dictionary containing a list of relevant documents for each query.
+        qrels: Dictionary containing a list of relevant documents for each
+          query.
         rankings: All loaded dictionaries containing a lists of retrieved
             documents for each query.
 
@@ -173,9 +174,10 @@ def get_recalls(
 
     Args:
         topics: List of topics (conversations).
-        qrels: Dictionary containing a list of relevant documents for each query.
+        qrels: Dictionary containing a list of relevant documents for each
+          query.
         rankings: All loaded dictionaries containing a lists of retrieved
-            documents for each query.
+          documents for each query.
 
     Returns:
         Dictionary with a list of recalls for each topic.

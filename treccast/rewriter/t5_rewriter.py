@@ -58,7 +58,8 @@ class T5Rewriter(Rewriter):
         For more details see https://huggingface.co/castorini/t5-base-canard.
 
         Example:
-            Context: "How do you know when your garage door opener is going bad?"
+            Context: "How do you know when your garage door opener is going
+                bad?"
             Query: "Now it stopped working. Why?"
 
             Reformulation:
