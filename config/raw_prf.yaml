@@ -1,0 +1,6 @@
+# Output
+output_name: "raw_prf"
+
+prf:
+  type: "RM3"
+  

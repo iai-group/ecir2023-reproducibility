@@ -97,6 +97,7 @@ def test_main(
         output_name="test",
         retriever=mock_retriever(),
         rewriter=None,
+        expander=None,
         reranker=None,
         year=default_config["year"].get(),
         k=1000,

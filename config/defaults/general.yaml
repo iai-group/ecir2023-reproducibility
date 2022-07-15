@@ -21,6 +21,11 @@ es:
  k1: 1.2
  b: 0.75
 
+prf:
+  type: null
+  num_documents: 10
+  num_terms: 10
+
 
 # Re-ranking parameters
 reranker: null

@@ -10,6 +10,7 @@ from treccast.core.base import Query
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import CachedRanking
 from treccast.core.topic import QueryRewrite, Topic
+from treccast.expander.prf import PRF, RM3, PrfType
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.t5_reranker import T5Reranker
@@ -31,7 +32,7 @@ def main(config: confuse.Configuration):
     """
     query_rewrite = None
     if config["query_rewrite"].get():
-        query_rewrite = QueryRewrite[config["query_rewrite"].get().upper()]
+        query_rewrite = QueryRewrite[config["query_rewrite"].get(str).upper()]
     queries = Topic.load_queries_from_file(config["year"].get(), query_rewrite)
 
     rewriter = None
@@ -39,6 +40,8 @@ def main(config: confuse.Configuration):
         rewriter = _get_rewriter(config["rewrite_path"].get())
 
     retriever = _get_retriever(config)
+
+    expander = _get_expander(config, retriever)
 
     ranking_cache = None
     # Initialize CachedRanking if we are expanding candidate pools with
@@ -57,6 +60,7 @@ def main(config: confuse.Configuration):
         output_name=config["output_name"].get(),
         retriever=retriever,
         rewriter=rewriter,
+        expander=expander,
         reranker=reranker,
         year=config["year"].get(),
         k=k,
@@ -69,6 +73,7 @@ def run(
     output_name: str,
     retriever: Retriever,
     rewriter: Rewriter = None,
+    expander: PRF = None,
     reranker: Reranker = None,
     year: str = "2021",
     k: int = 1000,
@@ -80,11 +85,13 @@ def run(
     This is convenient when using later stages of the pipeline.
 
     Args:
+        queries: List of queries.
         output_path: Path to output TREC runfile.
-        year: Year for which to run the application.
+        retriever: First-pass retrieval model.
         rewriter: Rewriter to use. Defaults to None
-        retriever: First-pass retrieval model. Defaults to None.
+        expander: Class to use for query expansion. Defaults to None.
         reranker: Reranker model. Defaults to None.
+        year: Year for which to run the application.
         k: number of documents to save for each turn. Defaults to 1000
         ranking_cache: Class that adds rankings from previous turns to the
             current candidate pool.
@@ -104,6 +111,9 @@ def run(
             # Custom rewriter
             if rewriter:
                 query = Rewriter.rewrite_query(query)
+
+            if expander:
+                query = expander.get_expanded_query(query)
 
             # Retrieval
             ranking = retriever.retrieve(query, num_results=k)
@@ -166,6 +176,25 @@ def _get_retriever(config: confuse.Configuration) -> Retriever:
         k1=config["es"]["k1"].get(),
         b=config["es"]["b"].get(),
     )
+
+
+def _get_expander(config: confuse.Configuration, retriever: Retriever) -> PRF:
+    """Returns prf expander instance.
+
+    Args:
+        config: Configuration for the run.
+        retriever: Retriever to use for document retrieval for prf.
+
+    Returns:
+        The constructed class for query expansion.
+    """
+    prf_type = config["prf"]["type"].get()
+    if prf_type and PrfType[prf_type] == PrfType.RM3:
+        return RM3(
+            retriever,
+            config["prf"]["num_documents"].get(),
+            config["prf"]["num_terms"].get(),
+        )
 
 
 def _get_reranker(config: confuse.Configuration) -> Reranker:

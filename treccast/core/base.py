@@ -1,7 +1,7 @@
 """Query and Document classes as representation of """
 
 from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 
 @dataclass
@@ -15,6 +15,22 @@ class Query:
         """Returns topic id under assumption that query ID consists of topic ID
         and turn number separated by an underscore."""
         return self.query_id.split("_")[0]
+
+    def __str__(self):
+        return self.question
+
+
+@dataclass
+class SparseQuery(Query):
+    """Representation of a sparse query containing a dict of weighted terms."""
+
+    weighted_terms: Dict[str, float]
+
+    def __str__(self):
+        return " ".join(
+            f"{term}^{round(weight, 2)}"
+            for term, weight in self.weighted_terms.items()
+        )
 
 
 @dataclass

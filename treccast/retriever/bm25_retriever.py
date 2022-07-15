@@ -1,9 +1,13 @@
 """BM25 retrieval using ElasticSearch."""
 
-from treccast.core.base import Query
+from typing import Any, Dict, List
+
+from treccast.core.base import Query, SparseQuery
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import Ranking
 from treccast.retriever.retriever import Retriever
+
+_ES_query = Dict[str, Any]
 
 
 class BM25Retriever(Retriever):
@@ -26,13 +30,15 @@ class BM25Retriever(Retriever):
         self._collection.update_similarity_parameters(k1=k1, b=b)
         self._field = field
 
-    def retrieve(self, query: Query, num_results: int = 1000) -> Ranking:
+    def retrieve(
+        self, query: Query, num_results: int = 1000, source=True
+    ) -> Ranking:
         """Performs retrieval.
 
         Args:
             query: Query instance.
-            num_results: Number of documents to return (defaults
-                to 1000).
+            num_results: Number of documents to return (defaults to 1000).
+            source: Whether to return document content (defaults to True).
 
         Returns:
             Document ranking.
@@ -40,35 +46,146 @@ class BM25Retriever(Retriever):
         # TODO Improve logging.
         # See https://github.com/iai-group/trec-cast-2021/issues/37
 
+        if isinstance(query, SparseQuery):
+            es_query = self.bool_query(query.weighted_terms)
+        else:
+            es_query = self.match_query(query.question)
+
         print(
             "Retrieving using query:\n",
-            " ".join(
-                token["token"]
-                for token in self._collection.es.indices.analyze(
-                    body={"text": query.question},
-                    index=self._collection.index_name,
-                )["tokens"]
-            ),
+            str(query),
+            "\n",
         )
 
+        return self._retrieve(
+            query.query_id,
+            query=es_query,
+            num_results=num_results,
+            source=source,
+        )
+
+    def _retrieve(
+        self,
+        query_id: str,
+        query: _ES_query = None,
+        num_results: int = 1000,
+        source=True,
+    ) -> Ranking:
+        """Performs retrieval.
+
+        Args:
+            query_id: query ID.
+            query: Elasticsearch query.
+            num_results: Number of documents to return.
+            source: Weather to include document content in the return set.
+
+        Returns:
+            Document ranking.
+        """
         res = self._collection.es.search(
-            body={"query": {"match": {self._field: {"query": query.question}}}},
+            body={"query": query},
             index=self._collection.index_name,
-            _source=True,
+            _source=source,
             size=num_results,
         )
 
         return Ranking(
-            query.query_id,
+            query_id,
             [
                 {
                     "doc_id": hit["_id"],
                     "score": hit["_score"],
-                    "content": hit["_source"]["body"],
+                    "content": hit["_source"]["body"] if source else None,
                 }
                 for hit in res["hits"]["hits"]
             ],
         )
+
+    def analyze_query(self, text: str) -> List[str]:
+        """Parses text into a list of tokens which exist in the collection.
+
+        Args:
+            text: String to analyze.
+
+        Returns:
+            A list of tokens.
+        """
+        return [
+            token["token"]
+            for token in self._collection.es.indices.analyze(
+                body={"text": text, "field": self._field},
+                index=self._collection.index_name,
+            )["tokens"]
+        ]
+
+    def match_query(self, query: str, weight: float = 1.0) -> _ES_query:
+        """Simple elasticsearch match query.
+
+        Args:
+            query: Full query to use for retrieval.
+            weight: Weight for scaling the scores.
+
+        Returns:
+            Elasticsearch query.
+        """
+        return {"match": {self._field: {"query": query, "boost": weight}}}
+
+    def _term_query(self, term: str, weight: float = 1.0) -> _ES_query:
+        """Sub-query for a single term to be used as part of a larger query.
+
+        Args:
+            term: Single term to add to the query.
+            weight: Weight for scaling the term (Defaults to 1.0).
+
+        Returns:
+            Partial elasticsearch query.
+        """
+        return {"term": {self._field: {"value": term, "boost": weight}}}
+
+    def _phrase_query(self, phrase: str, weight: float = 1.0) -> _ES_query:
+        """Sub-query for a single phrase to be used as part of a larger query.
+
+        Args:
+            phrase: Phrase to add to the query.
+            weight: Weight for scaling the phrase (Defaults to 1.0).
+
+        Returns:
+            Partial elasticsearch query.
+        """
+        return {
+            "match_phrase": {self._field: {"query": phrase, "boost": weight}}
+        }
+
+    def bool_query(
+        self,
+        weighted_terms: Dict[str, float],
+        weighted_phrases: Dict[str, float] = None,
+    ) -> _ES_query:
+        """Query that computes the scores of each term or phrase individually.
+
+        Args:
+            weighted_terms: Dictionary of terms with weights as key-value pair.
+            weighted_phrases: Dictionary of phrases with weights as key-value
+              pair (Defaults to None).
+
+        Returns:
+            Elasticsearch query to return documents based on the aggregated
+              scores.
+        """
+        return {
+            "bool": {
+                "should": [
+                    *[
+                        self._term_query(term, weight)
+                        for term, weight in weighted_terms.items()
+                    ],
+                    *[
+                        self._phrase_query(phrase, weight)
+                        for phrase, weight in (weighted_phrases or {}).items()
+                    ],
+                ]
+            }
+        }
 
 
 if __name__ == "__main__":

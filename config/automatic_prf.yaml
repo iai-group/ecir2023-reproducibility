@@ -1,0 +1,7 @@
+# Output
+output_name: "automatic_prf"
+
+query_rewrite: "automatic"
+
+prf:
+  type: "RM3"

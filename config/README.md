@@ -1,6 +1,6 @@
 # Config
 
-- When `treccast/main.py` is run, it will load the default configuration from `defaults/general.yaml` and `defaults/{{year}}.yaml`. **NB! These files should not be modified unless certain current pipeline will not break**
+- When `treccast/main.py` is run, it will load the default configuration from `defaults/general.yaml` and `defaults/{{year}}.yaml`. **NB! Do not modify these files unless you are certain the current pipeline will not break**
 - Defaults can be overwritten by creating a new configuration file and specifying desired parameters.
 
 ```yaml
@@ -25,6 +25,14 @@ query_rewrite: null
 rewrite: False
 rewrite_path: null
 
+# Query expansion by pseudo relevance feedback
+prf:
+  # currently implemented type "RM3"
+  type: null
+  # how many documents to use for feedback
+  num_documents: 10
+  # how many highest scoring tokens to add to the query
+  num_tokens: 10
 
 # Retrieval defaults
 # If first pass file is specified, loads results from those, otherwise

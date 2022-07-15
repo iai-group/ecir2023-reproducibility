@@ -1,0 +1,8 @@
+# Output
+output_name: "manual_prf"
+
+query_rewrite: "manual"
+
+prf:
+  type: "RM3"
+
