@@ -12,15 +12,13 @@ Usage:
     $ python indexer.py --ms_marco path/to/collection
 """
 import argparse
-from typing import Any, Dict, Iterator, Union
+from typing import Any, Dict, Iterator
 
 import nltk
-from nltk.corpus import stopwords
 from elasticsearch.helpers import parallel_bulk
-from trec_car import read_data
-
-from treccast.core.util.file_parser import FileParser
+from nltk.corpus import stopwords
 from treccast.core.collection import ElasticSearchIndex
+from treccast.core.util.data_generator import DataGeneratorMixin
 
 DEFAULT_MS_MARCO_PASSAGE_DATASET = (
     "/data/collections/msmarco-passage/collection.tar.gz"
@@ -30,9 +28,10 @@ DEFAULT_TREC_CAR_PARAGRAPH_DATASET = (
 )
 DEFAULT_INDEX_NAME = "ms_marco_trec_car"
 DEFAULT_HOST_NAME = "localhost:9204"
+_ACTION = "indexing"
 
 
-class Indexer(ElasticSearchIndex):
+class Indexer(DataGeneratorMixin, ElasticSearchIndex):
     def __init__(
         self, index_name: str, hostname: str = "localhost:9200"
     ) -> None:
@@ -50,85 +49,6 @@ class Indexer(ElasticSearchIndex):
             max_retries=10,
             retry_on_timeout=True,
         )
-
-    def generate_data_marco(
-        self, filepath: str
-    ) -> Iterator[Dict[str, Union[str, Dict]]]:
-        """Data generator for batch indexing of MS MARCO dataset.
-
-        Args:
-            filepath: Path to the MS MARCO passage dataset
-
-        Yields:
-            Iterator[dict]: Dictionary containing index, id and contents of a
-                passage.
-        """
-        print("Starting to index the MS MARCO passage dataset")
-        for i, line in enumerate(FileParser.parse(filepath)):
-            pid, content = line.split("\t")
-            yield {
-                "_index": self._index_name,
-                "_id": f"MARCO_{pid}",
-                "_source": {"body": content},
-            }
-            if i % 1000000 == 0:
-                print(f"Indexed {i} paragraphs")
-        print(f"Indexing finished. Indexed total {i} paragraphs.\n")
-
-    def generate_data_car(
-        self, filepath: str
-    ) -> Iterator[Dict[str, Union[str, Dict]]]:
-        """Data generator for batch indexing of TREC CAR dataset.
-
-        Args:
-            filepath: Path to the TREC CAR paragraph dataset.
-
-        Yields:
-            Iterator[dict]: Dictionary containing index, id and contents of a
-                paragraph.
-        """
-        print("Starting to index the TREC CAR paragraphs dataset")
-        with open(filepath, "rb") as f:
-            for i, paragraph in enumerate(read_data.iter_paragraphs(f)):
-                # Paragraphs contain text with named entities in format
-                # [Text](Named Entity) under paragraph.bodies.
-                yield {
-                    "_index": self._index_name,
-                    "_id": f"CAR_{paragraph.para_id}",
-                    "_source": {"body": paragraph.get_text().strip()},
-                }
-                if i % 1000000 == 0:
-                    print(f"Indexed {i} paragraphs")
-            print(f"Indexing finished. Indexed total {i} paragraphs.")
-
-    def generate_data_trecweb(
-        self, filepath: str
-    ) -> Iterator[Dict[str, Union[str, Dict]]]:
-        """Data generator for batch indexing of preprocessed TRECWEB files.
-
-        Args:
-            filepath: Path to the a TRECWEB dataset.
-
-        Yields:
-            Dictionary containing index, id and contents of a
-                paragraph.
-        """
-        print(f"Starting to index filepath: {filepath}")
-        for i, (passage_id, title, passage) in enumerate(
-            FileParser.parse(filepath)
-        ):
-            yield {
-                "_index": self._index_name,
-                "_id": passage_id,
-                "_source": {
-                    "body": passage,
-                    "title": title,
-                    "catch_all": f"{title} {passage}",
-                },
-            }
-            if i % 1000000 == 0:
-                print(f"Indexed {i} paragraphs")
-        print(f"Indexing finished. Indexed total {i} paragraphs.")
 
     def batch_index(self, data_generator: Iterator[dict]) -> None:
         """Bulk index a dataset in parallel.
@@ -246,14 +166,20 @@ def main(args):
 
     indexing.create_index(use_analyzer=not args.no_analyzer)
     if args.ms_marco:
-        data_generator = indexing.generate_data_marco(args.ms_marco)
+        data_generator = indexing.generate_data_marco(
+            _ACTION, args.ms_marco, index_name=indexing._index_name
+        )
         indexing.batch_index(data_generator)
     if args.trec_car:
-        data_generator = indexing.generate_data_car(args.trec_car)
+        data_generator = indexing.generate_data_car(
+            _ACTION, args.trec_car, index_name=indexing._index_name
+        )
         indexing.batch_index(data_generator)
     if args.trecweb:
         for filepath in args.trecweb:
-            data_generator = indexing.generate_data_trecweb(filepath)
+            data_generator = indexing.generate_data_trecweb(
+                _ACTION, filepath, index_name=indexing._index_name
+            )
             indexing.batch_index(data_generator)
 
 
