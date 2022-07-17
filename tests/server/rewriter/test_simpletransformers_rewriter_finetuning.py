@@ -6,7 +6,7 @@ from treccast.rewriter.simpletransformers_rewriter_finetuning import (
 
 
 @pytest.fixture
-def simpletransformers_rewriter_finetuning() -> SimpleTransformersRewriterFinetuning:
+def st_rewriter_finetuning() -> SimpleTransformersRewriterFinetuning:
     model_args = (
         SimpleTransformersRewriterFinetuning.get_simpletransformers_args(
             srf._MODEL_LOCATION
@@ -22,10 +22,10 @@ def simpletransformers_rewriter_finetuning() -> SimpleTransformersRewriterFinetu
 
 
 def test_load_dataset(
-    simpletransformers_rewriter_finetuning: SimpleTransformersRewriterFinetuning,
+    st_rewriter_finetuning: SimpleTransformersRewriterFinetuning,
 ):
     assert (
-        simpletransformers_rewriter_finetuning._dataset[
+        st_rewriter_finetuning._dataset[
             "train"
         ].column_names.sort()
         == [
@@ -42,14 +42,14 @@ def test_load_dataset(
 
 
 def test_partition_dataset(
-    simpletransformers_rewriter_finetuning: SimpleTransformersRewriterFinetuning,
+    st_rewriter_finetuning: SimpleTransformersRewriterFinetuning,
 ):
-    data = simpletransformers_rewriter_finetuning._dataset["train"]
+    data = st_rewriter_finetuning._dataset["train"]
     (
         train_dataset,
         val_dataset,
         _,
-    ) = simpletransformers_rewriter_finetuning.partition_dataset("<sep>")
+    ) = st_rewriter_finetuning.partition_dataset("<sep>")
 
     assert len(data["Rewrite"]) == (
         len(train_dataset["input_text"]) + len(val_dataset["input_text"])
