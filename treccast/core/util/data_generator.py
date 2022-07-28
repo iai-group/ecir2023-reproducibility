@@ -129,6 +129,7 @@ class DataGeneratorMixin:
                     "_source": {
                         "body": passage,
                         "title": title,
+                        "catch_all": f"{title} {passage}",
                     },
                 }
             else:

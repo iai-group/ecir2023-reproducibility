@@ -135,6 +135,23 @@ def test_generate_data_trecweb_first_entry(indexer: Indexer):
             "The hot glowing surfaces of stars "
             "emit energy in the form of electromagnetic radiation.?"
         ),
+        "catch_all": (
+            "The hot glowing surfaces of stars emit energy in the form of"
+            " electromagnetic radiation.? Science & Mathematics Physics The hot"
+            " glowing surfaces of stars emit energy in the form of"
+            " electromagnetic radiation.? It is a good approximation to assume"
+            " that the emissivity e is equal to 1 for these surfaces. Find the"
+            " radius of the star Rigel, the bright blue star in the"
+            " constellation Orion that radiates energy at a rate of 2.7 x 10^32"
+            " W and has a surface temperature of 11,000 K. Assume that the star"
+            " is spherical. Use σ =... show more Follow 3 answers Answers"
+            " Relevance Rating Newest Oldest Best Answer: Stefan-Boltzmann law"
+            " states that the energy flux by radiation is proportional to the"
+            " forth power of the temperature: q = ε · σ · T^4 The total energy"
+            " flux at a spherical surface of Radius R is Q = q·π·R² ="
+            " ε·σ·T^4·π·R² Hence the radius is R = √ ( Q / (ε·σ·T^4·π) ) = √ ("
+            " 2.7x10+32 W / (1 · 5.67x10-8W/m²K^4 · (1100K)^4 · π) )"
+        ),
     }
 
 
