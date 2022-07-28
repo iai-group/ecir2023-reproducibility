@@ -1,0 +1,18 @@
+es:
+    host_name: localhost:9204
+    index_name: ms_marco_trec_car_clean
+    field: body
+    k1: 1.2
+    b: 0.75
+output_name: t5_qrecc_rewrites_2020
+reranker: t5
+rewrite: yes
+rewrite_path: data/rewrites/2020/12_T5_QReCC.tsv
+year: '2020'
+k: 1000
+num_prev_turns: 0
+query_rewrite:
+first_pass_file:
+bert:
+    base_model: bert-base-uncased
+    reranker_path:

@@ -110,7 +110,7 @@ def run(
 
             # Custom rewriter
             if rewriter:
-                query = Rewriter.rewrite_query(query)
+                query = rewriter.rewrite_query(query)
 
             if expander:
                 query = expander.get_expanded_query(query)

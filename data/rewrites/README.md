@@ -20,8 +20,7 @@ You can generate query rewrites with chosen model as described in [data/fine_tun
 # Query rewritten with fine-tuned models
 
 The following files contain rewrites generated with T5 model fine-tuned using different datasets:
-  * `12_T5_QReCC.tsv` - T5 fine-tuned using QReCC.
-  * `12_T5_QReCC_st.tsv` - T5 fine-tuned using QReCC (implementation based on Simple Transformers).
+  * `12_T5_QReCC.tsv` - T5 fine-tuned using QReCC (implementation based on Simple Transformers).
 They are all located under `data/rewrites/2020` and `data/rewrites/2021`.
 
-Performance of the rewriting methods in the whole retrieval-reranking pipeline is reported in [data/runs/2020/README.md](../runs/2020/README.md) and [data/runs/2021/README.md](../runs/2021/README.md). (TODO)
+Performance of the rewriting methods in the whole retrieval-reranking pipeline is reported in [data/runs/2020/README.md](../runs/2020/README.md) and [data/runs/2021/README.md](../runs/2021/README.md).

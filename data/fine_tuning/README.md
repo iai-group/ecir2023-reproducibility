@@ -66,7 +66,7 @@ All the preprocessed data collections used for fine-tuning and the models are st
   * Exemplary configuration for qrecc with default arguments:
 `CUDA_VISIBLE_DEVICES=0 python -m treccast.rewriter.simpletransformers_rewriter_finetuning`
   * Fine-tuned models are stored under `$DATA/models/fine_tuned_models/rewriter/qrecc/`:
-    - `T5-QReCC_st_WaterlooClarke-full` - T5 fine-tuned with the QReCC training dataset, using original test partition of the QReCC dataset as a validation set (implementation based on Simple Transformers).
+    - `T5_QReCC_st_WaterlooClarke-full` - T5 fine-tuned with the QReCC training dataset, using original test partition of the QReCC dataset as a validation set (implementation based on Simple Transformers).
     - `T5_QReCC_st_WaterlooClarke-train` - T5 fine-tuned on QReCC collection split to train/validation/test partitions (implementation based on Simple Transformers).
 
 ## Generate file with queries rewritten with fine-tuned model

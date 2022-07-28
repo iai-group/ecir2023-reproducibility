@@ -41,6 +41,7 @@ All the runfiles with metadata config files are placed under `$DATA/runs/2021`. 
 
 | *Method* | *Query rewriting* | *recall@1000* | *MAP* | *MRR* | *NDCG* | *NDCG@5* |
 | -- | -- | -- | -- | -- | -- | -- |
-| [BM25 (ms_marco_kilt_wapo_clean) + T5](/scripts/reproduce/raw_2021.sh) | None (raw) | 0.3497 | 0.1217 | 0.2875 | 0.2605 | 0.2041 |
-| [BM25 (ms_marco_kilt_wapo_clean) + T5](/scripts/reproduce/manual_2021.sh) | Manual | 0.7729 | 0.3858 | 0.7326 | 0.6291 | 0.5654 |
-| [BM25 (ms_marco_kilt_wapo_clean) + T5](/scripts/reproduce/automatic_2021.sh) | Automatic | 0.6319 | 0.2684 | 0.5575 | 0.4842 | 0.3969 |
+| [BM25 (ms_marco_kilt_wapo_clean) + T5](reproduce_raw_2021.meta.yaml) | None (raw) | 0.3497 | 0.1217 | 0.2875 | 0.2605 | 0.2041 |
+| [BM25 (ms_marco_kilt_wapo_clean) + T5](reproduce_manual_2021.meta.yaml) | Manual | 0.7729 | 0.3858 | 0.7326 | 0.6291 | 0.5654 |
+| [BM25 (ms_marco_kilt_wapo_clean) + T5](reproduce_automatic_2021.meta.yaml) | Automatic | 0.6319 | 0.2684 | 0.5575 | 0.4842 | 0.3969 |
+| [T5-QReCC rewriter (WaterlooClarke) + BM25 (ms_marco_trec_car_clean) + T5](t5_qrecc_rewriter_2021.meta.yaml) | Automatic | 0.6095 | 0.2461 | 0.5269 | 0.4582 | 0.3741 | 
