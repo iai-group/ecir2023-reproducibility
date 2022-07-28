@@ -27,25 +27,43 @@
     - MS MARCO `msmarco-docs.trecweb` (21G)
     - WaPo `TREC_Washington_Post_collection.v4.trecweb` (3.4G)
 
+### Y4
+  * Raw collections
+    - [MS MARCO V2 (Documents)](https://microsoft.github.io/msmarco/TREC-Deep-Learning-2021#document-ranking-dataset) => `$COLLECTIONS/msmarco-v2-doc/msmarco_v2_doc.tar` (33G)
+    - [KILT Wikipedia](https://github.com/facebookresearch/KILT/) => same as in Y3
+    - [Washington Post 2020](https://trec.nist.gov/data/wapost/) => same as in Y3
+  * Pre-processed collections (in TREC Web format) =>`$COLLECTIONS/trec-cast-y4`
+    - MS MARCO `/ms_marco/MARCO_{0-791}.trecweb` (109G)
+    - KILT `kilt_knowledgesource.trecweb` (18G)
+    - WaPo `TREC_Washington_Post_collection.v4.trecweb` (3.4G)
+
 ## Indices
 
-Elasticsearch server in use is `gustav1.ux.uis.no:9204`.
+Elasticsearch servers in use are `gustav1.ux.uis.no:9204` and `gorina39.ux.uis.no:9204`.
 
 If the connection from gorina to the index on gustav1 fails, the workaround is to make a ssh connection with port forwarding using the following command:
 `ssh -L 9204:gustav1.ux.uis.no:9204 -N -f gustav1.ux.uis.no`
 
 ### Y2
 
+Available both on `gustav1` and `gorina39`:
   * `ms_marco_trec_car` => Basic inverted index without any preprocessing.
   * `ms_marco_trec_car_clean` => Inverted index with stopword removal and KStemming.
 
 ### Y3
+
+Available both on `gustav1` and `gorina39`:
   * `ms_marco_kilt_wapo_clean` => Inverted index with stopword removal and KStemming.
     - document ID: `[MARCO|KILT|WAPO]_document_id-passage_index`
     - fields: 
       - title: Document title.
       - body: Passage text.
       - catch_all: Concatenation of title and body.
+
+### Y4
+
+So far available only on `gorina39`:
+  * `ms_marco_v2_kilt_wapo` => Analogical to `ms_marco_kilt_wapo_clean` but using MS MARCO V2 collection. 
 
 ## Topics
 
