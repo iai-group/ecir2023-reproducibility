@@ -26,4 +26,5 @@ dependencies:
   - pip:
     - trec-car-tools
     - simpletransformers==0.61.13
+    - pyserini
     - python-terrier
