@@ -29,7 +29,7 @@ class Turn:
     passage_id: str = None
 
     def __post_init__(self):
-        if self.passage_id:
+        if self.passage_id is not None:
             self.canonical_result_id = (
                 f"{self.canonical_result_id}-{self.passage_id}"
             )
