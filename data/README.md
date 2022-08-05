@@ -63,7 +63,13 @@ Available both on `gustav1` and `gorina39`:
 ### 2022
 
 So far available only on `gorina39`:
-  * `ms_marco_v2_kilt_wapo` => Analogical to `ms_marco_kilt_wapo_clean` but using MS MARCO V2 collection. 
+  * `ms_marco_v2_kilt_wapo` => Analogous to `ms_marco_kilt_wapo_clean` but using MS MARCO V2 collection. 
+
+### Separate MS MARCO indices
+
+Available only on `gorina39`:
+  * ms_marco => Analogous to `ms_marco_kilt_wapo_clean` but using only MS MARCO collection.
+  * ms_marco_v2 => Analogous to `ms_marco_v2_kilt_wapo` but using only MS MARCO V2 collection.
 
 ## Topics
 
