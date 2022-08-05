@@ -1,6 +1,7 @@
 """Class to fine-tune T5 models for Query Rewriting using simpletransformers
 library."""
 
+import argparse
 import logging
 import os
 from typing import Dict, List
@@ -28,6 +29,11 @@ _MODEL_LOCATION = (
 _BEST_MODEL_LOCATION = "best_model/"
 # Whether train set should be split to train and validation sets.
 _SPLIT_TRAIN_DATASET = True
+# Maximum input sequence length in terms.
+_MAX_SEQ_LENGTH = 512
+# Whether all previous canonical responses should be included in the input. If
+# false only the last one is included.
+_INCLUDE_PREVIOUS_RESPONSES = False
 
 
 class SimpleTransformersRewriterFinetuning:
@@ -75,30 +81,68 @@ class SimpleTransformersRewriterFinetuning:
 
     @staticmethod
     def construct_input_data(
-        context: List[str], question: List[str], separator: str = _SEPARATOR
+        context: List[str],
+        question: List[str],
+        separator: str = _SEPARATOR,
+        include_previous_responses: bool = _INCLUDE_PREVIOUS_RESPONSES,
     ) -> str:
         """Constructs input data for the model from the provided data sample.
 
         Args:
             context: List of rewritten questions and answers from previous
-                turns.
+              turns.
             question: The original question from the current turn.
             separator: Special token to separate input sequences.
+            include_previous_responses: Whether all previous canonical responses
+              should be included in the input. If false only the last one is
+              included.
 
         Returns:
             Context utterances merged with current question using a separator.
+            If the input sequence is too long (> _MAX_SEQ_LENGTH) last canonical
+            response is cut.
         """
-        return separator.join(context + [question])
+        if not include_previous_responses and len(context) > 0:
+            context = context[0::2] + [context[-1]]
+
+        split_context = [c.split(" ") for c in context]
+        split_question = question.split(" ")
+        if (
+            sum([len(c) for c in split_context]) + len(split_question)
+            > _MAX_SEQ_LENGTH
+        ):
+            split_previous_questions = split_context[:-1]
+            split_last_canonical_response = split_context[-1]
+
+            all_questions_length = sum(
+                [len(c) for c in split_previous_questions]
+            ) + len(split_question)
+            split_position = len(split_last_canonical_response) - (
+                _MAX_SEQ_LENGTH - all_questions_length
+            )
+            cut_canonical_response = split_last_canonical_response[
+                :(-split_position)
+            ]
+            return separator.join(
+                context[:-1] + [" ".join(cut_canonical_response)] + [question]
+            )
+        else:
+            return separator.join(context + [question])
 
     @staticmethod
     def construct_df_from_dataset(
-        dataset: Dict[str, List[str]], separator: str = _SEPARATOR
+        dataset: Dict[str, List[str]],
+        separator: str = _SEPARATOR,
+        include_previous_responses: bool = _INCLUDE_PREVIOUS_RESPONSES,
     ) -> pd.DataFrame:
         """Creates a Pandas DataFrame from the given dataset.
 
         Args:
             dataset: The dataset to be processed.
             separator: Special token to separate input sequences.
+            include_previous_responses: Whether all previous canonical responses
+              should be included in the input. If false only the last one is
+              included.
 
         Returns:
             pd.DataFrame: Pandas DataFrame with prefix, input_text and
@@ -106,7 +150,10 @@ class SimpleTransformersRewriterFinetuning:
         """
         constructed_input_data = [
             SimpleTransformersRewriterFinetuning.construct_input_data(
-                context, question, separator
+                context,
+                question,
+                separator,
+                include_previous_responses,
             )
             for context, question in zip(
                 dataset["Context"], dataset["Question"]
@@ -130,6 +177,7 @@ class SimpleTransformersRewriterFinetuning:
         self,
         separator: str = _SEPARATOR,
         split_train_dataset: bool = _SPLIT_TRAIN_DATASET,
+        include_previous_responses: bool = _INCLUDE_PREVIOUS_RESPONSES,
     ) -> List[pd.DataFrame]:
         """Splits dataset to training, validation and test partitions.
 
@@ -137,6 +185,9 @@ class SimpleTransformersRewriterFinetuning:
             separator: Special token to separate input sequences.
             split_train_dataset: Flag to decide whether train set should be
               split to train and validation sets.
+            include_previous_responses: Whether all previous canonical responses
+              should be included in the input. If false only the last one is
+              included.
 
         Returns:
             Dataset with training, validation and test partitions for model
@@ -158,19 +209,21 @@ class SimpleTransformersRewriterFinetuning:
 
             valid_dataset = (
                 SimpleTransformersRewriterFinetuning.construct_df_from_dataset(
-                    self._dataset["valid"], separator
+                    self._dataset["valid"],
+                    separator,
+                    include_previous_responses,
                 )
             )
 
         train_dataset = (
             SimpleTransformersRewriterFinetuning.construct_df_from_dataset(
-                self._dataset["train"], separator
+                self._dataset["train"], separator, include_previous_responses
             )
         )
 
         test_dataset = (
             SimpleTransformersRewriterFinetuning.construct_df_from_dataset(
-                self._dataset["test"], separator
+                self._dataset["test"], separator, include_previous_responses
             )
         )
 
@@ -236,7 +289,7 @@ class SimpleTransformersRewriterFinetuning:
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
         model_args = T5Args()
-        model_args.max_seq_length = 512
+        model_args.max_seq_length = _MAX_SEQ_LENGTH
         model_args.num_train_epochs = 3
         model_args.evaluate_generated_text = True
         model_args.evaluate_during_training = True
@@ -256,40 +309,107 @@ class SimpleTransformersRewriterFinetuning:
         model_args.use_multiprocessing_for_evaluation = False
         model_args.fp16 = False
         model_args.learning_rate = 5e-5
+        model_args.dataloader_num_workers = 0
+        model_args.use_multiprocessed_decoding = False
 
         return model_args
 
 
-def main():
-    """Fine-tunes a base model."""
+def parse_cmdline_arguments() -> argparse.Namespace:
+    """Defines accepted arguments and returns the parsed values.
 
-    # TODO(lajewska): parsing of args will follow in a future PR
+    Returns:
+        Object with a property for each argument.
+    """
+    parser = argparse.ArgumentParser(
+        prog="simpletransformers_rewriter_finetunig.py"
+    )
+    parser.add_argument(
+        "--base_model_name",
+        type=str,
+        default=_BASE_MODEL_NAME,
+        help="The name of the base model to be used for fine-tuning",
+    )
+    parser.add_argument(
+        "--model_type",
+        type=str,
+        default=_MODEL_TYPE,
+        help="Specific model type to be used for fine-tuning",
+    )
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default=_DATASET_QRECC,
+        help="The path to the dataset to be used for fine-tuning",
+    )
+    parser.add_argument(
+        "--model_dir",
+        type=str,
+        default=_MODEL_LOCATION,
+        help="The output directory for the fine-tuned model",
+    )
+    parser.add_argument(
+        "--split_train_dataset",
+        action="store_true",
+        help="Whether train set should be split to train and validation sets.",
+    )
+    parser.add_argument(
+        "--separator",
+        type=str,
+        default=_SEPARATOR,
+        help="Special token to separate input sequences.",
+    )
+    parser.add_argument(
+        "--validation_portion",
+        type=float,
+        default=_VALIDATION_PORTION,
+        help="The portion of training dataset to be extracted for validation.",
+    )
+    parser.add_argument(
+        "--include_previous_responses",
+        action="store_false",
+        help="Whether all previous canonical responses should be included in\n"
+        "the input. If false only the last one is included.",
+    )
+    return parser.parse_args()
+
+
+def main(args):
+    """Fine-tunes a base model.
+
+    Args:
+        args: Command line arguments.
+    """
+
     model_args = (
         SimpleTransformersRewriterFinetuning.get_simpletransformers_args(
-            _MODEL_LOCATION
+            args.model_dir
         )
     )
 
     st_rewriter_finetuning = SimpleTransformersRewriterFinetuning(
         train_args=model_args,
-        dataset=_DATASET_QRECC,
-        base_model_name=_BASE_MODEL_NAME,
-        model_type=_MODEL_TYPE,
+        dataset=args.dataset,
+        base_model_name=args.base_model_name,
+        model_type=args.model_type,
     )
 
-    train_df, valid_df, test_df = st_rewriter_finetuning.partition_dataset()
+    train_df, valid_df, test_df = st_rewriter_finetuning.partition_dataset(
+        separator=args.separator,
+        split_train_dataset=args.split_train_dataset,
+        include_previous_responses=args.include_previous_responses,
+    )
 
-    print(train_df)
-    print(valid_df)
-    print(test_df)
-
-    st_rewriter_finetuning.train(train_df, valid_df)
+    if args.split_train_dataset:
+        st_rewriter_finetuning.train(train_df, valid_df)
+    else:
+        st_rewriter_finetuning.train(train_df, test_df)
     print("*** Model trained ***")
 
     # Load the fine-tuned model from the model location
     fine_tuned_model = T5Model(
-        _BASE_MODEL_NAME,
-        _MODEL_LOCATION + _BEST_MODEL_LOCATION,
+        args.base_model_name,
+        args.model_dir + _BEST_MODEL_LOCATION,
         args=model_args,
         use_cuda=st_rewriter_finetuning._cuda_available,
     )
@@ -327,4 +447,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    args = parse_cmdline_arguments()
+    main(args)
