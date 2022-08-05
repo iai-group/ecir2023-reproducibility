@@ -18,6 +18,7 @@ All the runfiles with metadata config files are placed under `$DATA/runs/2020`. 
 | [BM25 (ms_marco_trec_car_clean) + T5](reproduce_manual_2020.meta.yaml) | Manual | 0.6936 | 0.3384 | 0.7156 | 0.5839 | 0.5137 |
 | [BM25 (ms_marco_trec_car_clean) + T5](reproduce_automatic_2020.meta.yaml) | Automatic | 0.4820 | 0.1953 | 0.4900 | 0.3909 | 0.3291 |
 | [T5-QReCC rewriter (WaterlooClarke) + BM25 (ms_marco_trec_car_clean) + T5](t5_qrecc_rewriter_2020.meta.yaml) | Automatic | 0.5122 | 0.2083 | 0.4979 | 0.4084 | 0.3515 | 
+| [T5-CANARD rewriter (`castorini/t5-base-canard`) + BM25 (ms_marco_trec_car_clean) + T5](t5_canard_rewriter_2020.meta.yaml) | Automatic | 0.5270 | 0.2264 | 0.5323 | 0.4396 | 0.3768 | 
 
 **To be removed**
 

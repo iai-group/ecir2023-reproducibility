@@ -13,21 +13,26 @@ from treccast.rewriter.rewriter import Rewriter
 
 
 # The path to the fine-tuned model to be loaded and used for rewriting.
-_MODEL_DIR = "data/fine_tuning/rewriter/qrecc/T5_QReCC_st_WaterlooClarke-train/best_model"
+_MODEL_DIR = (
+    "data/fine_tuning/rewriter/qrecc/T5_QReCC_st_WaterlooClarke-train/"
+    + "best_model"
+)
 # Year for which the rewrites should be generated.
 _YEAR = "2021"
 # Max sequence length for the model.
-_MAX_LENGTH = 128
+_MAX_LENGTH = 512
 # The path to the output directory for the generated query rewrites.
 _OUTPUT_DIR = "data/rewrites/2021/12_T5_QReCC.tsv"
 # Specifies whether previously rewritten queries should be used in the context
 # for rewriting current query.
 _USE_PREVIOUS_REWRITTEN_UTTERANCE = True
-# Specifies whether canonical responses should be used in the context for
-# rewriting current query.
-_USE_CANONICAL_RESPONSES = True
+# Specifies whether the last canonical response should be used in the context
+# for rewriting current query.
+_USE_CANONICAL_RESPONSE = True
 # The name of the index to be used for loading canonical responses.
 _INDEX_NAME = "ms_marco_kilt_wapo_clean"
+# Special token to separate input sequences.
+_SEPARATOR = "<sep>"
 
 
 class T5Rewriter(Rewriter):
@@ -71,8 +76,9 @@ class T5Rewriter(Rewriter):
         self,
         query: Query,
         context: Context = None,
-        use_canonical_responses: bool = _USE_CANONICAL_RESPONSES,
+        use_canonical_response: bool = _USE_CANONICAL_RESPONSE,
         index_name: str = _INDEX_NAME,
+        separator: str = _SEPARATOR,
     ) -> Query:
         """Rewrites query to a new contextualized query given context.
 
@@ -81,6 +87,9 @@ class T5Rewriter(Rewriter):
         "|||" that indicates a boundary of queries (and responses) of different
         conversation turns.
         For more details see https://huggingface.co/castorini/t5-base-canard.
+
+        In case of T5 fine-tuned on QReCC a standard <sep> is use as a
+        separation token.
 
         Example:
             Context: "How do you know when your garage door opener is going
@@ -94,10 +103,11 @@ class T5Rewriter(Rewriter):
             query: Query to rewrite.
             context (optional): Context containing additional information for
               the rewrite. Defaults to None.
-            use_canonical_responses: Determines whether canonical responses
+            use_canonical_response: Determines whether canonical responses
               should be used for rewriting the query.
             index_name: The name of the index to be used for loading canonical
               responses.
+            separator: Special token to separate input sequences.
 
         Returns:
             Rewritten query.
@@ -107,14 +117,28 @@ class T5Rewriter(Rewriter):
             return query
 
         # Construct input text
-        # Currently uses only past queries and not responses
-        input_text = " ".join(q.question for q, _ in context.history)
-        if use_canonical_responses:
+        history_questions = [q.question for q, _ in context.history]
+        input_text = separator.join(history_questions)
+        if use_canonical_response:
             passage_loader = PassageLoader(index=index_name)
             doc_id = context.history[-1][1].doc_id
             canonical_response = passage_loader.get(doc_id)
-            input_text += f" {canonical_response}"
-        input_text += f" {query.question}"
+            split_canonical_response = canonical_response.split(" ")
+            all_questions_length = len(
+                " ".join(history_questions + [query.question]).split(" ")
+            )
+            if (
+                len(split_canonical_response) + all_questions_length
+                > _MAX_LENGTH
+            ):
+                split_position = len(split_canonical_response) - (
+                    _MAX_LENGTH - all_questions_length
+                )
+                canonical_response = " ".join(
+                    split_canonical_response[:(-split_position)]
+                )
+            input_text += f"{separator + canonical_response}"
+        input_text += f"{separator + query.question}"
 
         # Get input token ids
         input_ids = self._tokenizer.encode(
@@ -145,8 +169,9 @@ def rewrite_queries_with_fine_tuned_model(
     max_length: int,
     output_dir: str,
     use_previous_rewritten_utterance: bool,
-    use_responses: str,
+    use_responses: bool,
     index_name: str,
+    separator: str,
 ):
     """Rewrites queries using a fine-tuned T5 model.
 
@@ -163,6 +188,7 @@ def rewrite_queries_with_fine_tuned_model(
           the context for rewriting current query.
         index_name: The name of the index to be used for loading canonical
           responses.
+        separator: Special token to separate input sequences.
     """
     rewriter = T5Rewriter(model_name=model_dir, max_length=max_length)
     contexts = Topic.load_contexts_from_file(year, QueryRewrite.AUTOMATIC)
@@ -181,7 +207,11 @@ def rewrite_queries_with_fine_tuned_model(
                     for idx, history in enumerate(context.history)
                 ]
             rewrite = rewriter.rewrite_query(
-                query, context, use_responses, index_name
+                query=query,
+                context=context,
+                use_canonical_response=use_responses,
+                index_name=index_name,
+                separator=separator,
             )
             rewrites.append(rewrite)
             tsv_writer.writerow(
@@ -240,21 +270,27 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
-        "--use_responses",
+        "--use_canonical_response",
         type=bool,
-        default=_USE_CANONICAL_RESPONSES,
+        default=_USE_CANONICAL_RESPONSE,
         help=(
-            "Specifies whether canonical responses should be used in the "
-            "context for rewriting current query."
+            "Specifies whether the last canonical response should be used in "
+            "the context for rewriting current query."
         ),
     )
     parser.add_argument(
         "--index_name",
-        type=bool,
+        type=str,
         default=_INDEX_NAME,
         help=(
             "The name of the index to be used for loading canonical responses."
         ),
+    )
+    parser.add_argument(
+        "--separator",
+        type=str,
+        default=_SEPARATOR,
+        help="Special token to separate input sequences.",
     )
     return parser.parse_args()
 
@@ -287,8 +323,9 @@ def main(args):
         max_length=args.max_length,
         output_dir=args.output_dir,
         use_previous_rewritten_utterance=args.use_previous_rewritten_utterance,
-        use_responses=args.use_responses,
+        use_responses=args.use_canonical_response,
         index_name=args.index_name,
+        separator=args.separator,
     )
 
 
