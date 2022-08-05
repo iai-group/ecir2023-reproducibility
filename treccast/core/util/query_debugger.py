@@ -6,7 +6,7 @@ as well as the runfile to interact with a simple prompt.
 Typical usage:
 
 python -m treccast.core.util.query_debugger --year 2020 \
-  --runfile /data/scratch/trec-cast-2021/data/runs/2020/org_baselines/y2_manual_results_500.v1.0.run \ 
+  --runfile /data/scratch/trec-cast/data/runs/2020/org_baselines/y2_manual_results_500.v1.0.run \ 
   --hostname gustav1.ux.uis.no:9204
 """  # noqa E501 long path
 

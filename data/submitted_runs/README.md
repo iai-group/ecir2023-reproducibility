@@ -10,7 +10,7 @@
     - CONVERSATIONAL QUERY UNDERSTANDING METHOD:
       - None
     - CONVERSATIONAL QUERY UNDERSTANDING DATA:
-      - [x] method uses CAsT Y3 provided manually rewritten utterances (this makes the ru a manual run)
+      - [x] method uses CAsT 2021 provided manually rewritten utterances (this makes the ru a manual run)
     - PASSAGE RANKING METHOD:
       - [x] method uses a pre-trained neural language model (BERT, Roberta, T5, etc.) (please describe specifics in the description field below)
     - PASSAGE RANKING DATA:

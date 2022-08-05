@@ -27,7 +27,7 @@ NOTATION = {
 COMMAND = (
     "tools/trec_eval/trec_eval -l 2 "
     "-m map -m recip_rank -m recall.1000 -m ndcg_cut.3 data/qrels/{year}.txt "
-    "/data/scratch/trec-cast-2021/data/runs/{year}/{rewrite}{run_details}_t5.trec"  # noqa E501 long path
+    "/data/scratch/trec-cast/data/runs/{year}/{rewrite}{run_details}_t5.trec"  # noqa E501 long path
 )
 
 

@@ -290,7 +290,7 @@ def parse_cmd_line_args():
     args.ANALYSIS_DOCUMENT_APPEARANCE = (
         f"data/analysis/{args.year}_relevant_documents.json"
     )
-    args.PATH_RUNFILE = "/data/scratch/trec-cast-2021/data/runs/{}/{}_10k.trec"
+    args.PATH_RUNFILE = "/data/scratch/trec-cast/data/runs/{}/{}_10k.trec"
     return args
 
 

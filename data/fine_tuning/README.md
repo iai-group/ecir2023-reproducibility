@@ -2,9 +2,9 @@
 
 ## Generating fine-tuning data
 
-All the preprocessed data collections used for fine-tuning and the models are stored in `$DATA` folder on gustav1 (`$DATA` refers to `gustav1:/data/scratch/trec-cast-2021/data`).
+All the preprocessed data collections used for fine-tuning and the models are stored in `$DATA` folder on gustav1 (`$DATA` refers to `gustav1:/data/scratch/trec-cast/data`).
 
-### TREC-CAsT Y1-Y2 data
+### TREC-CAsT 2019-2020 data
 
   * TBD.
   * `$DATA/fine_tuning/trec-cast/Y1Y2_manual_qrels.tsv`.
@@ -44,7 +44,7 @@ All the preprocessed data collections used for fine-tuning and the models are st
 
 ## Generating fine-tuning data
 
-All the preprocessed data collections used for fine-tuning and the models are stored in `$DATA` folder on gustav1 (`$DATA` refers to `gustav1:/data/scratch/trec-cast-2021/data`).
+All the preprocessed data collections used for fine-tuning and the models are stored in `$DATA` folder on gustav1 (`$DATA` refers to `gustav1:/data/scratch/trec-cast/data`).
 
 ### QReCC
 

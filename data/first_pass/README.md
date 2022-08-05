@@ -9,7 +9,7 @@
 - The first pass generation creates two files:
     - `data/first_pass/year/output_name.tsv` (TSV file with query_id, query, passage_id, passage, label fields)
     - `data/runs/year/output_name.trec` (TREC run format for using first pass scores for submission)
-- Pre-computed first pass files for 2021 are located on gustav1 DATA=`/data/scratch/trec-cast-2021/data/`:
+- Pre-computed first pass files for 2021 are located on gustav1 DATA=`/data/scratch/trec-cast/data/`:
     - `$DATA/first_pass/2021/bm25_2021_manual.tsv`
     - `$DATA/runs/2021/bm25_2021_manual.trec`
     - `$DATA/first_pass/2021/bm25_2021_raw.tsv`
