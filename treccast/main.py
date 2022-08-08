@@ -13,7 +13,7 @@ from treccast.core.topic import QueryRewrite, Topic
 from treccast.expander.prf import PRF, RM3, PrfType
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.reranker import Reranker
-from treccast.reranker.t5_reranker import T5Reranker
+from treccast.reranker.t5_reranker import DuoT5Reranker, T5Reranker
 from treccast.retriever.bm25_retriever import BM25Retriever
 from treccast.retriever.retriever import CachedRetriever, Retriever
 from treccast.rewriter.rewriter import CachedRewriter, Rewriter
@@ -54,6 +54,11 @@ def main(config: confuse.Configuration):
         k *= num_prev_turns + 1
 
     reranker = _get_reranker(config)
+    second_reranker = None
+    second_reranker_top_k = None
+    if config["duot5"].get(bool):
+        second_reranker = DuoT5Reranker()
+        second_reranker_top_k = config["duot5_topk"].get()
 
     run(
         queries=queries,
@@ -62,6 +67,8 @@ def main(config: confuse.Configuration):
         rewriter=rewriter,
         expander=expander,
         reranker=reranker,
+        second_reranker=second_reranker,
+        second_reranker_top_k=second_reranker_top_k,
         year=config["year"].get(),
         k=k,
         ranking_cache=ranking_cache,
@@ -75,11 +82,16 @@ def run(
     rewriter: Rewriter = None,
     expander: PRF = None,
     reranker: Reranker = None,
+    second_reranker: Reranker = None,
+    second_reranker_top_k: int = 50,
     year: str = "2021",
     k: int = 1000,
     ranking_cache: CachedRanking = None,
 ) -> None:
     """Iterates over queries to perform rewriting, retrieval, and re-ranking.
+
+    An optional additional reranking step may also be performed on the top-k
+    reranked results.
 
     Results are saved to a TREC runfile. Passages are also saved in a TSV file.
     This is convenient when using later stages of the pipeline.
@@ -91,10 +103,14 @@ def run(
         rewriter: Rewriter to use. Defaults to None
         expander: Class to use for query expansion. Defaults to None.
         reranker: Reranker model. Defaults to None.
+        second_reranker: The second reranker model to be applied after first
+          reranking step in reranker.
+        second_reranker_top_k: Number of top documents in the ranking to be
+          reranked by the second reranker.
         year: Year for which to run the application.
         k: number of documents to save for each turn. Defaults to 1000
         ranking_cache: Class that adds rankings from previous turns to the
-            current candidate pool.
+          current candidate pool.
     """
     with open(f"data/runs/{year}/{output_name}.trec", "w") as trec_out, open(
         f"data/first_pass/{year}/{output_name}.tsv", "w"
@@ -125,6 +141,10 @@ def run(
             # Re-ranking
             if reranker:
                 ranking = reranker.rerank(query, ranking)
+                if second_reranker is not None:
+                    ranking = second_reranker.rerank(
+                        query, ranking, second_reranker_top_k
+                    )
 
             # Save results
             ranking.write_to_tsv_file(tsv_writer, query.question, k=k)
@@ -334,6 +354,24 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
         "--reranker",
         choices=["bert", "t5"],
         help="Performs re-ranking if specified. Defaults to None.",
+    )
+    reranker_group.add_argument(
+        "--duot5",
+        action="store_const",
+        const=True,
+        help=(
+            "Performs re-ranking with duoT5 after first reranking. Defaults to "
+            "False."
+        ),
+    )
+    reranker_group.add_argument(
+        "--duot5_topk",
+        type=int,
+        dest="duot5_topk",
+        help=(
+            "Number of top documents in the ranking to be reranked by duoT5. "
+            "Defaults to 50."
+        ),
     )
     reranker_group.add_argument(
         "--bert.base_model",

@@ -26,6 +26,9 @@ prf:
   num_documents: 10
   num_terms: 10
 
+# Reranking with duoT5
+duot5: False
+duot5_topk: 50
 
 # Re-ranking parameters
 reranker: null

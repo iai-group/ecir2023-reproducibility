@@ -99,6 +99,8 @@ def test_main(
         rewriter=None,
         expander=None,
         reranker=None,
+        second_reranker=None,
+        second_reranker_top_k=None,
         year=default_config["year"].get(),
         k=1000,
         ranking_cache=None,

@@ -1,0 +1,24 @@
+duot5: yes
+duot5_topk: 50
+es:
+    host_name: localhost:9204
+    index_name: ms_marco_trec_car_clean
+    field: body
+    k1: 1.2
+    b: 0.75
+output_name: mono-duo-t5_automatic-2020
+query_rewrite: automatic
+reranker: t5
+year: '2020'
+k: 1000
+num_prev_turns: 0
+rewrite: no
+rewrite_path:
+first_pass_file:
+prf:
+    type:
+    num_documents: 10
+    num_terms: 10
+bert:
+    base_model: bert-base-uncased
+    reranker_path:

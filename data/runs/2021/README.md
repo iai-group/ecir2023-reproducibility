@@ -44,5 +44,6 @@ All the runfiles with metadata config files are placed under `$DATA/runs/2021`. 
 | [BM25 (ms_marco_kilt_wapo_clean) + T5](reproduce_raw_2021.meta.yaml) | None (raw) | 0.3497 | 0.1217 | 0.2875 | 0.2605 | 0.2041 |
 | [BM25 (ms_marco_kilt_wapo_clean) + T5](reproduce_manual_2021.meta.yaml) | Manual | 0.7729 | 0.3858 | 0.7326 | 0.6291 | 0.5654 |
 | [BM25 (ms_marco_kilt_wapo_clean) + T5](reproduce_automatic_2021.meta.yaml) | Automatic | 0.6319 | 0.2684 | 0.5575 | 0.4842 | 0.3969 |
-| [T5-QReCC rewriter (WaterlooClarke) + BM25 (ms_marco_trec_car_clean) + T5](t5_qrecc_rewriter_2021.meta.yaml) | Automatic | 0.6095 | 0.2461 | 0.5269 | 0.4582 | 0.3741 |
+| [BM25 (ms_marco_kilt_wapo_clean) + T5 (monoT5 + duoT5)](mono-duo-t5_automatic-2021.meta.yaml) | Automatic | 0.6319 | 0.2620 | 0.5544 | 0.4841 | 0.4094 |
+| [T5-QReCC rewriter (WaterlooClarke) + BM25 (ms_marco_trec_car_clean) + T5](t5_qrecc_rewriter_2021.meta.yaml) | Automatic | 0.6095 | 0.2461 | 0.5269 | 0.4582 | 0.3741 | 
 | [T5-CANARD rewriter (`castorini/t5-base-canard`) + BM25 (ms_marco_trec_car_clean) + T5](t5_canard_rewriter_2021.meta.yaml) | Automatic | 0.6666 | 0.2716 | 0.5335 | 0.5038 | 0.4035 |
