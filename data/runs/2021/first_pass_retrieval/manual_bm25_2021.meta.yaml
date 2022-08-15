@@ -1,0 +1,24 @@
+es:
+    host_name: localhost:9204
+    index_name: ms_marco_kilt_wapo_clean
+    field: catch_all
+    k1: 1.2
+    b: 0.75
+output_name: first_pass_retrieval/manual_bm25_2021
+query_rewrite: manual
+year: '2021'
+k: 1000
+num_prev_turns: 0
+rewrite: no
+rewrite_path:
+first_pass_file:
+prf:
+    type:
+    num_documents: 10
+    num_terms: 10
+duot5: no
+duot5_topk: 50
+reranker:
+bert:
+    base_model: bert-base-uncased
+    reranker_path:
