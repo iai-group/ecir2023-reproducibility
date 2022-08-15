@@ -1,4 +1,7 @@
-"""Mixin class to generate data from file."""
+"""Mixin class to generate data from file.
+
+Action supported: encoding and indexing.
+"""
 
 import itertools
 import logging

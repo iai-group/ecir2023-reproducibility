@@ -108,7 +108,7 @@ def parse_cmdline_arguments() -> argparse.Namespace:
     Returns:
         Object with a property for each argument.
     """
-    parser = argparse.ArgumentParser(prog="pyserini_encoder.py")
+    parser = argparse.ArgumentParser(prog="pyserini_ance_encoder.py")
     parser.add_argument(
         "-o",
         "--output-file",
