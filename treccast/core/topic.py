@@ -21,7 +21,7 @@ class QueryRewrite(Enum):
 
 @dataclass
 class Turn:
-    turn_id: int
+    turn_id: str
     canonical_result_id: str
     result_turn_dependence: int
     query_turn_dependence: list
@@ -29,6 +29,8 @@ class Turn:
     automatic_rewritten_utterance: str = None
     manual_rewritten_utterance: str = None
     passage_id: str = None
+    response: str = None
+    provenance: List[str] = None
     passage: str = None
     canonical_passage: str = None
 
@@ -89,7 +91,7 @@ class Topic:
     title: str
     turns: List[Turn]
 
-    def get_turn(self, turn_id: int) -> Turn:
+    def get_turn(self, turn_id: str) -> Turn:
         """Returns a given topic turn.
 
         Args:
@@ -101,11 +103,11 @@ class Topic:
         Returns:
             Turn instance.
         """
-        if len(self.turns) < turn_id:
+        if turn_id not in [turn.turn_id for turn in self.turns]:
             raise IndexError(f"Invalid turn_id: {turn_id}")
-        return self.turns[turn_id - 1]
+        return next(turn for turn in self.turns if turn.turn_id == turn_id)
 
-    def get_query_id(self, turn_id: int) -> str:
+    def get_query_id(self, turn_id: str) -> str:
         """Returns query ID corresponding to a given topic turn.
 
         Args:
@@ -117,7 +119,7 @@ class Topic:
         return f"{self.topic_id}_{turn_id}"
 
     def get_query(
-        self, turn_id: int, query_rewrite: QueryRewrite = None
+        self, turn_id: str, query_rewrite: QueryRewrite = None
     ) -> Query:
         """Returns query corresponding to a given turn, optionally, with query
         rewriting applied.
@@ -148,10 +150,13 @@ class Topic:
             self.get_query(turn.turn_id, query_rewrite) for turn in self.turns
         ]
 
-    def get_contexts(self, query_rewrite: QueryRewrite = None) -> List[Context]:
+    def get_contexts(
+        self, year: str, query_rewrite: QueryRewrite = None
+    ) -> List[Context]:
         """Gets a list of contexts for each turn.
 
         Args:
+            year: Year (2019_train, 2019, 2020, 2021, or 2022).
             query_rewrite (optional): Query rewrite variant to include in
               context (auto/manual). Defaults to None (i.e., raw).
 
@@ -160,16 +165,32 @@ class Topic:
             responses included.
         """
         queries = self.get_queries(query_rewrite)[:-1]
-        canonical_response_ids = [
-            turn.canonical_result_id for turn in self.turns
-        ][:-1]
+        if year == "2022":
+            canonical_response_ids = [turn.provenance for turn in self.turns][
+                :-1
+            ]
+        else:
+            canonical_response_ids = [
+                turn.canonical_result_id for turn in self.turns
+            ][:-1]
         contexts = [None]
         for query, canonical_response in zip(queries, canonical_response_ids):
             context = Context()
             context.history = (
                 contexts[-1].history.copy() if len(contexts) > 1 else []
             )
-            context.history.append((query, Document(canonical_response)))
+            if year == "2022":
+                context.history.append(
+                    (
+                        query,
+                        [
+                            Document(provenance)
+                            for provenance in canonical_response
+                        ],
+                    )
+                )
+            else:
+                context.history.append((query, [Document(canonical_response)]))
             contexts.append(context)
         return contexts
 
@@ -250,7 +271,9 @@ class Topic:
                         "result_turn_dependence"
                     ),
                     query_turn_dependence=raw_turn.get("query_turn_dependence"),
-                    raw_utterance=raw_turn.get("raw_utterance"),
+                    raw_utterance=raw_turn.get("utterance")
+                    if raw_turn.get("raw_utterance") is None
+                    else raw_turn.get("raw_utterance"),
                     automatic_rewritten_utterance=raw_turn.get(
                         "automatic_rewritten_utterance"
                     ),
@@ -258,6 +281,23 @@ class Topic:
                         "manual_rewritten_utterance"
                     ),
                     passage_id=raw_turn.get("passage_id"),
+                    response=raw_turn.get("response"),
+                    # The documents in 2022 index contains additional infix
+                    # _msmarco_doc_ that is missing in document IDs in 2022
+                    # topics.
+                    provenance=[
+                        provenance + "-1"
+                        if "-" not in provenance and len(provenance) > 0
+                        else provenance
+                        for provenance in [
+                            provenance.replace("_", "_msmarco_doc_", 1)
+                            if "MARCO" in provenance
+                            else provenance
+                            for provenance in raw_turn.get("provenance")
+                        ]
+                    ]
+                    if "provenance" in raw_turn
+                    else raw_turn.get("provenance"),
                     passage=raw_turn.get("passage"),
                     canonical_passage=raw_turn.get("canonical_passage"),
                 )
@@ -334,7 +374,7 @@ class Topic:
         return [
             context
             for topic in Topic.load_topics_from_file(year, query_rewrite)
-            for context in topic.get_contexts(query_rewrite)
+            for context in topic.get_contexts(year, query_rewrite)
         ]
 
 

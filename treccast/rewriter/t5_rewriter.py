@@ -79,6 +79,7 @@ class T5Rewriter(Rewriter):
         use_canonical_response: bool = _USE_CANONICAL_RESPONSE,
         index_name: str = _INDEX_NAME,
         separator: str = _SEPARATOR,
+        year: str = _YEAR,
     ) -> Query:
         """Rewrites query to a new contextualized query given context.
 
@@ -121,8 +122,11 @@ class T5Rewriter(Rewriter):
         input_text = separator.join(history_questions)
         if use_canonical_response:
             passage_loader = PassageLoader(index=index_name)
-            doc_id = context.history[-1][1].doc_id
-            canonical_response = passage_loader.get(doc_id)
+            canonical_response = ""
+            for doc in context.history[-1][1]:
+                canonical_response = canonical_response + passage_loader.get(
+                    doc.doc_id
+                )
             split_canonical_response = canonical_response.split(" ")
             all_questions_length = len(
                 " ".join(history_questions + [query.question]).split(" ")
@@ -212,6 +216,7 @@ def rewrite_queries_with_fine_tuned_model(
                 use_canonical_response=use_responses,
                 index_name=index_name,
                 separator=separator,
+                year=year,
             )
             rewrites.append(rewrite)
             tsv_writer.writerow(
@@ -245,7 +250,7 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         "--year",
         type=str,
         default=_YEAR,
-        choices=["2020", "2021"],
+        choices=["2020", "2021", "2022"],
         help="Year for which the rewrites should be generated.",
     )
     parser.add_argument(

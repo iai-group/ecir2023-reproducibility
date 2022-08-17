@@ -84,6 +84,12 @@ Available only on `gorina39`:
   * [2021 topics](topics/2021)
     - [2021_manual_evaluation_topics_v1.0.json](topics/2021/2021_manual_evaluation_topics_v1.0.json): Manual query rewrites.
     - [2021_automatic_evaluation_topics_v1.0.json](topics/2021/2021_automatic_evaluation_topics_v1.0.json): Automatic query rewrites.
+  * [2022 topics](topics/2022)
+    - [2022_manual_evaluation_topics_tree_v1.0.json](topics/2022/2022_manual_evaluation_topics_tree_v1.0.json): Conversation trees with manual query rewrites.
+    - [2022_automatic_evaluation_topics_tree_v1.0.json](topics/2022/2022_automatic_evaluation_topics_tree_v1.0.json): Conversation trees with automatic query rewrites.
+    - [2022_manual_evaluation_topics_v1.0.json](topics/2022/2022_manual_evaluation_topics_v1.0.json): Flattened conversation trees with duplicates with manual query rewrites.
+    - [2022_automatic_evaluation_topics_v1.0.json](topics/2022/2022_automatic_evaluation_tree_v1.0.json): Flattened conversation trees with duplicates with automatic query rewrites.
+    - [2022_evaluation_topics_turn_ids.json](topics/2022/2022_evaluation_topics_turn_ids.json): IDs that responses/ranked passages need to be returned for.
 
 ## Qrels
 

@@ -84,7 +84,7 @@ def run(
     reranker: Reranker = None,
     second_reranker: Reranker = None,
     second_reranker_top_k: int = 50,
-    year: str = "2021",
+    year: str = "2022",
     k: int = 1000,
     ranking_cache: CachedRanking = None,
 ) -> None:
@@ -266,8 +266,8 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     parser.add_argument(
         "-y",
         "--year",
-        choices=["2020", "2021"],
-        help='Year for which to run the program. Defaults to "2021".',
+        choices=["2020", "2021", "2022"],
+        help='Year for which to run the program. Defaults to "2022".',
     )
     parser.add_argument(
         "-k",

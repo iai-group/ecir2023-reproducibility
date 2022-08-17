@@ -58,4 +58,4 @@ class Context:
     system response.
     """
 
-    history: List[Tuple[Query, Document]] = field(default_factory=list)
+    history: List[Tuple[Query, List[Document]]] = field(default_factory=list)

@@ -1,46 +1,81 @@
 """Tests for Topic."""
 
 import pytest
-from treccast.core.topic import Context, Document, QueryRewrite, Topic
+from typing import List
+from treccast.core.topic import Context, Document, QueryRewrite, Topic, Query
 
 
 def test_get_filepath():
     assert (
-        Topic.get_filepath("2019")
+        Topic.get_filepath("2019", QueryRewrite.MANUAL, False)
         == "data/topics/2019/2019_manual_evaluation_topics_v1.0.json"
     )
     assert (
-        Topic.get_filepath("2020", QueryRewrite.MANUAL)
+        Topic.get_filepath("2020", QueryRewrite.MANUAL, False)
         == "data/topics/2020/2020_manual_evaluation_topics_v1.0.json"
     )
     assert (
-        Topic.get_filepath("2021", QueryRewrite.AUTOMATIC)
+        Topic.get_filepath("2021", QueryRewrite.AUTOMATIC, False)
         == "data/topics/2021/2021_automatic_evaluation_topics_v1.0.json"
+    )
+    assert (
+        Topic.get_filepath("2022", QueryRewrite.AUTOMATIC, False)
+        == "data/topics/2022/2022_automatic_evaluation_topics_v1.0.json"
     )
 
 
 @pytest.fixture
-def topics_2020_raw():
+def topics_2020_raw() -> List[Topic]:
     return Topic.load_topics_from_file("2020")
 
 
 @pytest.fixture
-def topics_2020_manual():
+def topics_2020_manual() -> List[Topic]:
     return Topic.load_topics_from_file("2020", QueryRewrite.MANUAL)
 
 
 @pytest.fixture
-def topics_2020_automatic():
+def topics_2020_automatic() -> List[Topic]:
     return Topic.load_topics_from_file("2020", QueryRewrite.AUTOMATIC)
 
 
 @pytest.fixture
-def queries_2020_manual():
+def topics_2021_raw() -> List[Topic]:
+    return Topic.load_topics_from_file("2021")
+
+
+@pytest.fixture
+def topics_2021_manual() -> List[Topic]:
+    return Topic.load_topics_from_file("2021", QueryRewrite.MANUAL)
+
+
+@pytest.fixture
+def topics_2021_automatic() -> List[Topic]:
+    return Topic.load_topics_from_file("2021", QueryRewrite.AUTOMATIC)
+
+
+@pytest.fixture
+def topics_2022_raw() -> List[Topic]:
+    return Topic.load_topics_from_file("2022", None, False)
+
+
+@pytest.fixture
+def topics_2022_manual() -> List[Topic]:
+    return Topic.load_topics_from_file("2022", QueryRewrite.MANUAL, False)
+
+
+@pytest.fixture
+def topics_2022_automatic() -> List[Topic]:
+    return Topic.load_topics_from_file("2022", QueryRewrite.AUTOMATIC, False)
+
+
+@pytest.fixture
+def queries_2020_manual() -> List[Query]:
     return Topic.load_queries_from_file("2020", QueryRewrite.MANUAL)
 
 
 @pytest.fixture
-def queries_2020_automatic():
+def queries_2020_automatic() -> List[Query]:
     return Topic.load_queries_from_file("2020", QueryRewrite.AUTOMATIC)
 
 
@@ -110,25 +145,69 @@ def test_get_query_automatic_rewrite_via_queries(queries_2020_automatic):
 
 
 @pytest.mark.parametrize(
-    "topics, query_rewrite",
+    "topics, year, query_rewrite",
     [
-        ("topics_2020_raw", None),
-        ("topics_2020_manual", QueryRewrite.MANUAL),
-        ("topics_2020_automatic", QueryRewrite.AUTOMATIC),
+        ("topics_2020_raw", "2020", None),
+        ("topics_2020_manual", "2020", QueryRewrite.MANUAL),
+        ("topics_2020_automatic", "2020", QueryRewrite.AUTOMATIC),
+        ("topics_2021_raw", "2021", None),
+        ("topics_2021_manual", "2021", QueryRewrite.MANUAL),
+        ("topics_2021_automatic", "2021", QueryRewrite.AUTOMATIC),
     ],
 )
-def test_get_context_raw(topics, query_rewrite, request):
+def test_get_context_raw(topics, year, query_rewrite, request):
     topic = request.getfixturevalue(topics)[0]
     query_1 = topic.get_query(1, query_rewrite)
     canonical_response_id_1 = topic.turns[0].canonical_result_id
     query_2 = topic.get_query(2, query_rewrite)
     canonical_response_id_2 = topic.turns[1].canonical_result_id
-    contexts = topic.get_contexts(query_rewrite)
+    contexts = topic.get_contexts(year, query_rewrite)
     assert contexts[0] is None
     context_2 = Context()
-    context_2.history = [(query_1, Document(canonical_response_id_1))]
+    context_2.history = [(query_1, [Document(canonical_response_id_1)])]
     assert contexts[1] == context_2
     context_3 = Context()
     context_3.history = context_2.history
-    context_3.history.append((query_2, Document(canonical_response_id_2)))
+    context_3.history.append((query_2, [Document(canonical_response_id_2)]))
+    assert contexts[2] == context_3
+
+
+@pytest.mark.parametrize(
+    "topics, query_rewrite",
+    [
+        ("topics_2022_raw", None),
+        ("topics_2022_manual", QueryRewrite.MANUAL),
+        ("topics_2022_automatic", QueryRewrite.AUTOMATIC),
+    ],
+)
+def test_get_context_raw_2022(topics, query_rewrite, request):
+    topic = request.getfixturevalue(topics)[0]
+    query_1 = topic.get_query("1-1", query_rewrite)
+    canonical_response_ids_1 = topic.turns[0].provenance
+    query_2 = topic.get_query("1-3", query_rewrite)
+    canonical_response_ids_2 = topic.turns[1].provenance
+    contexts = topic.get_contexts("2022", query_rewrite)
+    assert contexts[0] is None
+    context_2 = Context()
+    context_2.history = [
+        (
+            query_1,
+            [
+                Document(response_id_1)
+                for response_id_1 in canonical_response_ids_1
+            ],
+        )
+    ]
+    assert contexts[1] == context_2
+    context_3 = Context()
+    context_3.history = context_2.history
+    context_3.history.append(
+        (
+            query_2,
+            [
+                Document(response_id_2)
+                for response_id_2 in canonical_response_ids_2
+            ],
+        )
+    )
     assert contexts[2] == context_3
