@@ -266,7 +266,7 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     parser.add_argument(
         "-y",
         "--year",
-        choices=["2020", "2021", "2022"],
+        choices=["2019", "2020", "2021", "2022"],
         help='Year for which to run the program. Defaults to "2022".',
     )
     parser.add_argument(

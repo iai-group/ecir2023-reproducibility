@@ -23,6 +23,7 @@ dependencies:
   - scipy=1.7.1
   - h5py
   - faiss-cpu
+  - matplotlib
   - pip:
     - trec-car-tools
     - simpletransformers==0.61.13

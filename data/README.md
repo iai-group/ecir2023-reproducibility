@@ -10,6 +10,12 @@
 
 ## Datasets
 
+### 2019
+
+  * [TREC CAR paragraph collection v2.0](http://trec-car.cs.unh.edu/datareleases/) => `$COLLECTIONS/trec-car/paragraphCorpus.v2.0.tar.gz` (6.9G)
+  * [MS MARCO Passage Ranking collection](https://github.com/microsoft/MSMARCO-Passage-Ranking) => `$COLLECTIONS/msmarco-passage/collection.tar.gz` (988M)
+  * [Washington Post 2019](https://trec.nist.gov/data/wapost/) => `$COLLECTIONS/wapo/WashingtonPost.v2.tar.gz` (2.4G)
+
 ### 2020
 
   * [MS MARCO Passage Ranking collection](https://github.com/microsoft/MSMARCO-Passage-Ranking) => `$COLLECTIONS/msmarco-passage/collection.tar.gz` (988M)  
@@ -43,6 +49,11 @@ Elasticsearch servers in use are `gustav1.ux.uis.no:9204` and `gorina39.ux.uis.n
 
 If the connection from gorina to the index on gustav1 fails, the workaround is to make a ssh connection with port forwarding using the following command:
 `ssh -L 9204:gustav1.ux.uis.no:9204 -N -f gustav1.ux.uis.no`
+
+### 2019
+
+So far available only on `gorina39`:
+  * `ms_marco_wapo_v2_trec_car` => Inverted index with stopword removal and KStemming.
 
 ### 2020
 
