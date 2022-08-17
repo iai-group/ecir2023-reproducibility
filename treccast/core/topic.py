@@ -4,12 +4,14 @@ of a Question and Context.
 
 from __future__ import annotations
 
+import argparse
 import json
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
+from typing import List, Tuple
 
 from treccast.core.base import Context, Document, Query
+from treccast.core.util.passage_loader import PassageLoader
 
 
 class QueryRewrite(Enum):
@@ -27,15 +29,14 @@ class Turn:
     automatic_rewritten_utterance: str = None
     manual_rewritten_utterance: str = None
     passage_id: str = None
+    passage: str = None
+    canonical_passage: str = None
 
     def __post_init__(self):
         if self.passage_id is not None:
             self.canonical_result_id = (
                 f"{self.canonical_result_id}-{self.passage_id}"
             )
-
-    # TODO: Extend with the text of the canonical result
-    # See https://github.com/iai-group/trec-cast-2021/issues/17
 
     def get_utterance(self, query_rewrite: QueryRewrite = None) -> str:
         """Returns the text utterance for this turn, optionally, with query
@@ -65,6 +66,20 @@ class Turn:
             )
 
         return utterance
+
+    def get_passage_content(self, use_answer_rewrite: bool = False) -> str:
+        """Returns passage content.
+
+        Args:
+            use_answer_rewrite: If false, returns full passage, otherwise
+              uses answer rewrite. Defaults to False.
+
+        Returns:
+            Passage content.
+        """
+        if use_answer_rewrite and self.passage:
+            return self.passage
+        return self.canonical_passage
 
 
 @dataclass
@@ -159,7 +174,9 @@ class Topic:
         return contexts
 
     @staticmethod
-    def get_filepath(year: str, query_rewrite: QueryRewrite = None) -> str:
+    def get_filepath(
+        year: str, query_rewrite: QueryRewrite = None, use_extended: bool = True
+    ) -> str:
         """Returns file path to topic file to be used based on year and query
         rewriting applied.
 
@@ -167,6 +184,7 @@ class Topic:
             year: Year (2019_train, 2019, 2020, or 2021).
             query_rewrite (optional): Query rewrite variant to load
               (auto/manual). Defaults to None (i.e., raw).
+            use_extended (optional): If true, uses extended topic file version.
 
         Returns:
             Topic file path (relative to repo root).
@@ -181,13 +199,14 @@ class Topic:
                 else "manual"
             )
             filepath += f"{year}_{variant}_evaluation_topics"
-        filepath += "_v1.0.json"
+        extend = "_extended" if use_extended else ""
+        filepath += f"_v1.0{extend}.json"
 
         return filepath
 
     @staticmethod
     def load_topics_from_file(
-        year: str, query_rewrite: QueryRewrite = None
+        year: str, query_rewrite: QueryRewrite = None, use_extended: bool = True
     ) -> List[Topic]:
         """Creates a list of Topic objects from JSON file.
 
@@ -195,12 +214,16 @@ class Topic:
             year: Year.
             query_rewrite (optional): Query rewrite variant to load
               (auto/manual). Defaults to None (i.e., raw).
+            use_extended (optional): If true, uses extended topic file version.
+              Defaults to True.
 
         Returns:
             Extracted Topics.
         """
         with open(
-            Topic.get_filepath(year, query_rewrite), "r", encoding="utf8"
+            Topic.get_filepath(year, query_rewrite, use_extended),
+            "r",
+            encoding="utf8",
         ) as f_in:
             raw_topics = json.load(f_in)
 
@@ -235,6 +258,8 @@ class Topic:
                         "manual_rewritten_utterance"
                     ),
                     passage_id=raw_turn.get("passage_id"),
+                    passage=raw_turn.get("passage"),
+                    canonical_passage=raw_turn.get("canonical_passage"),
                 )
                 for raw_turn in raw_topic.get("turn")
             ]
@@ -262,6 +287,36 @@ class Topic:
         ]
 
     @staticmethod
+    def load_queries_with_answers_from_file(
+        year: str,
+        query_rewrite: QueryRewrite = None,
+        use_answer_rewrite: bool = False,
+    ) -> List[Tuple(Query, Document)]:
+        """Creates a list of Query objects from topic JSON file.
+
+        Args:
+            year: Year.
+            query_rewrite (optional): Query rewrite variant to load
+              (auto/manual). Defaults to None (i.e., raw).
+            use_answer_rewrite (optional): If true, the document content is the
+              rewritten passage, otherwise its full passage. Defaults to False.
+
+        Returns:
+            List of Query objects.
+        """
+        return [
+            (
+                topic.get_query(turn.turn_id, query_rewrite),
+                Document(
+                    turn.canonical_result_id,
+                    turn.get_passage_content(use_answer_rewrite),
+                ),
+            )
+            for topic in Topic.load_topics_from_file(year, query_rewrite)
+            for turn in topic.turns
+        ]
+
+    @staticmethod
     def load_contexts_from_file(
         year: str, query_rewrite: QueryRewrite = None
     ) -> List[Context]:
@@ -281,3 +336,71 @@ class Topic:
             for topic in Topic.load_topics_from_file(year, query_rewrite)
             for context in topic.get_contexts(query_rewrite)
         ]
+
+
+def parse_args() -> argparse.Namespace:
+    """Defines accepted arguments and returns the parsed values.
+
+    Returns:
+        Object with a property for each argument.
+    """
+    parser = argparse.ArgumentParser(prog="topic.py")
+    # General config
+    parser.add_argument(
+        "--hostname",
+        help=("Elasticsearch hostname."),
+    )
+    return parser.parse_args()
+
+
+def extend_with_canonical_passages(
+    host_name: str,
+    index_name: str,
+    year: str,
+    query_rewrite: QueryRewrite = None,
+) -> None:
+    """Extends turns with canonical passages.
+
+    Stores extended topics to the json file of the same name with "_extended"
+    added to the end.
+
+    Args:
+        host_name: Elasticsearch hostname.
+        index_name: Elasticsearch index to use for passage retrieval.
+        year: Year for which to extend the topic file.
+        query_rewrite (optional): Type of query rewrite. Defaults to None.
+    """
+    passage_loader = PassageLoader(host_name, index_name)
+    filepath = Topic.get_filepath(year, query_rewrite, use_extended=False)
+
+    # load original topics
+    with open(filepath, "r", encoding="utf8") as f_in:
+        raw_topics = json.load(f_in)
+
+    # extend turns with canonical answers
+    for i, topic in enumerate(
+        Topic.load_topics_from_file(year, query_rewrite, use_extended=False)
+    ):
+        for turn, raw_turn in zip(topic.turns, raw_topics[i]["turn"]):
+            raw_turn["canonical_passage"] = passage_loader.get(
+                turn.canonical_result_id
+            )
+
+    # save extended topics
+    with open(
+        f"{filepath.split('.json')[0]}_extended.json", "w", encoding="utf8"
+    ) as f_out:
+        json.dump(raw_topics, f_out)
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    opts = {
+        "2020": "ms_marco_trec_car_clean",
+        "2021": "ms_marco_kilt_wapo_clean",
+    }
+    for year, index_name in opts.items():
+        for query_rewrite in [QueryRewrite.AUTOMATIC, QueryRewrite.MANUAL]:
+            extend_with_canonical_passages(
+                args.hostname, index_name, year, query_rewrite
+            )
