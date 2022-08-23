@@ -1,12 +1,5 @@
 # Experiments 2020
 
-Evaluation scores are generated using trec_eval (note that relevance threshold is >=2 for binary measures!):
-```
-$ {TREC_EVAL_PATH}/trec_eval -m all_trec -l2 data/qrels/2020.txt data/runs-2020/{RUNID}.trec
-```
-
-  * It assumes that [trec_eval](https://github.com/usnistgov/trec_eval) is installed locally under `{TREC_EVAL_PATH}`.
-
 There should be a script corresponding to each table row containing the exact parameterization.
 Scripts are to be run from root.
 
