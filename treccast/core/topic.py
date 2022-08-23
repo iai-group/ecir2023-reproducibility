@@ -8,7 +8,7 @@ import argparse
 import json
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from treccast.core.base import Context, Document, Query
 from treccast.core.util.passage_loader import PassageLoader
@@ -33,6 +33,7 @@ class Turn:
     provenance: List[str] = None
     passage: str = None
     canonical_passage: str = None
+    provenance_passages: List[str] = None
 
     def __post_init__(self):
         if self.passage_id is not None:
@@ -82,6 +83,22 @@ class Turn:
         if use_answer_rewrite and self.passage:
             return self.passage
         return self.canonical_passage
+
+    def get_provenance_content(
+        self, use_answer_rewrite: bool = False
+    ) -> List[str]:
+        """Returns contents of all passages in provenance.
+
+        Args:
+            use_answer_rewrite: If false, returns list of passages, otherwise
+              uses answer rewrite (response). Defaults to False.
+
+        Returns:
+            Passage content.
+        """
+        if use_answer_rewrite and self.passage:
+            return [self.response]
+        return self.provenance_passages
 
 
 @dataclass
@@ -300,6 +317,7 @@ class Topic:
                     else raw_turn.get("provenance"),
                     passage=raw_turn.get("passage"),
                     canonical_passage=raw_turn.get("canonical_passage"),
+                    provenance_passages=raw_turn.get("provenance_passages"),
                 )
                 for raw_turn in raw_topic.get("turn")
             ]
@@ -331,7 +349,9 @@ class Topic:
         year: str,
         query_rewrite: QueryRewrite = None,
         use_answer_rewrite: bool = False,
-    ) -> List[Tuple(Query, Document)]:
+    ) -> Union[
+        List[Tuple(Query, Document)], List[Tuple(Query, List[Document])]
+    ]:
         """Creates a list of Query objects from topic JSON file.
 
         Args:
@@ -350,7 +370,18 @@ class Topic:
                 Document(
                     turn.canonical_result_id,
                     turn.get_passage_content(use_answer_rewrite),
-                ),
+                )
+                if year != "2022"
+                else [
+                    Document(
+                        provenance_id,
+                        provenance_content,
+                    )
+                    for provenance_id, provenance_content in zip(
+                        turn.provenance,
+                        turn.get_provenance_content(use_answer_rewrite),
+                    )
+                ],
             )
             for topic in Topic.load_topics_from_file(year, query_rewrite)
             for turn in topic.turns
@@ -422,9 +453,16 @@ def extend_with_canonical_passages(
         Topic.load_topics_from_file(year, query_rewrite, use_extended=False)
     ):
         for turn, raw_turn in zip(topic.turns, raw_topics[i]["turn"]):
-            raw_turn["canonical_passage"] = passage_loader.get(
-                turn.canonical_result_id
-            )
+            if year == "2022":
+                if turn.provenance is not None:
+                    raw_turn["provenance_passages"] = [
+                        passage_loader.get(provenance_id)
+                        for provenance_id in turn.provenance
+                    ]
+            else:
+                raw_turn["canonical_passage"] = passage_loader.get(
+                    turn.canonical_result_id
+                )
 
     # save extended topics
     with open(
@@ -438,6 +476,7 @@ if __name__ == "__main__":
     opts = {
         "2020": "ms_marco_trec_car_clean",
         "2021": "ms_marco_kilt_wapo_clean",
+        "2022": "ms_marco_v2_kilt_wapo",
     }
     for year, index_name in opts.items():
         for query_rewrite in [QueryRewrite.AUTOMATIC, QueryRewrite.MANUAL]:

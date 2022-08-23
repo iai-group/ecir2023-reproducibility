@@ -112,6 +112,7 @@ def run(
         ranking_cache: Class that adds rankings from previous turns to the
           current candidate pool.
     """
+    retrieved_query_ids = []
     with open(f"data/runs/{year}/{output_name}.trec", "w") as trec_out, open(
         f"data/first_pass/{year}/{output_name}.tsv", "w"
     ) as retrieval_out:
@@ -123,6 +124,9 @@ def run(
             # TODO: Replace print with logging.
             # See: https://github.com/iai-group/trec-cast-2021/issues/37
             print(query.query_id)
+            if query.query_id in retrieved_query_ids:
+                print("Retrieval with this query has been already performed.")
+                continue
 
             # Custom rewriter
             if rewriter:
@@ -154,6 +158,8 @@ def run(
                 k=k,
                 remove_passage_id=(year == "2021"),
             )
+
+            retrieved_query_ids.append(query.query_id)
 
 
 def _get_rewriter(path: str) -> Rewriter:
