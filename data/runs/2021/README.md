@@ -20,3 +20,14 @@ All the runfiles with metadata config files are placed under `$DATA/runs/2021`. 
 | [BM25 (ms_marco_kilt_wapo_clean)](first_pass_retireval/manual_bm25_2021.meta.yaml) | Manual | 0.7732 | 0.2470 | 0.6213 | 0.5310 | 0.4073 |
 | [BM25 (ms_marco_kilt_wapo_clean)](first_pass_retireval/automatic_bm25_2021.meta.yaml) | Automatic | 0.6319 | 0.1770 | 0.4878 | 0.4184 | 0.3114 |
 | [T5-CANARD rewriter (`castorini/t5-base-canard`) + BM25 (ms_marco_kilt_wapo_clean)](first_pass_retireval/t5_canard_bm25_2021.meta.yaml) | Automatic | 0.6666 | 0.1743 | 0.4763 | 0.4301 | 0.3031 | 
+
+## Evaluation on 2021 synthetic qrels
+
+| *Method* | *Query rewriting* | *recall@1000* | *MAP* | *MRR* | *NDCG* | *NDCG@3* | *NDCG@5* | 
+| -- | -- | -- | -- | -- | -- | -- | -- |
+| [BM25 (ms_marco_trec_car_clean) + T5](reproduce_raw_2021.meta.yaml) | None (raw) | 0.1597 | 0.0255 | 0.0255 | 0.0503 | 0.0200 | 0.0253 |
+| [BM25 (ms_marco_trec_car_clean) + T5](reproduce_manual_2021.meta.yaml) | Manual | 0.2594 | 0.0692 | 0.0692 | 0.1076 | 0.0550 | 0.0689 |
+| [BM25 (ms_marco_trec_car_clean) + T5](reproduce_automatic_2021.meta.yaml) | Automatic | 0.2343 | 0.0567 | 0.0567 | 0.0926 | 0.0419 | 0.0603 |
+| [BM25 (ms_marco_trec_car_clean) + T5 (monoT5 + duoT5)](mono-duo-t5_automatic_2021.meta.yaml) | Automatic | 0.2343 | 0.0757 | 0.0757 | 0.1071 | 0.0670 | 0.0775 |
+| [T5-QReCC rewriter (WaterlooClarke) + BM25 (ms_marco_trec_car_clean) + T5](t5_qrecc_rewriter_2021.meta.yaml) | Automatic | 0.2176 | 0.0461 | 0.0461 | 0.0798 | 0.0388 | 0.0526 |
+| [T5-CANARD rewriter (`castorini/t5-base-canard`) + BM25 (ms_marco_trec_car_clean) + T5](t5_canard_rewriter_2021.meta.yaml) | Automatic | 0.2301 | 0.0600 | 0.0600 | 0.0945 | 0.0493 | 0.0646 |
