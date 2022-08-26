@@ -1,5 +1,37 @@
 # Submitted files
 
+## Main-task run 'uis_duoboat'
+
+  * What topic data does this run use?
+    - [x] System uses automatic topic files
+  
+  * How is conversation understanding (NLP/rewriting) performed in this run (check all that apply)?
+    - [x] method performs generative query rewriting (CQR), including models like BART/T5
+  
+  * What data is used for conversational query understanding in this run (check all that apply)?
+    - [x] method uses other external data (please specify in the external resources field below)
+  
+  * How is ranking performed in this run (check all that apply)?
+    - [x] method uses traditional unsupervised sparse retrieval (e.g. QL, BM25, etc.)
+    - [x] method performs re-ranking with a pre-trained neural language model (BERT, Roberta, T5, etc.) (please describe specifics in the description field below)
+  
+  * What data is used to develop the ranking method in this run (check all that apply)?
+    - [x] method is trained with previous CAsT datasets
+    - [x] method is trained with TREC Deep Learning Track and/or MS MARCO dataset
+  
+  * Please specify all the methods used to handle feedback or clarification responses from the user.
+    - [x] method does not treat them specially
+  
+  * Please describe the method used to generate the final conversational responses from one or more retrieved passages.
+    - [x] method uses single source (single passage)
+    - [x] method does not perform summarization (i.e. uses passages as-is)
+
+  * Please describe the external resources used by this run, if applicable.
+    - HuggingFace pretrained models, CANARD dataset, MS MARCO dataset, 2020 and 2021 CAsT datasets
+
+  * Please provide a short description of this run.
+    - The first-pass retrieval using BM25 with the parameters tuned on 2020 and 2021 CAsT datasets, is followed by mono T5 reranking and duo T5 reranking, which have been fine-tuned on MS MARCO. The query rewriting is performed with a HuggingFace model fine-tuned on CANARD dataset. Previously rewritten utterances and the last canonical response are used as a context.
+
 ## Mixed-initiative run 'uis_clearboat'
 
   * What category of mixed-initiative does this run use?
@@ -30,4 +62,3 @@
 
 ## Mixed-initiative run 'uis_ambiguousboat'
 Todo: 
-
