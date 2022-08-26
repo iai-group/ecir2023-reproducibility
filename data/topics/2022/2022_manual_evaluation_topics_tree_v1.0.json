@@ -1643,7 +1643,8 @@
                 "participant": "System",
                 "response": "Tour Nigeria is the name of a tourism brand created by the Nigerian Tourism Development Corporation (NTDC), to promote domestic tourism in Nigeria. The ″Tour Nigeria″ tourism brand was officially branded and launched by Folorunsho Coker, the present Director General of the Nigerian Tourism Development Corporation, in 2017. Some of the brand’s projects include CHIEF which aims to promote domestic tourism, encourage ease of doing business in Nigeria, and act as the foothold upon which the Tour Nigeria project would be driven and achieved.",
                 "provenance": [
-                    "KILT_59101211-1"
+                    "KILT_59101211-1",
+                    "KILT_59101211-2"
                 ]
             },
             {
@@ -2055,7 +2056,7 @@
             },
             {
                 "number": "2-4",
-                "parent": "2-2",
+                "parent": "2-3",
                 "participant": "User",
                 "utterance": "What’s Merienda?",
                 "manual_rewritten_utterance": "What’s Merienda?"
@@ -2231,9 +2232,9 @@
             },
             {
                 "number": "9-1",
-                "parent": "2-2",
+                "parent": "2-5",
                 "participant": "User",
-                "utterance": "That’s a bit general. What makes Argentina unique?",
+                "utterance": "That’s a bit general. What makes Argentina’s unique?",
                 "manual_rewritten_utterance": "That’s a bit general. What makes Argentina’s version of Merienda unique?"
             },
             {
@@ -3274,7 +3275,7 @@
                 "response": "For example,  Author of the book “algorithms of oppression”, Safiya U. Noble was looking for websites to share with her stepdaughter and nieces. She searched \"black girls\" on Google, expecting to be directed to educational sites, historical information, or pop culture sites for young people. Instead, the first hit was the site HotBlackPussy.com. The first page was filled with similar results. According to Google in 2010, \"black girls\" were defined not by history, interests, or aspirations. They were defined as porn. What accounts for such racist, sexist search results? Most people tend to attribute Google failures or glitches like this to public search patterns; search engines return porn for \"black girls\" because those are the sites that people click on most.",
                 "provenance": [
                     "MARCO_48_119371286-1",
-                    "MARCO_16_1884092099"
+                    "MARCO_16_1884092099-2"
                 ]
             },
             {

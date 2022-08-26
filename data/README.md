@@ -73,7 +73,10 @@ Available both on `gustav1` and `gorina39`:
 
 ### 2022
 
-So far available only on `gorina39`:
+New index generated with files preprocessed by organizers available both on `gorina39` and on `gustav1`:
+  * `ms_marco_v2_kilt_wapo_new` => Analogous to `ms_marco_kilt_wapo_clean` but using MS MARCO V2 collection. 
+
+Outdated index available only on `gorina39`:
   * `ms_marco_v2_kilt_wapo` => Analogous to `ms_marco_kilt_wapo_clean` but using MS MARCO V2 collection. 
 
 ### Separate MS MARCO indices

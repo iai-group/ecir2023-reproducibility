@@ -28,7 +28,9 @@ The following files contain rewrites generated with T5 model fine-tuned using di
     `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2021/13_T5_CANARD.tsv --separator "|||"`
     - Rewrites for 2022 were generated with:
     `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2022/13_T5_CANARD.tsv --year 2022 --separator "|||" --index_name ms_marco_v2_kilt_wapo`
+    and for the updated index with:
+    `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2022/13_T5_CANARD_new.tsv --year 2022 --separator "|||" --index_name ms_marco_v2_kilt_wapo_new`
 
-They are all located under `data/rewrites/2020` and `data/rewrites/2021`.
+They are all located under `data/rewrites/2020`, `data/rewrites/2021`, and `data/rewrites/2022`.
 
-Performance of the rewriting methods in the whole retrieval-reranking pipeline is reported in [data/runs/2020/README.md](../runs/2020/README.md) and [data/runs/2021/README.md](../runs/2021/README.md).
+Performance of the rewriting methods in the whole retrieval-reranking pipeline is reported in [data/runs/2020/README.md](../runs/2020/README.md), [data/runs/2021/README.md](../runs/2021/README.md), and [data/runs/2022/README.md](../runs/2022/README.md).

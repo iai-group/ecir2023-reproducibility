@@ -299,19 +299,14 @@ class Topic:
                     ),
                     passage_id=raw_turn.get("passage_id"),
                     response=raw_turn.get("response"),
-                    # The documents in 2022 index contains additional infix
-                    # _msmarco_doc_ that is missing in document IDs in 2022
-                    # topics.
+                    # 2022 topics file sometimes specifies only doc_id, with
+                    # no passage_id indicatior. In such cases, we are taking
+                    # the first passage of the document as a provenance.
                     provenance=[
                         provenance + "-1"
                         if "-" not in provenance and len(provenance) > 0
                         else provenance
-                        for provenance in [
-                            provenance.replace("_", "_msmarco_doc_", 1)
-                            if "MARCO" in provenance
-                            else provenance
-                            for provenance in raw_turn.get("provenance")
-                        ]
+                        for provenance in raw_turn.get("provenance")
                     ]
                     if "provenance" in raw_turn
                     else raw_turn.get("provenance"),
@@ -476,7 +471,7 @@ if __name__ == "__main__":
     opts = {
         "2020": "ms_marco_trec_car_clean",
         "2021": "ms_marco_kilt_wapo_clean",
-        "2022": "ms_marco_v2_kilt_wapo",
+        "2022": "ms_marco_v2_kilt_wapo_new",
     }
     for year, index_name in opts.items():
         for query_rewrite in [QueryRewrite.AUTOMATIC, QueryRewrite.MANUAL]:

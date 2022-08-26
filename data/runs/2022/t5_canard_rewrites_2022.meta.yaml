@@ -1,13 +1,13 @@
 es:
     host_name: localhost:9204
-    index_name: ms_marco_v2_kilt_wapo
+    index_name: ms_marco_v2_kilt_wapo_new
     field: catch_all
     k1: 1.2
     b: 0.75
 output_name: t5_canard_rewrites_2022
 reranker: t5
 rewrite: yes
-rewrite_path: data/rewrites/2022/13_T5_CANARD.tsv
+rewrite_path: data/rewrites/2022/13_T5_CANARD_new.tsv
 year: '2022'
 k: 1000
 num_prev_turns: 0

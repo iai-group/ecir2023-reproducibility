@@ -28,7 +28,6 @@ def covert_trec_file_for_manual_inspection(
         delimiter=" ",
         names=["Query_id", "Q0", "Doc_id", "Rank", "Score", "Run_id"],
     )
-    print(trec_output.iloc[0]["Doc_id"])
     current_query_id = ""
     documents_added_for_current_query = 0
     results_for_manual_inspection = pd.DataFrame(
@@ -70,7 +69,7 @@ if __name__ == "__main__":
     results_for_manual_inspection = covert_trec_file_for_manual_inspection(
         "data/runs/2022/t5_canard_rewrites_2022.trec",
         3,
-        "ms_marco_v2_kilt_wapo",
+        "ms_marco_v2_kilt_wapo_new",
         "2022",
     )
     results_for_manual_inspection.to_csv(
