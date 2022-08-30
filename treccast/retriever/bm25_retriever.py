@@ -47,7 +47,11 @@ class BM25Retriever(Retriever):
         # See https://github.com/iai-group/trec-cast-2021/issues/37
 
         if isinstance(query, SparseQuery):
-            es_query = self.bool_query(query.weighted_terms)
+            es_query = self.bool_query(
+                query.weighted_terms,
+                query.weighted_match_phrases,
+                query.weighted_match_queries,
+            )
         else:
             es_query = self.match_query(query.question)
 
@@ -160,6 +164,7 @@ class BM25Retriever(Retriever):
         self,
         weighted_terms: Dict[str, float],
         weighted_phrases: Dict[str, float] = None,
+        weighted_match_queries: Dict[str, float] = None,
     ) -> _ES_query:
         """Query that computes the scores of each term or phrase individually.
 
@@ -167,6 +172,8 @@ class BM25Retriever(Retriever):
             weighted_terms: Dictionary of terms with weights as key-value pair.
             weighted_phrases: Dictionary of phrases with weights as key-value
               pair (Defaults to None).
+            weighted_match_queries: Dictionary of match queries with weights as
+              key-value pair.
 
         Returns:
             Elasticsearch query to return documents based on the aggregated
@@ -177,11 +184,17 @@ class BM25Retriever(Retriever):
                 "should": [
                     *[
                         self._term_query(term, weight)
-                        for term, weight in weighted_terms.items()
+                        for term, weight in (weighted_terms or {}).items()
                     ],
                     *[
                         self._phrase_query(phrase, weight)
                         for phrase, weight in (weighted_phrases or {}).items()
+                    ],
+                    *[
+                        self.match_query(match, weight)
+                        for match, weight in (
+                            weighted_match_queries or {}
+                        ).items()
                     ],
                 ]
             }

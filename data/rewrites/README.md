@@ -1,5 +1,11 @@
 # Query rewrites
 
+All rewrites are stored in TSV files located under `data/rewrites/{2020|2021|2022}`.
+
+The performance of the selected rewriting methods in the retrieval-reranking pipeline is reported in [data/runs/2020/README.md](../runs/2020/README.md), [data/runs/2021/README.md](../runs/2021/README.md), and [data/runs/2022/README.md](../runs/2022/README.md)..
+
+## Pre-generated rewrites for 2020
+
 The files `[1..11].tsv` are taken from the [GitHub repository](https://github.com/svakulenk0/cast_evaluation) accompanying the paper "Vakulenko et al. A Comparison of Question Rewriting Methods for Conversational Passage Retrieval. ECIR'21" [[PDF](https://arxiv.org/pdf/2101.07382.pdf)].
 
 The best performing rewriting methods:
@@ -13,11 +19,11 @@ The best performing rewriting methods:
 | Initial (BM25) | 11_Human | 0.7070 | 0.1439 | 0.3777 | 0.4232 | 0.2431 |
 | Reranking (BM25+BERT) | 11_Human | 0.7070 | 0.3269 | 0.6912 | 0.5830 | 0.5116 |
 
-# Generating query rewrites
+## Generating query rewrites
 
 You can generate query rewrites with chosen model as described in [data/fine_tuning/README.md](../fine_tuning/README.md). 
 
-# Query rewritten with fine-tuned models
+## Query rewritten with fine-tuned models
 
 The following files contain rewrites generated with T5 model fine-tuned using different datasets:
   * `12_T5_QReCC.tsv` - T5 fine-tuned using QReCC (implementation based on Simple Transformers).
@@ -28,9 +34,12 @@ The following files contain rewrites generated with T5 model fine-tuned using di
     `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2021/13_T5_CANARD.tsv --separator "|||"`
     - Rewrites for 2022 were generated with:
     `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2022/13_T5_CANARD.tsv --year 2022 --separator "|||" --index_name ms_marco_v2_kilt_wapo`
-    and for the updated index with:
-    `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2022/13_T5_CANARD_new.tsv --year 2022 --separator "|||" --index_name ms_marco_v2_kilt_wapo_new`
 
-They are all located under `data/rewrites/2020`, `data/rewrites/2021`, and `data/rewrites/2022`.
+## Sparse query rewrites
 
-Performance of the rewriting methods in the whole retrieval-reranking pipeline is reported in [data/runs/2020/README.md](../runs/2020/README.md), [data/runs/2021/README.md](../runs/2021/README.md), and [data/runs/2022/README.md](../runs/2022/README.md).
+Sparse query rewrites are generated similarly to query rewrites with an additional flag `--sparse`. This adds an extra column in the TSV file. The values in the column are a dictionary of rewrites and probability scores as key-value pairs.
+
+The following files contain rewrites generated with T5 model fine-tuned using different datasets:
+  * `14_T5_QReCC_sparse.tsv` - T5 fine-tuned using QReCC.
+  * `15_T5_CANARD_sparse.tsv` - T5 fine-tuned using CANARD (`castorini/t5-base-canard` HuggingFace model used)
+

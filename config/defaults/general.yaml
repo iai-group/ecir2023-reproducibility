@@ -11,6 +11,7 @@ output_name: raw_1k
 # Rewrite defaults
 query_rewrite: null
 rewrite: False
+rewrite_sparse: False
 rewrite_path: null
 
 

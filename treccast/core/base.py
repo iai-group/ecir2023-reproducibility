@@ -24,13 +24,28 @@ class Query:
 class SparseQuery(Query):
     """Representation of a sparse query containing a dict of weighted terms."""
 
-    weighted_terms: Dict[str, float]
+    weighted_terms: Dict[str, float] = None
+    weighted_match_queries: Dict[str, float] = None
+    weighted_match_phrases: Dict[str, float] = None
 
     def __str__(self):
-        return " ".join(
-            f"{term}^{round(weight, 2)}"
-            for term, weight in self.weighted_terms.items()
-        )
+        query = ""
+        if self.weighted_terms:
+            query += " ".join(
+                f"{term}^{round(weight, 2)}"
+                for term, weight in self.weighted_terms.items()
+            )
+        if self.weighted_match_queries:
+            query += " ".join(
+                f"(({term}))^{round(weight, 2)}"
+                for term, weight in self.weighted_match_queries.items()
+            )
+        if self.weighted_match_phrases:
+            query += " ".join(
+                f"(({term}))^{round(weight, 2)}"
+                for term, weight in self.weighted_match_phrases.items()
+            )
+        return query or super().__str__()
 
 
 @dataclass

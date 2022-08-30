@@ -37,7 +37,9 @@ def main(config: confuse.Configuration):
 
     rewriter = None
     if config["rewrite"].get(bool):
-        rewriter = _get_rewriter(config["rewrite_path"].get())
+        rewriter = _get_rewriter(
+            config["rewrite_path"].get(), config["rewrite_sparse"].get(False)
+        )
 
     retriever = _get_retriever(config)
 
@@ -136,6 +138,7 @@ def run(
                 query = expander.get_expanded_query(query)
 
             # Retrieval
+            # TODO https://github.com/iai-group/trec-cast/issues/379
             ranking = retriever.retrieve(query, num_results=k)
             if ranking_cache:
                 ranking = ranking_cache.add_previous_turns(
@@ -162,16 +165,17 @@ def run(
             retrieved_query_ids.append(query.query_id)
 
 
-def _get_rewriter(path: str) -> Rewriter:
+def _get_rewriter(path: str, sparse: bool) -> Rewriter:
     """Returns rewriter instance that generates rewritten questions.
 
     Args:
         path: Filepath containing rewrites.
+        sparse: If true loads sparse query rewrites.
 
     Returns:
         Rewriter class containing rewrites.
     """
-    return CachedRewriter(path)
+    return CachedRewriter(path, sparse)
 
 
 def _get_retriever(config: confuse.Configuration) -> Retriever:
@@ -313,7 +317,14 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     )
     rewrite_group.add_argument(
         "--rewrite_path",
-        help="Specifies the path for rewritten queries. Defalts to None.",
+        help="Specifies the path for rewritten queries. Defaults to None.",
+    )
+
+    rewrite_group.add_argument(
+        "--rewrite_sparse",
+        action="store_const",
+        const=True,
+        help="Specifies the path for rewritten queries. Defaults to False.",
     )
 
     # First-pass retrieval specific config

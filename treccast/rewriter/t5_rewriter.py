@@ -2,15 +2,16 @@
 
 import argparse
 import csv
+import json
+from typing import Dict, Union
 
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from treccast.core import NEURAL_MODEL_CACHE_DIR
-from treccast.core.base import Context, Query
+from treccast.core.base import Context, Query, SparseQuery
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.util.passage_loader import PassageLoader
 from treccast.rewriter.rewriter import Rewriter
-
 
 # The path to the fine-tuned model to be loaded and used for rewriting.
 _MODEL_DIR = (
@@ -33,6 +34,8 @@ _USE_CANONICAL_RESPONSE = True
 _INDEX_NAME = "ms_marco_kilt_wapo_clean"
 # Special token to separate input sequences.
 _SEPARATOR = "<sep>"
+# Number of beams to use in beam search.
+_NUM_BEAMS = 10
 
 
 class T5Rewriter(Rewriter):
@@ -40,19 +43,22 @@ class T5Rewriter(Rewriter):
         self,
         model_name: str = "castorini/t5-base-canard",
         max_length: int = 64,
-        num_beams: int = 10,
+        num_beams: int = _NUM_BEAMS,
         early_stopping: bool = True,
+        sparse: bool = False,
     ) -> None:
         """Instantiate T5 rewriter.
 
         Args:
             model_name (optional): Hugging Face model name. Defaults to
-                "castorini/t5-base-canard".
+              "castorini/t5-base-canard".
             max_length (optional): Max sequence length. Default model was
-                trained with sequences up to 64. Defaults to 64.
+              trained with sequences up to 64. Defaults to 64.
             num_beams (optional): How many beams to explore. Defaults to 10.
             early_stopping (optional): Whether to stop when num_beams is
-                reached. Defaults to True.
+              reached. Defaults to True.
+            sparse (optional): If true performs sparse query rewrite. Defaults
+              to False.
         """
         self._device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu"
@@ -60,6 +66,7 @@ class T5Rewriter(Rewriter):
         self._max_length = max_length
         self._num_beams = num_beams
         self._early_stopping = early_stopping
+        self.sparse = sparse
 
         self._tokenizer = T5Tokenizer.from_pretrained(
             model_name, cache_dir=NEURAL_MODEL_CACHE_DIR
@@ -72,6 +79,70 @@ class T5Rewriter(Rewriter):
             .eval()
         )
 
+    def _generate_rewrite(self, input_ids: torch.Tensor) -> str:
+        """Generates rewrite given input ids.
+
+        Args:
+            input_ids: A sequence of tokens.
+
+        Returns:
+            A rewrite.
+        """
+        # Generate output token ids
+        output_ids = self._model.generate(
+            input_ids,
+            max_length=self._max_length,
+            num_beams=self._num_beams,
+            early_stopping=self._early_stopping,
+        )
+
+        # Decode output token ids
+        rewrite = self._tokenizer.decode(
+            output_ids[0],
+            clean_up_tokenization_spaces=True,
+            skip_special_tokens=True,
+        )
+
+        return rewrite
+
+    def _generate_sparse_rewrite(
+        self, input_ids: torch.Tensor
+    ) -> Dict[str, float]:
+        """Generates top-k rewrites and their probabilities where k is
+        self._num_beams.
+
+        Args:
+            input_ids: A sequence of tokens.
+
+        Returns:
+            Rewrites and their probabilities.
+        """
+        # Generate output
+        output = self._model.generate(
+            input_ids.to(self._device, non_blocking=True),
+            max_length=self._max_length,
+            num_beams=self._num_beams,
+            early_stopping=False,
+            output_scores=True,
+            return_dict_in_generate=True,
+            num_return_sequences=self._num_beams,
+        )
+
+        # Decode output and return sequences
+        scores = torch.exp(output.sequences_scores).tolist()
+        factor = sum(scores)
+        rewrites = {
+            self._tokenizer.decode(
+                seq,
+                clean_up_tokenization_spaces=True,
+                skip_special_tokens=True,
+            ): score
+            / factor
+            for seq, score in zip(output.sequences, scores)
+        }
+
+        return rewrites
+
     def rewrite_query(
         self,
         query: Query,
@@ -80,7 +151,7 @@ class T5Rewriter(Rewriter):
         index_name: str = _INDEX_NAME,
         separator: str = _SEPARATOR,
         year: str = _YEAR,
-    ) -> Query:
+    ) -> Union[Query, SparseQuery]:
         """Rewrites query to a new contextualized query given context.
 
         Based on the training regime of the "castorini/t5-base-canard" model, as
@@ -149,21 +220,15 @@ class T5Rewriter(Rewriter):
             input_text, return_tensors="pt", add_special_tokens=True
         ).to(self._device)
 
-        # Generate output token ids
-        output_ids = self._model.generate(
-            input_ids,
-            max_length=self._max_length,
-            num_beams=self._num_beams,
-            early_stopping=self._early_stopping,
-        )
+        if self.sparse:
+            rewrites = self._generate_sparse_rewrite(input_ids)
+            return SparseQuery(
+                query.query_id,
+                max(rewrites, key=rewrites.get),
+                weighted_match_queries=rewrites,
+            )
 
-        # Decode output token ids
-        rewrite = self._tokenizer.decode(
-            output_ids[0],
-            clean_up_tokenization_spaces=True,
-            skip_special_tokens=True,
-        )
-
+        rewrite = self._generate_rewrite(input_ids)
         return Query(query.query_id, rewrite)
 
 
@@ -176,6 +241,8 @@ def rewrite_queries_with_fine_tuned_model(
     use_responses: bool,
     index_name: str,
     separator: str,
+    sparse: bool,
+    num_beams: int,
 ):
     """Rewrites queries using a fine-tuned T5 model.
 
@@ -194,14 +261,19 @@ def rewrite_queries_with_fine_tuned_model(
           responses.
         separator: Special token to separate input sequences.
     """
-    rewriter = T5Rewriter(model_name=model_dir, max_length=max_length)
+    rewriter = T5Rewriter(
+        model_name=model_dir,
+        max_length=max_length,
+        num_beams=num_beams,
+        sparse=sparse,
+    )
     contexts = Topic.load_contexts_from_file(year, QueryRewrite.AUTOMATIC)
     queries = Topic.load_queries_from_file(year)
 
     with open(output_dir, "w") as rewrites_out:
         tsv_writer = csv.writer(rewrites_out, delimiter="\t")
         tsv_writer.writerow(
-            ["conversation_id", "turn_id", "id", "query", "original"]
+            ["conversation_id", "turn_id", "id", "query", "original", "sparse"]
         )
         rewrites = []
         for query, context in zip(queries, contexts):
@@ -226,6 +298,9 @@ def rewrite_queries_with_fine_tuned_model(
                     query.query_id,
                     rewrite.question,
                     query.question,
+                    json.dumps(rewrite.weighted_match_queries)
+                    if isinstance(rewrite, SparseQuery)
+                    else "",
                 ]
             )
 
@@ -297,6 +372,19 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         default=_SEPARATOR,
         help="Special token to separate input sequences.",
     )
+
+    parser.add_argument(
+        "--sparse",
+        action="store_const",
+        const=True,
+        help="If true, generates sparse rewrites. Defaults to False.",
+    )
+    parser.add_argument(
+        "--num_beams",
+        type=int,
+        default=_NUM_BEAMS,
+        help="Number of beams to use in beam search.",
+    )
     return parser.parse_args()
 
 
@@ -331,6 +419,8 @@ def main(args):
         use_responses=args.use_canonical_response,
         index_name=args.index_name,
         separator=args.separator,
+        sparse=args.sparse,
+        num_beams=args.num_beams,
     )
 
 

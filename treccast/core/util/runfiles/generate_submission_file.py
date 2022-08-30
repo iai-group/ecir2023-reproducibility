@@ -9,7 +9,7 @@ Exemplary JSON runfile:
             "turn_id": "132_1-1",
             "responses": [
                 {
-                    "text": "HOME - UN Climate Change Conference (COP26) at ...",
+                    "text": "HOME - UN Climate Change Conference (COP26) ...",
                     "rank": 1,
                     "provenance": [
                         {
