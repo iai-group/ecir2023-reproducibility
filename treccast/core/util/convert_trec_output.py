@@ -1,27 +1,31 @@
-"""Converts TREC runfile to the format convinient for manual inspection.
-"""
+"""Converts TREC runfile to the format convenient for manual inspection."""
+import argparse
 import pandas as pd
 from treccast.core.util.passage_loader import PassageLoader
 from treccast.core.topic import Topic, QueryRewrite
+
+_TOP_K = 3
+_YEAR = "2022"
+_INDEX_NAME = "ms_marco_v2_kilt_wapo_new"
 
 
 def covert_trec_file_for_manual_inspection(
     path_to_trec_file: str, top_k: int, index_name: str, year: str
 ) -> pd.DataFrame:
-    """Converts TREC runfile to the format convinient for manual inspection.
+    """Converts TREC runfile to the format convenient for manual inspection.
 
     The resulting file contains the following columns: Query_id, Query,
     Passage_id, Passage, and Score.
 
     Args:
-        path_to_trec_file: Path tp the TREC file to be converted.
+        path_to_trec_file: Path to the TREC file to be converted.
         top_k: Number of top documents for each query to be included in the
           converted file.
-        index_name: Name of the index to be sued for loading pasages.
+        index_name: Name of the index to be used for loading pasages.
         year: Year for which queries are to be loaded.
 
     Returns:
-        Pandas DataFrame with the converted TREC run file.
+        Pandas DataFrame with the converted TREC runfile.
     """
     trec_output = pd.read_csv(
         path_to_trec_file,
@@ -65,15 +69,64 @@ def covert_trec_file_for_manual_inspection(
     return results_for_manual_inspection
 
 
-if __name__ == "__main__":
-    results_for_manual_inspection = covert_trec_file_for_manual_inspection(
-        "data/runs/2022/t5_canard_rewrites_2022.trec",
-        3,
-        "ms_marco_v2_kilt_wapo_new",
-        "2022",
+def parse_cmdline_arguments() -> argparse.Namespace:
+    """Defines accepted arguments and returns the parsed values.
+
+    Returns:
+       Object with a property for each argument.
+    """
+    parser = argparse.ArgumentParser(prog="convert_trec_output.py")
+    parser.add_argument(
+        "trec_file",
+        type=str,
+        help="Path to the TREC file to be converted.",
     )
+    parser.add_argument(
+        "output_file",
+        type=str,
+        help="Path to the output file.",
+    )
+    parser.add_argument(
+        "--k",
+        type=int,
+        default=_TOP_K,
+        help="Number of top documents for each query to include in file.",
+    )
+    parser.add_argument(
+        "--year",
+        type=str,
+        default=_YEAR,
+        help="Year for which queries are to be loaded.",
+    )
+    parser.add_argument(
+        "--index",
+        type=str,
+        default=_INDEX_NAME,
+        help="Name of the index to be used for loading pasages.",
+    )
+    return parser.parse_args()
+
+
+def main(args):
+    """Converts TREC runfile to csv file for manual inspection.
+
+    Args:
+        args: Arguments.
+    """
+    results_for_manual_inspection = covert_trec_file_for_manual_inspection(
+        args.trec_file,
+        args.k,
+        args.index,
+        args.year,
+    )
+
     results_for_manual_inspection.to_csv(
-        "data/runs/2022/t5_canard_rewrites_2022.csv",
+        args.output_file,
         sep="\t",
         encoding="utf-8-sig",
     )
+
+
+if __name__ == "__main__":
+    args = parse_cmdline_arguments()
+    main(args)
