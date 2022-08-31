@@ -112,7 +112,7 @@ class DuoT5Reranker(NeuralReranker):
         self,
         model_name: str = "castorini/duot5-base-msmarco",
         max_seq_len: int = 512,
-        batch_size: int = 256,
+        batch_size: int = 512,
     ) -> None:
         """Duo T5 reranker.
 

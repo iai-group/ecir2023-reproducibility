@@ -8,7 +8,9 @@ from typing import Any, Dict, List
 from treccast.core.base import Query, SparseQuery
 from treccast.retriever.bm25_retriever import BM25Retriever
 
-_WEIGHTED_TERMS = Dict[str, float]
+_WeightedTerms = Dict[str, float]
+
+_LAMBDA = 0.5
 
 
 class PrfType(Enum):
@@ -28,9 +30,9 @@ class PRF(abc.ABC):
 
     def interpolate_terms(
         self,
-        weighted_terms: _WEIGHTED_TERMS,
-        weighted_terms_to_add: _WEIGHTED_TERMS,
-        lam: float = 0.5,
+        weighted_terms: _WeightedTerms,
+        weighted_terms_to_add: _WeightedTerms,
+        lam: float = _LAMBDA,
     ) -> Dict[str, float]:
         """Interpolates new weighted terms into the existing terms.
 
@@ -82,7 +84,10 @@ class RM3(PRF):
         Returns:
             Sparse query containing expanded list of weighted terms.
         """
-        query_terms = Counter(self.retriever.analyze_query(query.question))
+        if isinstance(query, SparseQuery):
+            query_terms = self.retriever.simplify_query(query).weighted_terms
+        else:
+            query_terms = Counter(self.retriever.analyze_query(query.question))
         rm3_terms = self._get_top_collection_terms(query)
         return SparseQuery(
             query.query_id,

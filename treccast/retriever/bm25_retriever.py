@@ -1,5 +1,6 @@
 """BM25 retrieval using ElasticSearch."""
 
+from collections import defaultdict
 from typing import Any, Dict, List
 
 from treccast.core.base import Query, SparseQuery
@@ -30,6 +31,30 @@ class BM25Retriever(Retriever):
         self._collection.update_similarity_parameters(k1=k1, b=b)
         self._field = field
 
+    def simplify_query(self, query: SparseQuery) -> SparseQuery:
+        """Converts weighted match queries to weighted terms.
+
+        Args:
+            query: Sparse query to simplify.
+
+        Returns:
+            Simpler version of a sparse query.
+        """
+        if not query.weighted_match_queries:
+            return query
+
+        tokens = defaultdict(float)
+        for q, score in query.weighted_match_queries.items():
+            for token in self.analyze_query(q):
+                tokens[token] += score
+
+        return SparseQuery(
+            query.query_id,
+            query.question,
+            weighted_terms=tokens,
+            weighted_match_phrases=query.weighted_match_phrases,
+        )
+
     def retrieve(
         self, query: Query, num_results: int = 1000, source=True
     ) -> Ranking:
@@ -47,10 +72,10 @@ class BM25Retriever(Retriever):
         # See https://github.com/iai-group/trec-cast-2021/issues/37
 
         if isinstance(query, SparseQuery):
+            query = self.simplify_query(query)
             es_query = self.bool_query(
-                query.weighted_terms,
-                query.weighted_match_phrases,
-                query.weighted_match_queries,
+                weighted_terms=query.weighted_terms,
+                weighted_phrases=query.weighted_match_phrases,
             )
         else:
             es_query = self.match_query(query.question)

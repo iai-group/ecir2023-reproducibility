@@ -24,9 +24,9 @@ class Query:
 class SparseQuery(Query):
     """Representation of a sparse query containing a dict of weighted terms."""
 
-    weighted_terms: Dict[str, float] = None
-    weighted_match_queries: Dict[str, float] = None
-    weighted_match_phrases: Dict[str, float] = None
+    weighted_terms: Dict[str, float] = field(default_factory=dict)
+    weighted_match_queries: Dict[str, float] = field(default_factory=dict)
+    weighted_match_phrases: Dict[str, float] = field(default_factory=dict)
 
     def __str__(self):
         query = ""
