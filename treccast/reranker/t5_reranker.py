@@ -210,10 +210,8 @@ class DuoT5Reranker(NeuralReranker):
             # 6136, 1176 -> indexes of the tokens `false` and `true`
             # respectively.
             false_true_scores = all_tokens_logits[:, [6136, 1176]]
-            log_scores = torch.nn.functional.log_softmax(
-                false_true_scores, dim=1
-            )
-            return log_scores.tolist()
+            scores = torch.nn.functional.softmax(false_true_scores, dim=1)
+            return scores.tolist()
 
     def _encode(self, query: str, documents: List[Tuple[str, str]]) -> Batch:
         """Tokenizes and collates a number of single inputs.
