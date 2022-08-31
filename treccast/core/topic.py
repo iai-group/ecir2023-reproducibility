@@ -414,7 +414,7 @@ def parse_args() -> argparse.Namespace:
     # General config
     parser.add_argument(
         "--hostname",
-        help=("Elasticsearch hostname."),
+        help="Elasticsearch hostname.",
     )
     return parser.parse_args()
 

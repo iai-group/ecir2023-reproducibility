@@ -4,6 +4,44 @@ from treccast.core.ranking import Ranking
 
 
 @pytest.fixture
+def document_1():
+    return (
+        "Many people search for âstandard garage door sizesâ on a daily"
+        " basis. However there are many common size garage door widths and"
+        " heights but the standard size is probably more a matter of the age of"
+        " your home and what area of the town, state, or country that you live"
+        " in. There are a number of standard sizes for residential garage doors"
+        " in the United States."
+    )
+
+
+@pytest.fixture
+def document_2():
+    return (
+        "The presence of communication amid scientific minds was equally"
+        " important to the success of the Manhattan Project as scientific"
+        " intellect was. The only cloud hanging over the impressive achievement"
+        " of the atomic researchers and engineers is what their success truly"
+        " meant; hundreds of thousands of innocent lives obliterated."
+    )
+
+
+@pytest.fixture
+def document_3():
+    return (
+        "Garage Door Opener Problems. So, when the garage door opener decides"
+        " to take a day off, it can leave you stuck outside, probably during a"
+        " rain or snow storm. Though they may seem complicated, there really"
+        " are several things most homeowners can do to diagnose and repair"
+        " opener failures.nd, if you are careful not to damage the door or the"
+        " seal on the bottom of the door, use a flat shovel or similar tool to"
+        " chip awayat the ice. Once you get the door open, clear any water, ice"
+        " or snow from the spot on the garage floor where the door rests when"
+        " closed"
+    )
+
+
+@pytest.fixture
 def query():
     return Query(
         "qid_0",
@@ -12,57 +50,31 @@ def query():
 
 
 @pytest.fixture
-def ranking():
+def ranking(document_1, document_2, document_3):
     return Ranking(
         "qid_0",
         [
             {
                 "doc_id": "1",
                 "score": 50.62,
-                "content": (
-                    "Many people search for âstandard garage door sizesâ "
-                    "on a daily basis. However there are many common size "
-                    "garage door widths and heights but the standard size is "
-                    "probably more a matter of the age of your home and what "
-                    "area of the town, state, or country that you live in. "
-                    "There are a number of standard sizes for residential "
-                    "garage doors in the United States."
-                ),
+                "content": document_1,
             },
             {
                 "doc_id": "2",
                 "score": 1.52,
-                "content": (
-                    "The presence of communication amid scientific minds was "
-                    "equally important to the success of the Manhattan Project "
-                    "as scientific intellect was. The only cloud hanging over "
-                    "the impressive achievement of the atomic researchers and "
-                    "engineers is what their success truly meant; hundreds of "
-                    "thousands of innocent lives obliterated."
-                ),
+                "content": document_2,
             },
             {
                 "doc_id": "3",
                 "score": 80.22,
-                "content": (
-                    "Garage Door Opener Problems. So, when the garage door"
-                    " opener decides to take a day off, it can leave you stuck"
-                    " outside, probably during a rain or snow storm. Though"
-                    " they may seem complicated, there really are several"
-                    " things most homeowners can do to diagnose and repair"
-                    " opener failures.nd, if you are careful not to damage the"
-                    " door or the seal on the bottom of the door, use a flat"
-                    " shovel or similar tool to chip awayat the ice. Once you"
-                    " get the door open, clear any water, ice or snow from the"
-                    " spot on the garage floor where the door rests when closed"
-                ),
+                "content": document_3,
             },
         ],
     )
 
 
 @pytest.fixture
-def train_pairs():
+def train_pairs(document_1, document_2, document_3):
     train_queries = [
         Query(
             "0",
@@ -78,33 +90,17 @@ def train_pairs():
     ranking1.add_doc(
         "1",
         2,
-        "Many people search for âstandard garage door sizesâ on a daily "
-        "basis. However there are many common size garage door widths and"
-        "heights but the standard size is probably more a matter of the age"
-        "of your home and what area of the town, state, or country that you "
-        "live in. There are a number of standard sizes for residential garage "
-        "doors in the United States.",
+        document_1,
     )
     ranking1.add_doc(
         "2",
         0,
-        "The presence of communication amid scientific minds was equally"
-        "important to the success of the Manhattan Project as scientific"
-        "intellect was. The only cloud hanging over the impressive achievement"
-        " of the atomic researchers and engineers is what their success truly "
-        "meant; hundreds of thousands of innocent lives obliterated.",
+        document_2,
     )
     ranking1.add_doc(
         "3",
         3,
-        "Garage Door Opener Problems. So, when the garage door opener decides "
-        "to take a day off, it can leave you stuck outside, probably during a "
-        "rain or snow storm. Though they may seem complicated, there really are"
-        " several things most homeowners can do to diagnose and repair opener "
-        "failures.nd, if you are careful not to damage the door or the seal on "
-        "the bottom of the door, use a flat shovel or similar tool to chip away"
-        "at the ice. Once you get the door open, clear any water, ice or snow "
-        "from the spot on the garage floor where the door rests when closed",
+        document_3,
     )
 
     ranking2 = Ranking("1")

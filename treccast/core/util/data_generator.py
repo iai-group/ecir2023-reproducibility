@@ -5,7 +5,7 @@ Action supported: encoding and indexing.
 
 import itertools
 import logging
-from typing import Any, Iterator, List, Optional
+from typing import Any, Iterator, List
 
 from trec_car import read_data
 from treccast.core.util.file_parser import FileParser
@@ -14,23 +14,24 @@ _DataIterator = Iterator[Any]
 _BatchIterator = Iterator[List[Any]]
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s] %(levelname)-12s %(message)s",
-    handlers=[logging.StreamHandler()],
-)
+# TODO Fix logging
+# At the moment there is a lot of unnecessary messages coming from ES when
+# indexing
+
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format="[%(asctime)s] %(levelname)-12s %(message)s",
+#     handlers=[logging.StreamHandler()],
+# )
 
 
 class DataGeneratorMixin:
-    def generate_data_marco(
-        self, action: str, filepath: str, index_name: Optional[str] = None
-    ) -> _DataIterator:
+    def generate_data_marco(self, action: str, filepath: str) -> _DataIterator:
         """Data generator for batch encoding of MS MARCO dataset.
 
         Args:
             action: Action executed after data generation.
             filepath: Path to the MS MARCO passage dataset.
-            index_name (optional): Elasticsearch index name. Defaults to None.
 
         Yields:
             Iterator[Any]: Object containing id and contents of a passage.
@@ -45,9 +46,8 @@ class DataGeneratorMixin:
                 yield (f"MARCO_{pid}", content)
             elif action == "indexing":
                 yield {
-                    "_index": index_name,
                     "_id": f"MARCO_{pid}",
-                    "_source": {"body": content},
+                    "body": content,
                 }
             else:
                 raise RuntimeError(
@@ -58,15 +58,12 @@ class DataGeneratorMixin:
                 logging.info("Generated %s paragraphs", i)
         logging.info("Generation finished. Generated total %s paragraphs.", i)
 
-    def generate_data_car(
-        self, action: str, filepath: str, index_name: Optional[str] = None
-    ) -> _DataIterator:
+    def generate_data_car(self, action: str, filepath: str) -> _DataIterator:
         """Data generator for batch encoding of TREC CAR dataset.
 
         Args:
             action: Action executed after data generation.
             filepath: Path to the TREC CAR paragraph dataset.
-            index_name (optional): Elasticsearch index name. Defaults to None.
 
         Yields:
             Iterator[Any]: Object containing id and contents of a passage.
@@ -88,9 +85,8 @@ class DataGeneratorMixin:
                     )
                 elif action == "indexing":
                     yield {
-                        "_index": index_name,
                         "_id": f"CAR_{paragraph.para_id}",
-                        "_source": {"body": paragraph.get_text().strip()},
+                        "body": paragraph.get_text().strip(),
                     }
                 else:
                     raise RuntimeError(
@@ -104,14 +100,13 @@ class DataGeneratorMixin:
             )
 
     def generate_data_trecweb(
-        self, action: str, filepath: str, index_name: Optional[str] = None
+        self, action: str, filepath: str
     ) -> _DataIterator:
         """Data generator for batch encoding of preprocessed TRECWEB files.
 
         Args:
             action: Action executed after data generation.
             filepath: Path to a TRECWEB dataset.
-            index_name (optional): Elasticsearch index name. Defaults to None.
 
         Yields:
             Iterator[Any]: Object containing id and contents of a passage.
@@ -127,13 +122,10 @@ class DataGeneratorMixin:
                 yield (passage_id, f"{title} {passage}")
             elif action == "indexing":
                 yield {
-                    "_index": index_name,
                     "_id": passage_id,
-                    "_source": {
-                        "body": passage,
-                        "title": title,
-                        "catch_all": f"{title} {passage}",
-                    },
+                    "body": passage,
+                    "title": title,
+                    "catch_all": f"{title} {passage}",
                 }
             else:
                 raise RuntimeError(
@@ -157,10 +149,8 @@ class DataGeneratorMixin:
         Yields:
             Iterator[List]: List of passages objects.
         """
-        data_remaining = True
-        while data_remaining:
+        while True:
             chunk = list(itertools.islice(iterator, batch_size))
             if not chunk:
-                data_remaining = False
-                continue
+                break
             yield chunk

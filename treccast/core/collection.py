@@ -52,7 +52,13 @@ class ElasticSearchIndex(Collection):
             settings = self._get_default_settings()
             if use_analyzer:
                 settings.update(self._get_analysis_settings())
-            self._es.indices.create(self._index_name, {"settings": settings})
+            self._es.indices.create(
+                self._index_name,
+                {
+                    "settings": settings,
+                    "mappings": self._get_default_mappings(),
+                },
+            )
             print(
                 "New Index: ",
                 self._index_name,
@@ -83,7 +89,18 @@ class ElasticSearchIndex(Collection):
         Returns:
             Dictionary with index properties.
         """
-        return {"index": self._get_BM25_similarity()}
+        return {
+            "index": self._get_BM25_similarity(),
+        }
+
+    def _get_default_mappings(self) -> Dict[str, Any]:
+        """Returns default field mappings. This can be overridden with custom
+        properties if needed.
+
+        Returns:
+            Dictionary with field mappings.
+        """
+        return {"_source": {"includes": ["body"]}}
 
     def _get_BM25_similarity(
         self, b: float = 0.75, k1: float = 1.2

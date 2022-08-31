@@ -18,7 +18,7 @@ Usage:
 """
 import argparse
 import itertools
-from typing import Any, Dict, Iterator
+from typing import Any, Dict, Iterator, List
 
 import nltk
 from elasticsearch.helpers import parallel_bulk
@@ -36,6 +36,10 @@ DEFAULT_TREC_CAR_PARAGRAPH_DATASET = (
 DEFAULT_INDEX_NAME = "ms_marco_trec_car"
 DEFAULT_HOST_NAME = "localhost:9204"
 _ACTION = "indexing"
+_BATCH_SIZE = 30
+
+_DataIterator = Iterator[dict]
+_BatchIterator = Iterator[List[dict]]
 
 
 class Indexer(DataGeneratorMixin, ElasticSearchIndex):
@@ -43,8 +47,7 @@ class Indexer(DataGeneratorMixin, ElasticSearchIndex):
         self,
         index_name: str,
         hostname: str = "localhost:9200",
-        use_docT5query: bool = False,
-        docT5query_n_queries: int = 3,
+        docT5query_n_queries: int = 0,
     ) -> None:
         """Initializes an Elasticsearch instance on a given host.
 
@@ -52,8 +55,8 @@ class Indexer(DataGeneratorMixin, ElasticSearchIndex):
             index_name: Index name.
             hostname: Host name and port (defaults to
               "localhost:9200"),
-            use_docT5query: Use DocT5Query to expand passages or not.
-            docT5query_n_queries: Num queries to predict per passage.
+            docT5query_n_queries (optional): Num queries to predict per passage.
+              If 0, do not use passage expansion. Defaults to 0.
         """
         super().__init__(
             index_name,
@@ -64,12 +67,12 @@ class Indexer(DataGeneratorMixin, ElasticSearchIndex):
         )
 
         self.docT5query = (
-            DocT5Query(docT5query_n_queries) if use_docT5query else None
+            DocT5Query(docT5query_n_queries) if docT5query_n_queries else None
         )
 
-    def process_documents(
-        self, data_generator: Iterator[dict]
-    ) -> Iterator[dict]:
+    def _process_documents(
+        self, data_generator: _DataIterator
+    ) -> _DataIterator:
         """Adds elasticsearch specific information to generated documents.
 
         Args:
@@ -79,14 +82,58 @@ class Indexer(DataGeneratorMixin, ElasticSearchIndex):
             Processed documents.
         """
         for document in data_generator:
-            if self.docT5query:
-                doc2query_queries = self.docT5query.predict_queries(
-                    document["_source"]["body"]
-                )
-                document["_source"]["doc2query"] = " ".join(doc2query_queries)
+            document["_index"] = self.index_name
             yield document
 
-    def batch_index(self, data_generator: Iterator[dict]) -> None:
+    def _process_document_batches(
+        self, batches: _BatchIterator
+    ) -> _DataIterator:
+        """Expands documents with doc2query.
+
+        Args:
+            batches: Document batch generator.
+
+        Yields:
+            Processed (expanded) documents.
+        """
+        for batch in batches:
+            doc2query_queries = self.docT5query.batch_generate_queries(
+                [
+                    document.get("catch_all", document["body"])
+                    for document in batch
+                ]
+            )
+            for document, document_queries in zip(batch, doc2query_queries):
+                document["_index"] = self.index_name
+                document["doc2query"] = " ".join(document_queries)
+                document["catch_all"] = (
+                    document.get("catch_all", document["body"])
+                    + " "
+                    + document["doc2query"]
+                )
+                yield document
+
+    def process_documents(
+        self, data_generator: _DataIterator, batch_size: int = _BATCH_SIZE
+    ) -> _DataIterator:
+        """Adds elasticsearch specific information to generated documents.
+
+        If docT5query is used, additionally expands documents with queries.
+
+        Args:
+            data_generator: Document generator.
+            batch_size (optional): Batch size. Used for more efficient dot2query
+              expansions. Defaults to 30
+
+        Returns:
+            Data iterator that processes documents.
+        """
+        if self.docT5query:
+            batches = self.generate_batches(data_generator, batch_size)
+            return self._process_document_batches(batches)
+        return self._process_documents(data_generator)
+
+    def batch_index(self, data_generator: _DataIterator) -> None:
         """Bulk index a dataset in parallel.
 
         Args:
@@ -188,15 +235,19 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         help="Specifies the path(s) to TRECWEB dataset(s)",
     )
     parser.add_argument(
-        "--docT5query",
-        action="store_true",
-        help="Expands passages with docT5query",
-    )
-    parser.add_argument(
         "--docT5query_n_queries",
         type=int,
-        default=3,
-        help="How many queries to predict for each passage",
+        default=0,
+        help=(
+            "How many queries to predict for each passage using docT5query."
+            "Defaults to 0 (Means no expansion)."
+        ),
+    )
+    parser.add_argument(
+        "--batch_size",
+        type=int,
+        default=_BATCH_SIZE,
+        help="Batch size to use for doc2query.",
     )
     return parser.parse_args()
 
@@ -207,9 +258,7 @@ def main(args):
     Args:
         args: Arguments.
     """
-    indexing = Indexer(
-        args.index, args.host, args.docT5query, args.docT5query_n_queries
-    )
+    indexing = Indexer(args.index, args.host, args.docT5query_n_queries)
     if args.reset:
         indexing.delete_index()
 
@@ -218,27 +267,22 @@ def main(args):
     data_generators = []
     if args.ms_marco:
         data_generators.append(
-            indexing.generate_data_marco(
-                _ACTION, args.ms_marco, index_name=indexing._index_name
-            )
+            indexing.generate_data_marco(_ACTION, args.ms_marco)
         )
 
     if args.trec_car:
         data_generators.append(
-            indexing.generate_data_car(
-                _ACTION, args.trec_car, index_name=indexing._index_name
-            )
+            indexing.generate_data_car(_ACTION, args.trec_car)
         )
     if args.trecweb:
         for filepath in args.trecweb:
             data_generators.append(
-                indexing.generate_data_trecweb(
-                    _ACTION, filepath, index_name=indexing._index_name
-                )
+                indexing.generate_data_trecweb(_ACTION, filepath)
             )
 
     data_generator = itertools.chain(*data_generators)
-    indexing.batch_index(indexing.process_documents(data_generator))
+    documents = indexing.process_documents(data_generator)
+    indexing.batch_index(documents)
 
 
 if __name__ == "__main__":
