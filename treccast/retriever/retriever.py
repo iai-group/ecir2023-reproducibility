@@ -1,7 +1,7 @@
 """Interface for first pass retrieval."""
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Tuple
 
 from treccast.core.base import Query
 from treccast.core.collection import Collection
@@ -53,9 +53,13 @@ class CachedRetriever(Retriever):
         Args:
             path: path to file from which to load rankings.
         """
-        self._rankings = Ranking.load_rankings_from_tsv_file(path)
+        queries, rankings = Ranking.load_rankings_from_tsv_file(path)
+        self._rankings = rankings
+        self._queries = queries
 
-    def retrieve(self, query: Query, num_results: int = 1000) -> Ranking:
+    def retrieve(
+        self, query: Query, num_results: int = 1000
+    ) -> Tuple[Query, Ranking]:
         """Returns cached ranking for a given query.
 
         Args:
@@ -67,9 +71,11 @@ class CachedRetriever(Retriever):
                 cannot rank results.
 
         Returns:
-            Ranking for a given query.
+            Query-Ranking pair for a given query.
         """
         # FIXME https://github.com/iai-group/trec-cast-2021/issues/228
         # NB! Some old TSV files do not contain score so we cannot fetch top k
         # here. We need to re-run first-pass retrieval for relevant configs.
-        return self._rankings.get(query.query_id, Ranking(query.query_id))
+        return self._queries.get(query.query_id, query), self._rankings.get(
+            query.query_id, Ranking(query.query_id)
+        )

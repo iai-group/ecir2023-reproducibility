@@ -170,21 +170,29 @@ def test_document_dataclass():
 
 def test_load_rankings_from_tsv_file_num_queries():
     path = "tests/data/ranking_sample_1.tsv"
-    rankings = Ranking.load_rankings_from_tsv_file(path)
+    _, rankings = Ranking.load_rankings_from_tsv_file(path)
     assert len(rankings) == 2
 
 
 def test_load_rankings_from_tsv_file_first_query():
     path = "tests/data/ranking_sample_1.tsv"
-    rankings = Ranking.load_rankings_from_tsv_file(path)
-    first_ranking = rankings["001"]
-    assert first_ranking.query_id == "001"
-    assert len(first_ranking) == 3
+    queries, _ = Ranking.load_rankings_from_tsv_file(path)
+    first_query = queries["001"]
+    assert first_query.query_id == "001"
+    assert first_query.question == "test query 1"
+
+
+def test_load_rankings_from_tsv_file_second_ranking():
+    path = "tests/data/ranking_sample_1.tsv"
+    _, rankings = Ranking.load_rankings_from_tsv_file(path)
+    second_ranking = rankings["002"]
+    assert second_ranking.query_id == "002"
+    assert len(second_ranking) == 3
 
 
 def test_load_rankings_from_tsv_file_passage_text():
     path = "tests/data/ranking_sample_1.tsv"
-    rankings = Ranking.load_rankings_from_tsv_file(path)
+    _, rankings = Ranking.load_rankings_from_tsv_file(path)
     ids, contents = rankings["002"].documents()
     assert ids == ["002", "004", "005"]
     assert contents == ["test passage 2", "test passage 4", "test passage 5"]

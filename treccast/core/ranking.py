@@ -8,6 +8,7 @@ import sys
 from collections import defaultdict
 from typing import Dict, List, Tuple
 
+from treccast.core.base import Query
 from treccast.core.util.passage_loader import PassageLoader
 
 # This is needed since some of the passages are too long.
@@ -217,25 +218,29 @@ class Ranking:
     @staticmethod
     def load_rankings_from_tsv_file(
         filepath: str,
-    ) -> Dict[str, Ranking]:
-        """Creates a list of Ranking objects from a TSV runfile.
+    ) -> Tuple[Dict[str, Query], Dict[str, Ranking]]:
+        """Creates dictionaries of Query and Ranking objects from a TSV runfile.
 
         Args:
             filepath: Path to the runfile.
 
         Returns:
-            A dictionary of the Ranking objects built from the runfile.
+            A tuple with dictionaries of the Query and the Ranking objects
+              built from the runfile.
         """
         rankings = {}
+        queries = {}
         with open(filepath, "r") as f_in:
             reader = csv.reader(f_in, delimiter="\t")
             next(reader)
             for line in reader:
-                q_id, _, doc_id, passage = line[:4]
+                q_id, question, doc_id, passage = line[:4]
                 if q_id not in rankings:
                     rankings[q_id] = Ranking(query_id=q_id)
                 rankings[q_id].add_doc(doc_id, 0, passage)
-        return rankings
+                if q_id not in queries:
+                    queries[q_id] = Query(q_id, question)
+        return queries, rankings
 
 
 class CachedRanking:

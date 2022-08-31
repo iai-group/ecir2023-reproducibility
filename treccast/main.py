@@ -138,8 +138,10 @@ def run(
                 query = expander.get_expanded_query(query)
 
             # Retrieval
-            # TODO https://github.com/iai-group/trec-cast/issues/379
-            ranking = retriever.retrieve(query, num_results=k)
+            if isinstance(retriever, CachedRetriever):
+                query, ranking = retriever.retrieve(query, num_results=k)
+            else:
+                ranking = retriever.retrieve(query, num_results=k)
             if ranking_cache:
                 ranking = ranking_cache.add_previous_turns(
                     query.get_topic_id(), ranking
