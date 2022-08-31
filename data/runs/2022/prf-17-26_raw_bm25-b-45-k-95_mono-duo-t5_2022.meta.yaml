@@ -1,14 +1,14 @@
 duot5: yes
 es:
     b: '0.45'
-    host_name: localhost:9206
+    host_name: localhost:9204
     k1: '0.95'
     index_name: ms_marco_v2_kilt_wapo_new
     field: catch_all
-output_name: prf_t5-canard_bm25-b-45-k-95_mono-duo-t5_2022
+output_name: prf-17-26_raw_bm25-b-45-k-95_mono-duo-t5_2022
 reranker: t5
-rewrite: yes
-rewrite_path: data/rewrites/2022/13_T5_CANARD_new.tsv
+rewrite: no
+rewrite_path:
 year: '2022'
 k: 1000
 num_prev_turns: 0
@@ -16,8 +16,8 @@ query_rewrite:
 first_pass_file:
 prf:
     type: RM3
-    num_documents: 10
-    num_terms: 10
+    num_documents: 17
+    num_terms: 26
 duot5_topk: 50
 bert:
     base_model: bert-base-uncased

@@ -1,8 +1,9 @@
 """Converts TREC runfile to the format convenient for manual inspection."""
 import argparse
+
 import pandas as pd
+from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.util.passage_loader import PassageLoader
-from treccast.core.topic import Topic, QueryRewrite
 
 _TOP_K = 3
 _YEAR = "2022"

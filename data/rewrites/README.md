@@ -34,6 +34,8 @@ The following files contain rewrites generated with T5 model fine-tuned using di
     `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2021/13_T5_CANARD.tsv --separator "|||"`
     - Rewrites for 2022 were generated with:
     `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2022/13_T5_CANARD.tsv --year 2022 --separator "|||" --index_name ms_marco_v2_kilt_wapo`
+    and for the updated index with:
+    `python -m treccast.rewriter.t5_rewriter --model_dir castorini/t5-base-canard --output_dir data/rewrites/2022/13_T5_CANARD_new.tsv --year 2022 --separator "|||" --index_name ms_marco_v2_kilt_wapo_new`
 
 ## Sparse query rewrites
 
