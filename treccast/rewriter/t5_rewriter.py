@@ -10,7 +10,6 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 from treccast.core import NEURAL_MODEL_CACHE_DIR
 from treccast.core.base import Context, Query, SparseQuery
 from treccast.core.topic import QueryRewrite, Topic
-from treccast.core.util.passage_loader import PassageLoader
 from treccast.rewriter.rewriter import Rewriter
 
 # The path to the fine-tuned model to be loaded and used for rewriting.
@@ -30,28 +29,34 @@ _USE_PREVIOUS_REWRITTEN_UTTERANCE = True
 # Specifies whether the last canonical response should be used in the context
 # for rewriting current query.
 _USE_CANONICAL_RESPONSE = True
-# The name of the index to be used for loading canonical responses.
-_INDEX_NAME = "ms_marco_kilt_wapo_clean"
+# Whether to use provided answer rewrites or full passage texts in context.
+_USE_ANSWER_REWRITE = False
 # Special token to separate input sequences.
 _SEPARATOR = "<sep>"
 # Number of beams to use in beam search.
 _NUM_BEAMS = 10
+# Stop beam search when num_beams have completed.
+_EARLY_STOPPING = True
+# Use sparse rewriting
+_SPARSE = False
 
 
 class T5Rewriter(Rewriter):
     def __init__(
         self,
         model_name: str = "castorini/t5-base-canard",
+        separator: str = _SEPARATOR,
         max_length: int = 64,
         num_beams: int = _NUM_BEAMS,
-        early_stopping: bool = True,
-        sparse: bool = False,
+        early_stopping: bool = _EARLY_STOPPING,
+        sparse: bool = _SPARSE,
     ) -> None:
         """Instantiate T5 rewriter.
 
         Args:
             model_name (optional): Hugging Face model name. Defaults to
               "castorini/t5-base-canard".
+            separator (optional): Special token to separate input sequences.
             max_length (optional): Max sequence length. Default model was
               trained with sequences up to 64. Defaults to 64.
             num_beams (optional): How many beams to explore. Defaults to 10.
@@ -63,6 +68,8 @@ class T5Rewriter(Rewriter):
         self._device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu"
         )
+
+        self.separator = separator
         self._max_length = max_length
         self._num_beams = num_beams
         self._early_stopping = early_stopping
@@ -122,7 +129,7 @@ class T5Rewriter(Rewriter):
             input_ids.to(self._device, non_blocking=True),
             max_length=self._max_length,
             num_beams=self._num_beams,
-            early_stopping=False,
+            early_stopping=self._early_stopping,
             output_scores=True,
             return_dict_in_generate=True,
             num_return_sequences=self._num_beams,
@@ -148,9 +155,6 @@ class T5Rewriter(Rewriter):
         query: Query,
         context: Context = None,
         use_canonical_response: bool = _USE_CANONICAL_RESPONSE,
-        index_name: str = _INDEX_NAME,
-        separator: str = _SEPARATOR,
-        year: str = _YEAR,
     ) -> Union[Query, SparseQuery]:
         """Rewrites query to a new contextualized query given context.
 
@@ -177,9 +181,6 @@ class T5Rewriter(Rewriter):
               the rewrite. Defaults to None.
             use_canonical_response: Determines whether canonical responses
               should be used for rewriting the query.
-            index_name: The name of the index to be used for loading canonical
-              responses.
-            separator: Special token to separate input sequences.
 
         Returns:
             Rewritten query.
@@ -190,14 +191,11 @@ class T5Rewriter(Rewriter):
 
         # Construct input text
         history_questions = [q.question for q, _ in context.history]
-        input_text = separator.join(history_questions)
+        input_text = self.separator.join(history_questions)
         if use_canonical_response:
-            passage_loader = PassageLoader(index=index_name)
-            canonical_response = ""
-            for doc in context.history[-1][1]:
-                canonical_response = canonical_response + passage_loader.get(
-                    doc.doc_id
-                )
+            canonical_response = " ".join(
+                doc.content for doc in context.history[-1][1]
+            )
             split_canonical_response = canonical_response.split(" ")
             all_questions_length = len(
                 " ".join(history_questions + [query.question]).split(" ")
@@ -212,8 +210,8 @@ class T5Rewriter(Rewriter):
                 canonical_response = " ".join(
                     split_canonical_response[:(-split_position)]
                 )
-            input_text += f"{separator + canonical_response}"
-        input_text += f"{separator + query.question}"
+            input_text += f"{self.separator}{canonical_response}"
+        input_text += f"{self.separator}{query.question}"
 
         # Get input token ids
         input_ids = self._tokenizer.encode(
@@ -239,7 +237,7 @@ def rewrite_queries_with_fine_tuned_model(
     output_dir: str,
     use_previous_rewritten_utterance: bool,
     use_responses: bool,
-    index_name: str,
+    use_answer_rewrite: bool,
     separator: str,
     sparse: bool,
     num_beams: int,
@@ -257,17 +255,20 @@ def rewrite_queries_with_fine_tuned_model(
           queries should be used in the context for rewriting current query.
         use_responses: Specifies whether canonical responses should be used in
           the context for rewriting current query.
-        index_name: The name of the index to be used for loading canonical
-          responses.
+        use_answer_rewrite: If true, the document content is the rewritten
+          answer, otherwise its full passage(s). Defaults to False.
         separator: Special token to separate input sequences.
     """
     rewriter = T5Rewriter(
         model_name=model_dir,
+        separator=separator,
         max_length=max_length,
         num_beams=num_beams,
         sparse=sparse,
     )
-    contexts = Topic.load_contexts_from_file(year, QueryRewrite.AUTOMATIC)
+    contexts = Topic.load_contexts_from_file(
+        year, QueryRewrite.AUTOMATIC, use_answer_rewrite
+    )
     queries = Topic.load_queries_from_file(year)
 
     with open(output_dir, "w") as rewrites_out:
@@ -286,9 +287,6 @@ def rewrite_queries_with_fine_tuned_model(
                 query=query,
                 context=context,
                 use_canonical_response=use_responses,
-                index_name=index_name,
-                separator=separator,
-                year=year,
             )
             rewrites.append(rewrite)
             tsv_writer.writerow(
@@ -359,11 +357,12 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
-        "--index_name",
-        type=str,
-        default=_INDEX_NAME,
+        "--use_answer_rewrite",
+        type=bool,
+        default=_USE_ANSWER_REWRITE,
         help=(
-            "The name of the index to be used for loading canonical responses."
+            "Specifies whether to use provided answer rewrites or full passage "
+            "texts in context."
         ),
     )
     parser.add_argument(
@@ -417,7 +416,7 @@ def main(args):
         output_dir=args.output_dir,
         use_previous_rewritten_utterance=args.use_previous_rewritten_utterance,
         use_responses=args.use_canonical_response,
-        index_name=args.index_name,
+        use_answer_rewrite=args.use_answer_rewrite,
         separator=args.separator,
         sparse=args.sparse,
         num_beams=args.num_beams,

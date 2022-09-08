@@ -96,7 +96,7 @@ class Turn:
         Returns:
             Passage content.
         """
-        if use_answer_rewrite and self.passage:
+        if use_answer_rewrite and self.response:
             return [self.response]
         return self.provenance_passages
 
@@ -168,7 +168,10 @@ class Topic:
         ]
 
     def get_contexts(
-        self, year: str, query_rewrite: QueryRewrite = None
+        self,
+        year: str,
+        query_rewrite: QueryRewrite = None,
+        use_answer_rewrite: bool = False,
     ) -> List[Context]:
         """Gets a list of contexts for each turn.
 
@@ -176,6 +179,9 @@ class Topic:
             year: Year (2019_train, 2019, 2020, 2021, or 2022).
             query_rewrite (optional): Query rewrite variant to include in
               context (auto/manual). Defaults to None (i.e., raw).
+            use_answer_rewrite (optional): If false, uses full canonical passage
+              text(s) in context, otherwise only rewritten response. Defaults
+              to False.
 
         Returns:
             List of Contexts corresponding to every turn with canonical
@@ -183,15 +189,17 @@ class Topic:
         """
         queries = self.get_queries(query_rewrite)[:-1]
         if year == "2022":
-            canonical_response_ids = [turn.provenance for turn in self.turns][
-                :-1
-            ]
+            canonical_responses = [
+                turn.get_provenance_content(use_answer_rewrite)
+                for turn in self.turns
+            ][:-1]
         else:
-            canonical_response_ids = [
-                turn.canonical_result_id for turn in self.turns
+            canonical_responses = [
+                turn.get_passage_content(use_answer_rewrite)
+                for turn in self.turns
             ][:-1]
         contexts = [None]
-        for query, canonical_response in zip(queries, canonical_response_ids):
+        for query, canonical_response in zip(queries, canonical_responses):
             context = Context()
             context.history = (
                 contexts[-1].history.copy() if len(contexts) > 1 else []
@@ -201,13 +209,15 @@ class Topic:
                     (
                         query,
                         [
-                            Document(provenance)
-                            for provenance in canonical_response
+                            Document(None, passage)
+                            for passage in canonical_response
                         ],
                     )
                 )
             else:
-                context.history.append((query, [Document(canonical_response)]))
+                context.history.append(
+                    (query, [Document(None, canonical_response)])
+                )
             contexts.append(context)
         return contexts
 
@@ -384,7 +394,9 @@ class Topic:
 
     @staticmethod
     def load_contexts_from_file(
-        year: str, query_rewrite: QueryRewrite = None
+        year: str,
+        query_rewrite: QueryRewrite = None,
+        use_answer_rewrite: bool = False,
     ) -> List[Context]:
         """Loads a list of Context objects for topics from a given year.
 
@@ -392,6 +404,8 @@ class Topic:
             year: Year.
             query_rewrite (optional): Query rewrite variant to include in
               context (auto/manual). Defaults to None (i.e., raw).
+            use_answer_rewrite (optional): If true, the document content is the
+              rewritten passage, otherwise its full passage. Defaults to False.
 
         Returns:
             List of Context objects for each question in each topic in a given
@@ -400,7 +414,9 @@ class Topic:
         return [
             context
             for topic in Topic.load_topics_from_file(year, query_rewrite)
-            for context in topic.get_contexts(year, query_rewrite)
+            for context in topic.get_contexts(
+                year, query_rewrite, use_answer_rewrite
+            )
         ]
 
 
