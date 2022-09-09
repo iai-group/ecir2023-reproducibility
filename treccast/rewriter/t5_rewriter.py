@@ -191,14 +191,20 @@ class T5Rewriter(Rewriter):
 
         # Construct input text
         history_questions = [q.question for q, _ in context.history]
-        input_text = self.separator.join(history_questions)
+        input_text = self._tokenizer.tokenize(
+            self.separator.join(history_questions)
+        )
         if use_canonical_response:
             canonical_response = " ".join(
                 doc.content for doc in context.history[-1][1]
             )
-            split_canonical_response = canonical_response.split(" ")
+            split_canonical_response = self._tokenizer.tokenize(
+                canonical_response
+            )
             all_questions_length = len(
-                " ".join(history_questions + [query.question]).split(" ")
+                input_text
+                + [self.separator]
+                + self._tokenizer.tokenize(query.question)
             )
             if (
                 len(split_canonical_response) + all_questions_length
@@ -207,11 +213,13 @@ class T5Rewriter(Rewriter):
                 split_position = len(split_canonical_response) - (
                     _MAX_LENGTH - all_questions_length
                 )
-                canonical_response = " ".join(
-                    split_canonical_response[:(-split_position)]
-                )
-            input_text += f"{self.separator}{canonical_response}"
-        input_text += f"{self.separator}{query.question}"
+                split_canonical_response = split_canonical_response[
+                    :(-split_position)
+                ]
+            input_text += [self.separator] + split_canonical_response
+        input_text += [self.separator] + self._tokenizer.tokenize(
+            query.question
+        )
 
         # Get input token ids
         input_ids = self._tokenizer.encode(

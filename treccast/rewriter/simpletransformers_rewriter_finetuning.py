@@ -10,6 +10,7 @@ import pandas as pd
 import torch.multiprocessing
 from datasets import DatasetDict, load_dataset, load_metric
 from simpletransformers.t5 import T5Args, T5Model
+from transformers import T5Tokenizer
 
 # The default name of the pretrained base model to be fine-tuned.
 _BASE_MODEL_NAME = "t5"
@@ -69,6 +70,9 @@ class SimpleTransformersRewriterFinetuning:
 
         self._cuda_available = torch.cuda.is_available()
 
+        # Load a pretrained tokenizer
+        self._tokenizer = T5Tokenizer.from_pretrained(model_type)
+
         # Load a pretrained model
         self._model = T5Model(
             base_model_name,
@@ -77,10 +81,11 @@ class SimpleTransformersRewriterFinetuning:
             use_cuda=self._cuda_available,
             use_multiprocessing=False,
             use_multiprocessing_for_evaluation=False,
+            tokenizer=self._tokenizer,
         )
 
-    @staticmethod
     def construct_input_data(
+        self,
         context: List[str],
         question: List[str],
         separator: str = _SEPARATOR,
@@ -105,8 +110,8 @@ class SimpleTransformersRewriterFinetuning:
         if not include_previous_responses and len(context) > 0:
             context = context[0::2] + [context[-1]]
 
-        split_context = [c.split(" ") for c in context]
-        split_question = question.split(" ")
+        split_context = [self._tokenizer.tokenize(c) for c in context]
+        split_question = self._tokenizer.tokenize(question)
         if (
             sum([len(c) for c in split_context]) + len(split_question)
             > _MAX_SEQ_LENGTH
@@ -124,13 +129,19 @@ class SimpleTransformersRewriterFinetuning:
                 :(-split_position)
             ]
             return separator.join(
-                context[:-1] + [" ".join(cut_canonical_response)] + [question]
+                context[:-1]
+                + [
+                    self._tokenizer.convert_tokens_to_string(
+                        cut_canonical_response
+                    )
+                ]
+                + [question]
             )
         else:
             return separator.join(context + [question])
 
-    @staticmethod
     def construct_df_from_dataset(
+        self,
         dataset: Dict[str, List[str]],
         separator: str = _SEPARATOR,
         include_previous_responses: bool = _INCLUDE_PREVIOUS_RESPONSES,
@@ -149,7 +160,7 @@ class SimpleTransformersRewriterFinetuning:
             target_text columns.
         """
         constructed_input_data = [
-            SimpleTransformersRewriterFinetuning.construct_input_data(
+            self.construct_input_data(
                 context,
                 question,
                 separator,
@@ -207,24 +218,18 @@ class SimpleTransformersRewriterFinetuning:
                 }
             )
 
-            valid_dataset = (
-                SimpleTransformersRewriterFinetuning.construct_df_from_dataset(
-                    self._dataset["valid"],
-                    separator,
-                    include_previous_responses,
-                )
+            valid_dataset = self.construct_df_from_dataset(
+                self._dataset["valid"],
+                separator,
+                include_previous_responses,
             )
 
-        train_dataset = (
-            SimpleTransformersRewriterFinetuning.construct_df_from_dataset(
-                self._dataset["train"], separator, include_previous_responses
-            )
+        train_dataset = self.construct_df_from_dataset(
+            self._dataset["train"], separator, include_previous_responses
         )
 
-        test_dataset = (
-            SimpleTransformersRewriterFinetuning.construct_df_from_dataset(
-                self._dataset["test"], separator, include_previous_responses
-            )
+        test_dataset = self.construct_df_from_dataset(
+            self._dataset["test"], separator, include_previous_responses
         )
 
         return train_dataset, valid_dataset, test_dataset
