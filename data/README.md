@@ -38,8 +38,12 @@
     - [MS MARCO V2 (Documents)](https://microsoft.github.io/msmarco/TREC-Deep-Learning-2021#document-ranking-dataset) => `$COLLECTIONS/msmarco-v2/msmarco_v2_doc.tar` (33G)
     - [KILT Wikipedia](https://github.com/facebookresearch/KILT/) => same as in 2021
     - [Washington Post 2020](https://trec.nist.gov/data/wapost/) => same as in 2021
-  * Pre-processed collections (in TREC Web format) =>`$COLLECTIONS/trec-cast`
-    - MS MARCO `/ms_marco/MARCO_{0-791}.trecweb` (109G)
+  * The collections pre-processed by organizers (in TREC Web format) =>`$COLLECTIONS/trec-cast/2022/trecweb/` [TODO](https://github.com/iai-group/trec-cast/issues/416)
+    - MS MARCO `/MARCO_{0-109}.trecweb` (99G)
+    - KILT `/KILT_{0-7}.trecweb` (18G)
+    - WaPo `/WaPo_{0-59}.trecweb` (3.3G)
+  * The collections pre-processed by us (in TREC Web format) =>`$COLLECTIONS/trec-cast`
+    - MS MARCO `/msmarco-v2/MARCO_{0-791}.trecweb` (109G)
     - KILT => same as in 2021
     - WaPo => same as in 2021
 
