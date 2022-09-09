@@ -19,7 +19,7 @@ class HuggingFaceSummarizer(Summarizer):
         Args:
             model_name (optional): Hugging Face model name. Defaults to
               file-level constant _DEFAULT_SUMMARIZER_MODEL.
-        """
+        """  # noqa
         self._summarizer = pipeline("summarization", model=model_name)
 
     def summarize_passages(
@@ -33,7 +33,8 @@ class HuggingFaceSummarizer(Summarizer):
 
         Args:
             passages: Passages to summarize.
-            k (optional): Maximum number of passages to consider for the summary.
+            k (optional): Maximum number of passages to consider for the
+              summary.
             min_length (optional): Minimum number of tokens in the summary.
               Defaults to 10 tokens.
             max_length (optional): Maximum number of tokens in the summary.
