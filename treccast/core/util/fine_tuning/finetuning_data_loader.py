@@ -2,8 +2,8 @@ import csv
 from collections import defaultdict
 from typing import List, Tuple
 
+from treccast.core.base import Query, ScoredDocument
 from treccast.core.ranking import Ranking
-from treccast.core.base import Query
 
 
 class FineTuningDataLoader:
@@ -47,7 +47,9 @@ class FineTuningDataLoader:
             utterance_query = Query(str(qid), utterance_str)
             r = Ranking(utterance_query)
             for doc_id, (doc, score) in enumerate(ranking_list):
-                r.add_doc(doc_id=str(doc_id), score=score, doc_content=doc)
+                r.add_doc(
+                    ScoredDocument(doc_id=str(doc_id), content=doc, score=score)
+                )
             queries.append(utterance_query)
             rankings.append(r)
         return queries, rankings

@@ -6,7 +6,7 @@ import torch
 from ftfy import fix_text
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 from treccast.core import NEURAL_MODEL_CACHE_DIR
-from treccast.core.base import Query
+from treccast.core.base import Query, ScoredDocument
 from treccast.core.ranking import Ranking
 from treccast.reranker.reranker import Batch, NeuralReranker
 
@@ -150,8 +150,8 @@ class DuoT5Reranker(NeuralReranker):
         """
         reranking = Ranking(ranking.query_id)
         reranking_top_k = ranking.fetch_topk_docs(top_k, unique=True)
-        doc_ids = [doc["doc_id"] for doc in reranking_top_k]
-        documents = [doc["content"] for doc in reranking_top_k]
+        doc_ids = [doc.doc_id for doc in reranking_top_k]
+        documents = [doc.content for doc in reranking_top_k]
         doc_pairs = list(permutations(documents, 2))
         doc_ids_pairs = list(permutations(doc_ids, 2))
         scores = defaultdict(float)
@@ -169,11 +169,9 @@ class DuoT5Reranker(NeuralReranker):
 
         reranking.add_docs(
             [
-                {
-                    "doc_id": doc["doc_id"],
-                    "score": scores[doc["doc_id"]],
-                    "content": doc["content"],
-                }
+                ScoredDocument(
+                    doc.doc_id, doc.content, score=scores[doc.doc_id]
+                )
                 for doc in reranking_top_k
             ]
         )

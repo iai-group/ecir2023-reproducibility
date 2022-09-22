@@ -1,6 +1,7 @@
 """Passage summarizer based on a Hugging Face model."""
 
 from transformers import pipeline
+from treccast.core.base import ScoredDocument
 from treccast.core.ranking import Ranking
 from treccast.summarizer.summarizer import Summarizer
 
@@ -44,7 +45,7 @@ class HuggingFaceSummarizer(Summarizer):
             Abstractive summary of passages.
         """
         topk = passages.fetch_topk_docs(k=k, unique=True)
-        texts = list(map(lambda p: p["content"], topk))
+        texts = list(map(lambda p: p.content, topk))
         text = " ".join(texts)
         summary = self._summarizer(
             text, min_length=min_length, max_length=max_length
@@ -59,10 +60,9 @@ if __name__ == "__main__":
     passages = Ranking(
         "qid_0",
         [
-            {
-                "doc_id": "1",
-                "score": 50.62,
-                "content": (
+            ScoredDocument(
+                doc_id="1",
+                content=(
                     "Many people search for ’standard garage door sizes’ "
                     "on a daily basis. However there are many common size "
                     "garage door widths and heights but the standard size is "
@@ -71,11 +71,11 @@ if __name__ == "__main__":
                     "There are a number of standard sizes for residential "
                     "garage doors in the United States."
                 ),
-            },
-            {
-                "doc_id": "2",
-                "score": 1.52,
-                "content": (
+                score=50.62,
+            ),
+            ScoredDocument(
+                doc_id="2",
+                content=(
                     "The presence of communication amid scientific minds was "
                     "equally important to the success of the Manhattan Project "
                     "as scientific intellect was. The only cloud hanging over "
@@ -83,11 +83,11 @@ if __name__ == "__main__":
                     "engineers is what their success truly meant; hundreds of "
                     "thousands of innocent lives obliterated."
                 ),
-            },
-            {
-                "doc_id": "3",
-                "score": 80.22,
-                "content": (
+                score=1.52,
+            ),
+            ScoredDocument(
+                doc_id="3",
+                content=(
                     "Garage Door Opener Problems. So, when the garage door "
                     "opener decides to take a day off, it can leave you stuck "
                     "outside, probably during a rain or snow storm. Though "
@@ -99,7 +99,8 @@ if __name__ == "__main__":
                     "get the door open, clear any water, ice or snow from the "
                     "spot on the garage floor where the door rests when closed"
                 ),
-            },
+                score=80.22,
+            ),
         ],
     )
 

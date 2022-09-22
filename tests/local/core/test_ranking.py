@@ -14,9 +14,9 @@ def test_empty_ranking():
 
 def test_add_doc():
     ranking = Ranking("1")
-    ranking.add_doc("3", 80.22, "doc3 content")
-    ranking.add_doc("1", 50.62, "doc1 content")
-    ranking.add_doc("2", 1.52, "doc2 content")
+    ranking.add_doc(ScoredDocument("3", "doc3 content", 80.22))
+    ranking.add_doc(ScoredDocument("1", "doc1 content", 50.62))
+    ranking.add_doc(ScoredDocument("2", "doc2 content", 1.52))
     assert len(ranking) == 3
     doc_ids, contents = ranking.documents()
     assert doc_ids == ["3", "1", "2"]
@@ -31,9 +31,9 @@ def test_add_docs():
     ranking = Ranking("1")
     ranking.add_docs(
         [
-            {"doc_id": "001", "score": 10},
-            {"doc_id": "003", "score": 1},
-            {"doc_id": "002", "score": 5},
+            ScoredDocument("001", score=10),
+            ScoredDocument("003", score=1),
+            ScoredDocument("002", score=5),
         ]
     )
     assert len(ranking) == 3
@@ -50,19 +50,15 @@ def test_update():
     ranking = Ranking("1")
     ranking.add_docs(
         [
-            {"doc_id": "001", "score": 10, "content": "test content doc 1"},
-            {"doc_id": "003", "score": 1},
+            ScoredDocument("001", "test content doc 1", 10),
+            ScoredDocument("003", score=1),
         ]
     )
     assert len(ranking) == 2
     ranking.update(
         [
-            {
-                "doc_id": "001",
-                "score": 3,
-                "content": "test duplicate content doc 1",
-            },
-            {"doc_id": "004", "score": 5},
+            ScoredDocument("001", "test duplicate content doc 1", 3),
+            ScoredDocument("004", score=5),
         ]
     )
     assert len(ranking) == 3
@@ -77,39 +73,23 @@ def test_update():
 
 def test_fetch_topk_docs():
     ranking = Ranking("2")
-    ranking.add_doc("1", 50.62, "doc1 content")
-    ranking.add_doc("2", 1.52, "doc2 content")
-    ranking.add_doc("3", 80.22, "doc3 content")
+    ranking.add_doc(ScoredDocument("1", "doc1 content", 50.62))
+    ranking.add_doc(ScoredDocument("2", "doc2 content", 1.52))
+    ranking.add_doc(ScoredDocument("3", "doc3 content", 80.22))
     top2docs = ranking.fetch_topk_docs(2)
-    assert top2docs[0] == {
-        "doc_id": "3",
-        "score": 80.22,
-        "content": "doc3 content",
-    }
-    assert top2docs[1] == {
-        "doc_id": "1",
-        "score": 50.62,
-        "content": "doc1 content",
-    }
+    assert top2docs[0].doc_id == "3"
+    assert top2docs[1].score == 50.62
 
 
 def test_fetch_topk_docs_unique():
     ranking = Ranking("2")
-    ranking.add_doc("1", 50.62, "doc1 content")
-    ranking.add_doc("1", 1.52, "doc1 content")
-    ranking.add_doc("3", 80.22, "doc3 content")
+    ranking.add_doc(ScoredDocument("1", "doc1 content", 50.62))
+    ranking.add_doc(ScoredDocument("1", "doc1 content", 1.52))
+    ranking.add_doc(ScoredDocument("3", "doc3 content", 80.22))
     topkdocs = ranking.fetch_topk_docs(unique=True)
     assert len(topkdocs) == 2
-    assert topkdocs[0] == {
-        "doc_id": "3",
-        "score": 80.22,
-        "content": "doc3 content",
-    }
-    assert topkdocs[1] == {
-        "doc_id": "1",
-        "score": 50.62,
-        "content": "doc1 content",
-    }
+    assert topkdocs[0].content == "doc3 content"
+    assert topkdocs[1].doc_id == "1"
 
 
 def test_write_to_tsv_file():
@@ -119,9 +99,9 @@ def test_write_to_tsv_file():
     ranking = Ranking(
         "123",
         [
-            {"doc_id": "001", "score": 10, "content": "doc001\t content"},
-            {"doc_id": "003", "score": 1, "content": "doc003 content"},
-            {"doc_id": "002", "score": 5, "content": "doc002 content"},
+            ScoredDocument("001", "doc001\t content", 10),
+            ScoredDocument("003", "doc003 content", 1),
+            ScoredDocument("002", "doc002 content", 5),
         ],
     )
     ranking.write_to_tsv_file(tsv_writer, "test", k=2)
@@ -141,10 +121,10 @@ def test_write_to_trec_file():
     ranking = Ranking(
         "123",
         [
-            {"doc_id": "001", "score": 10},
-            {"doc_id": "003", "score": 1},
-            {"doc_id": "002", "score": 5},
-            {"doc_id": "002", "score": 6},
+            ScoredDocument("001", score=10),
+            ScoredDocument("003", score=1),
+            ScoredDocument("002", score=5),
+            ScoredDocument("002", score=6),
         ],
     )
     ranking.write_to_trec_file(outfile, "test", k=3)
@@ -154,18 +134,6 @@ def test_write_to_trec_file():
         content
         == "123 Q0 001 1 10 test\n123 Q0 002 2 6 test\n123 Q0 003 3 1 test\n"
     )
-
-
-def test_document_dataclass():
-    doc = ScoredDocument(doc_id="1", content="Test document", score=1.0)
-    assert doc.content == "Test document"
-    assert doc.doc_id == "1"
-    assert doc.score == 1.0
-
-    doc_without_content = ScoredDocument(doc_id="2", score=1.02)
-    assert doc_without_content.content is None
-    assert doc_without_content.doc_id == "2"
-    assert doc_without_content.score == 1.02
 
 
 def test_load_rankings_from_tsv_file_num_queries():

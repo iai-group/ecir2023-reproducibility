@@ -5,10 +5,9 @@ import shutil
 
 import pyterrier as pt
 import pyterrier_ance
-from treccast.core.base import Query
+from treccast.core.base import Query, ScoredDocument
 from treccast.core.ranking import Ranking
 from treccast.retriever.retriever import Retriever
-
 
 _DENSE_RETRIEVAL_MODEL_CHECKPOINT = (
     "data/retrieval/ance/Passage ANCE(FirstP) Checkpoint"
@@ -80,11 +79,11 @@ class ANCEDenseRetriever(Retriever):
         return Ranking(
             query.query_id,
             [
-                {
-                    "doc_id": retrieved_results["docid"][id],
-                    "score": retrieved_results["score"][id],
-                    "content": retrieved_results["text"][id],
-                }
+                ScoredDocument(
+                    retrieved_results["docid"][id],
+                    retrieved_results["text"][id],
+                    retrieved_results["score"][id],
+                )
                 for id in retrieved_results.index
             ],
         )
@@ -112,4 +111,4 @@ if __name__ == "__main__":
     query = Query("1", "What is a chemical reaction?")
     ranking = ance.retrieve(query, 10)
     for rank, doc in enumerate(ranking.fetch_topk_docs(10), start=1):
-        print(f'{rank}: {doc["score"]}, {doc["doc_id"]}, {doc["content"]}')
+        print(f"{rank}: {doc.score}, {doc.doc_id}, {doc.content}")

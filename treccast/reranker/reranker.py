@@ -4,8 +4,7 @@ from abc import ABC, abstractmethod
 from typing import List, Tuple
 
 import torch
-
-from treccast.core.base import Query
+from treccast.core.base import Query, ScoredDocument
 from treccast.core.ranking import Ranking
 
 Batch = Tuple[torch.Tensor, torch.Tensor, torch.Tensor]
@@ -74,7 +73,7 @@ class NeuralReranker(Reranker, ABC):
             # This is the same for both BERT and T5 rerankers.
             reranking.add_docs(
                 [
-                    {"doc_id": doc_id, "score": logit[1], "content": doc}
+                    ScoredDocument(doc_id, doc, logit[1])
                     for (logit, doc_id, doc) in zip(
                         logits, batch_doc_ids, batch_documents
                     )

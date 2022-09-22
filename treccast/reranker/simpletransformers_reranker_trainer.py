@@ -53,7 +53,7 @@ class SimpleTransformersTrainer:
             columns.
         """
         query_doc_pairs = [
-            [query.question, doc["content"], doc["score"]]
+            [query.question, doc.content, doc.score]
             for query, ranking in zip(queries, rankings)
             for doc in ranking.fetch_topk_docs()
         ]

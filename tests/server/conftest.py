@@ -1,5 +1,5 @@
 import pytest
-from treccast.core.base import Query
+from treccast.core.base import Query, ScoredDocument
 from treccast.core.ranking import Ranking
 
 
@@ -42,6 +42,102 @@ def document_3():
 
 
 @pytest.fixture
+def document_4():
+    return (
+        "Typically, it will cost less to install a steel garage door without an"
+        " opener than to install a custom wood door with a garage door opener. "
+        "Recent innovations have also yielded high-tech doors with thick "
+        "insulation and energy-efficient glaze, as well as finished interior "
+        "surfaces and other significant upgrades.f your garage door has started"
+        " to malfunction, you might be considering installing a new or upgraded"
+        " door. Rest assured it is a smart investment. In fact, installing a "
+        "new garage door yields about 84 percent in resale value, according to "
+        "Remodeling Magazine"
+    )
+
+
+@pytest.fixture
+def document_5():
+    return (
+        "Organize volunteer community panels, boards, or committees that meet "
+        "with the offender to discuss the incident and offender obligation to "
+        "repair the harm to victims and community members. Facilitate the "
+        "process of apologies to victims and communities. Invite local victim "
+        "advocates to provide ongoing victim-awareness training for probation "
+        "staff"
+    )
+
+
+@pytest.fixture
+def document_6():
+    return (
+        "Purchasing extra remotes and getting openers set up for operation will"
+        " typically range from $100 to $400, which will add to the overall cost"
+        " of the garage door installation. If your opener works with the new "
+        "door, you won't need to have it replaced. In cases in which the new "
+        "door is much heavier than the old door, however, the old garage door "
+        "opener won't be able to handle the extra weight. This is something to "
+        "keep in mind when you're shopping for a new garage door."
+    )
+
+
+@pytest.fixture
+def document_7():
+    return (
+        "More research is needed. Types Breast cancer can be: Ductal carcinoma:"
+        " This begins in the milk duct and is the most common type. Lobular "
+        "carcinoma: This starts in the lobules. Invasive breast cancer is when "
+        "the cancer cells break out from inside the lobules or ducts and invade"
+        " nearby tissue, increasing the chance of spreading to other parts of "
+        "the body. Non-invasive breast cancer is when the cancer is still "
+        "inside its place of origin and has not broken out."
+    )
+
+
+@pytest.fixture
+def document_8():
+    return (
+        "The presence of communication amid scientific minds was equally"
+        "important to the success of the Manhattan Project as scientific"
+        "intellect was. The only cloud hanging over the impressive achievement"
+        " of the atomic researchers and engineers is what their success truly "
+        "meant; hundreds of thousands of innocent lives obliterated."
+    )
+
+
+@pytest.fixture
+def document_9():
+    return (
+        "Many ecosystems, particularly prairie, savanna, chaparral and "
+        "coniferous forests, have evolved with fire as an essential contributor"
+        " to habitat vitality and renewal. [1] Many plant species in "
+        "fire-affected environments require fire to germinate, establish, or "
+        "to reproduce. Wildfire suppression not only eliminates these species, "
+        "but also the animals that depend upon them. [2]Campaigns in the United"
+        " States have historically molded public opinion to believe that "
+        "wildfires are always harmful to nature. This view is based on the "
+        "outdated belief that ecosystems progress toward an equilibrium and "
+        "that any disturbance, such as fire, disrupts the harmony of nature. "
+        "More recent ecological research has shown, however, that fire is an "
+        "integral component in the function and biodiversity of many natural "
+        "habitats, and that the organisms within these communities have adapted"
+        " to withstand, and even to exploit, natural wildfire."
+    )
+
+
+@pytest.fixture
+def document_10():
+    return (
+        "Organize volunteer community panels, boards, or committees that meet "
+        "with the offender to discuss the incident and offender obligation to "
+        "repair the harm to victims and community members. Facilitate the "
+        "process of apologies to victims and communities. Invite local victim "
+        "advocates to provide ongoing victim-awareness training for probation "
+        "staff"
+    )
+
+
+@pytest.fixture
 def query():
     return Query(
         "qid_0",
@@ -54,27 +150,17 @@ def ranking(document_1, document_2, document_3):
     return Ranking(
         "qid_0",
         [
-            {
-                "doc_id": "1",
-                "score": 50.62,
-                "content": document_1,
-            },
-            {
-                "doc_id": "2",
-                "score": 1.52,
-                "content": document_2,
-            },
-            {
-                "doc_id": "3",
-                "score": 80.22,
-                "content": document_3,
-            },
+            ScoredDocument("1", document_1, 50.62),
+            ScoredDocument("2", document_2, 1.52),
+            ScoredDocument("3", document_3, 80.22),
         ],
     )
 
 
 @pytest.fixture
-def train_pairs(document_1, document_2, document_3):
+def train_pairs(
+    document_1, document_2, document_3, document_4, document_5, document_6
+):
     train_queries = [
         Query(
             "0",
@@ -87,57 +173,13 @@ def train_pairs(document_1, document_2, document_3):
     ]
 
     ranking1 = Ranking("0")
-    ranking1.add_doc(
-        "1",
-        2,
-        document_1,
-    )
-    ranking1.add_doc(
-        "2",
-        0,
-        document_2,
-    )
-    ranking1.add_doc(
-        "3",
-        3,
-        document_3,
-    )
-
+    ranking1.add_doc(ScoredDocument("1", document_1, 2))
+    ranking1.add_doc(ScoredDocument("2", document_2, 0))
+    ranking1.add_doc(ScoredDocument("3", document_3, 3))
     ranking2 = Ranking("1")
-    ranking2.add_doc(
-        "1",
-        1,
-        "Typically, it will cost less to install a steel garage door without an"
-        " opener than to install a custom wood door with a garage door opener. "
-        "Recent innovations have also yielded high-tech doors with thick "
-        "insulation and energy-efficient glaze, as well as finished interior "
-        "surfaces and other significant upgrades.f your garage door has started"
-        " to malfunction, you might be considering installing a new or upgraded"
-        " door. Rest assured it is a smart investment. In fact, installing a "
-        "new garage door yields about 84 percent in resale value, according to "
-        "Remodeling Magazine",
-    )
-    ranking2.add_doc(
-        "4",
-        0,
-        "Organize volunteer community panels, boards, or committees that meet "
-        "with the offender to discuss the incident and offender obligation to "
-        "repair the harm to victims and community members. Facilitate the "
-        "process of apologies to victims and communities. Invite local victim "
-        "advocates to provide ongoing victim-awareness training for probation "
-        "staff",
-    )
-    ranking2.add_doc(
-        "5",
-        4,
-        "Purchasing extra remotes and getting openers set up for operation will"
-        " typically range from $100 to $400, which will add to the overall cost"
-        " of the garage door installation. If your opener works with the new "
-        "door, you won't need to have it replaced. In cases in which the new "
-        "door is much heavier than the old door, however, the old garage door "
-        "opener won't be able to handle the extra weight. This is something to "
-        "keep in mind when you're shopping for a new garage door.",
-    )
+    ranking2.add_doc(ScoredDocument("1", document_4, 1))
+    ranking2.add_doc(ScoredDocument("4", document_5, 0))
+    ranking2.add_doc(ScoredDocument("5", document_6, 4))
     return (train_queries, [ranking1, ranking2])
 
 
@@ -156,56 +198,12 @@ def test_pairs():
         ),
     ]
     ranking1 = Ranking("qid_2")
-    ranking1.add_doc(
-        "rel_doc",
-        0,
-        "More research is needed. Types Breast cancer can be: Ductal carcinoma:"
-        " This begins in the milk duct and is the most common type. Lobular "
-        "carcinoma: This starts in the lobules. Invasive breast cancer is when "
-        "the cancer cells break out from inside the lobules or ducts and invade"
-        " nearby tissue, increasing the chance of spreading to other parts of "
-        "the body. Non-invasive breast cancer is when the cancer is still "
-        "inside its place of origin and has not broken out.",
-    )
-    ranking1.add_doc(
-        "unrel_doc",
-        4,
-        "The presence of communication amid scientific minds was equally"
-        "important to the success of the Manhattan Project as scientific"
-        "intellect was. The only cloud hanging over the impressive achievement"
-        " of the atomic researchers and engineers is what their success truly "
-        "meant; hundreds of thousands of innocent lives obliterated.",
-    )
+    ranking1.add_doc(ScoredDocument("rel_doc", document_7, 0))
+    ranking1.add_doc(ScoredDocument("unrel_doc", document_8, 4))
 
     ranking2 = Ranking("qid_3")
-    ranking2.add_doc(
-        "rel_doc",
-        0,
-        "Many ecosystems, particularly prairie, savanna, chaparral and "
-        "coniferous forests, have evolved with fire as an essential contributor"
-        " to habitat vitality and renewal. [1] Many plant species in "
-        "fire-affected environments require fire to germinate, establish, or "
-        "to reproduce. Wildfire suppression not only eliminates these species, "
-        "but also the animals that depend upon them. [2]Campaigns in the United"
-        " States have historically molded public opinion to believe that "
-        "wildfires are always harmful to nature. This view is based on the "
-        "outdated belief that ecosystems progress toward an equilibrium and "
-        "that any disturbance, such as fire, disrupts the harmony of nature. "
-        "More recent ecological research has shown, however, that fire is an "
-        "integral component in the function and biodiversity of many natural "
-        "habitats, and that the organisms within these communities have adapted"
-        " to withstand, and even to exploit, natural wildfire.",
-    )
-    ranking2.add_doc(
-        "unrel_doc",
-        1,
-        "Organize volunteer community panels, boards, or committees that meet "
-        "with the offender to discuss the incident and offender obligation to "
-        "repair the harm to victims and community members. Facilitate the "
-        "process of apologies to victims and communities. Invite local victim "
-        "advocates to provide ongoing victim-awareness training for probation "
-        "staff",
-    )
+    ranking2.add_doc(ScoredDocument("rel_doc", document_9, 0))
+    ranking2.add_doc(ScoredDocument("unrel_doc", document_10, 1))
     return (test_queries, [ranking1, ranking2])
 
 

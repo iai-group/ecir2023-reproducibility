@@ -4,7 +4,7 @@ from unittest import mock
 
 import confuse
 import pytest
-from treccast.core.base import Query
+from treccast.core.base import Query, ScoredDocument
 
 with pytest.helpers.mock_expensive_imports():
     from treccast import main
@@ -17,14 +17,14 @@ class MockBM25Retriever(mock.MagicMock):
         super().__init__(*args, **kwargs)
         self.documents = {
             "001": [
-                {"doc_id": "001", "content": "test passage", "score": 1},
-                {"doc_id": "003", "content": "test passage", "score": 3},
-                {"doc_id": "002", "content": "test passage", "score": 2},
+                ScoredDocument("001", "test passage", 1),
+                ScoredDocument("003", "test passage", 3),
+                ScoredDocument("002", "test passage", 2),
             ],
             "002": [
-                {"doc_id": "002", "content": "test passage", "score": 2},
-                {"doc_id": "005", "content": "test passage", "score": 5},
-                {"doc_id": "004", "content": "test passage", "score": 4},
+                ScoredDocument("002", "test passage", 2),
+                ScoredDocument("005", "test passage", 5),
+                ScoredDocument("004", "test passage", 4),
             ],
         }
 

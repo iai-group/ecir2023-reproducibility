@@ -3,12 +3,12 @@
 from collections import defaultdict
 from typing import Any, Dict, List
 
-from treccast.core.base import Query, SparseQuery
+from treccast.core.base import Query, ScoredDocument, SparseQuery
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import Ranking
 from treccast.retriever.retriever import Retriever
 
-_ES_query = Dict[str, Any]
+_ESquery = Dict[str, Any]
 
 
 class BM25Retriever(Retriever):
@@ -58,7 +58,7 @@ class BM25Retriever(Retriever):
     def retrieve(
         self, query: Query, num_results: int = 1000, source=True
     ) -> Ranking:
-        """Performs retrieval.
+        """Performs retrieval for query.
 
         Args:
             query: Query instance.
@@ -86,30 +86,29 @@ class BM25Retriever(Retriever):
             "\n",
         )
 
-        return self._retrieve(
-            query.query_id,
+        documents = self._retrieve(
             query=es_query,
             num_results=num_results,
             source=source,
         )
 
+        return Ranking(query.query_id, documents)
+
     def _retrieve(
         self,
-        query_id: str,
-        query: _ES_query = None,
+        query: _ESquery = None,
         num_results: int = 1000,
         source=True,
-    ) -> Ranking:
-        """Performs retrieval.
+    ) -> List[ScoredDocument]:
+        """Performs retrieval for elastic search query.
 
         Args:
-            query_id: query ID.
             query: Elasticsearch query.
             num_results: Number of documents to return.
             source: Weather to include document content in the return set.
 
         Returns:
-            Document ranking.
+            List of scored documents.
         """
         res = self._collection.es.search(
             body={"query": query},
@@ -118,17 +117,14 @@ class BM25Retriever(Retriever):
             size=num_results,
         )
 
-        return Ranking(
-            query_id,
-            [
-                {
-                    "doc_id": hit["_id"],
-                    "score": hit["_score"],
-                    "content": hit["_source"]["body"] if source else None,
-                }
-                for hit in res["hits"]["hits"]
-            ],
-        )
+        return [
+            ScoredDocument(
+                doc_id=hit["_id"],
+                content=hit["_source"]["body"] if source else None,
+                score=hit["_score"],
+            )
+            for hit in res["hits"]["hits"]
+        ]
 
     def analyze_query(self, text: str) -> List[str]:
         """Parses text into a list of tokens which exist in the collection.
@@ -147,7 +143,7 @@ class BM25Retriever(Retriever):
             )["tokens"]
         ]
 
-    def match_query(self, query: str, weight: float = 1.0) -> _ES_query:
+    def match_query(self, query: str, weight: float = 1.0) -> _ESquery:
         """Simple elasticsearch match query.
 
         Args:
@@ -159,7 +155,7 @@ class BM25Retriever(Retriever):
         """
         return {"match": {self._field: {"query": query, "boost": weight}}}
 
-    def _term_query(self, term: str, weight: float = 1.0) -> _ES_query:
+    def _term_query(self, term: str, weight: float = 1.0) -> _ESquery:
         """Sub-query for a single term to be used as part of a larger query.
 
         Args:
@@ -171,7 +167,7 @@ class BM25Retriever(Retriever):
         """
         return {"term": {self._field: {"value": term, "boost": weight}}}
 
-    def _phrase_query(self, phrase: str, weight: float = 1.0) -> _ES_query:
+    def _phrase_query(self, phrase: str, weight: float = 1.0) -> _ESquery:
         """Sub-query for a single phrase to be used as part of a larger query.
 
         Args:
@@ -190,7 +186,7 @@ class BM25Retriever(Retriever):
         weighted_terms: Dict[str, float],
         weighted_phrases: Dict[str, float] = None,
         weighted_match_queries: Dict[str, float] = None,
-    ) -> _ES_query:
+    ) -> _ESquery:
         """Query that computes the scores of each term or phrase individually.
 
         Args:
@@ -237,4 +233,4 @@ if __name__ == "__main__":
     )
     ranking = bm25.retrieve(query)
     for doc in ranking.fetch_topk_docs(5):
-        print(f'{doc["doc_id"]}: {doc["score"]}')
+        print(f"{doc.doc_id}: {doc.score}")

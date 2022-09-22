@@ -77,7 +77,7 @@ def get_retrieved_docs_for_turn(
             )
             retrieved_doc_ids.update(
                 [
-                    doc["doc_id"]
+                    doc.doc_id
                     for doc in rankings[rewrite]
                     .get(qid, Ranking(""))
                     .fetch_topk_docs(k)
@@ -153,7 +153,7 @@ def get_document_appearance(
                     ].append(full_name)
 
             retrieved_doc_ids = [
-                doc["doc_id"]
+                doc.doc_id
                 for doc in rankings["raw"]
                 .get(qid, Ranking(""))
                 .fetch_topk_docs(1000)

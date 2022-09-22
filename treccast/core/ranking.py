@@ -6,9 +6,10 @@ import csv
 import io
 import sys
 from collections import defaultdict
+from operator import attrgetter
 from typing import Dict, List, Tuple
 
-from treccast.core.base import Query
+from treccast.core.base import Query, ScoredDocument
 from treccast.core.util.passage_loader import PassageLoader
 
 # This is needed since some of the passages are too long.
@@ -16,7 +17,9 @@ csv.field_size_limit(sys.maxsize)
 
 
 class Ranking:
-    def __init__(self, query_id: str, scored_docs: List[Dict] = None) -> None:
+    def __init__(
+        self, query_id: str, scored_docs: List[ScoredDocument] = None
+    ) -> None:
         """Instantiates a Ranking object using the query_id and a list of scored
         documents.
 
@@ -24,8 +27,7 @@ class Ranking:
 
         Args:
             query_id: Unique id for the query.
-            scored_docs: List of dictionaries, where the keys `doc_id` and
-                `score` are mandatory, and `content` is optional.
+            scored_docs: List of scored documents. Not necessarily sorted.
         """
         self._query_id = query_id
         self._scored_docs = scored_docs or []
@@ -44,52 +46,44 @@ class Ranking:
             Two parallel lists, containing document IDs and their content.
         """
         return (
-            [doc["doc_id"] for doc in self._scored_docs],
-            [doc.get("content") for doc in self._scored_docs],
+            [doc.doc_id for doc in self._scored_docs],
+            [doc.content for doc in self._scored_docs],
         )
 
-    def add_doc(
-        self, doc_id: str, score: float, doc_content: str = None
-    ) -> None:
+    def add_doc(self, doc: ScoredDocument) -> None:
         """Adds a new document to the ranking.
 
         Note: it doesn't check whether the document is already present.
 
         Args:
-            doc_id: Document ID.
-            score: The relevance score of the doc.
-            doc_content (optional): String content of the document.
+            doc: A scored document.
         """
-        self._scored_docs.append(
-            {"doc_id": doc_id, "score": score, "content": doc_content}
-        )
+        self._scored_docs.append(doc)
 
-    def add_docs(self, docs: List[Dict]) -> None:
+    def add_docs(self, docs: List[ScoredDocument]) -> None:
         """Adds multiple documents to the ranking.
 
         Note: it doesn't check whether the document is already present.
 
         Args:
-            docs: List of dictionaries, where the keys `doc_id` and
-                `score` are mandatory, and `content` is optional.
+            docs: List of scored documents.
         """
         self._scored_docs.extend(docs)
 
-    def update(self, docs: List[Dict]) -> None:
+    def update(self, docs: List[ScoredDocument]) -> None:
         """Adds multiple documents to the ranking uniquely.
 
         Args:
-            docs: List of dictionaries, where the keys `doc_id` and
-                `score` are mandatory, and `content` is optional.
+            docs: List of scored documents.
         """
         doc_ids, _ = self.documents()
         self._scored_docs.extend(
-            [doc for doc in docs if doc["doc_id"] not in doc_ids]
+            [doc for doc in docs if doc.doc_id not in doc_ids]
         )
 
     def fetch_topk_docs(
         self, k: int = 1000, unique: bool = False
-    ) -> List[Dict]:
+    ) -> List[ScoredDocument]:
         """Fetches the top-k docs based on their score.
 
             If k > len(self._scored_docs), the slicing automatically
@@ -103,19 +97,14 @@ class Ranking:
                 scoring. Defaults to False
 
         Returns:
-            Ordered list of dictionaries with doc_id, score, and (optional)
-                content fields.
+            Ordered list of scored documents.
         """
-        sorted_docs = sorted(
-            self._scored_docs, key=lambda i: i["score"], reverse=True
-        )
+        sorted_docs = sorted(self._scored_docs, key=attrgetter("score"))
         if unique:
-            sorted_unique_docs = {}
-            for doc in sorted_docs:
-                if doc["doc_id"] not in sorted_unique_docs:
-                    sorted_unique_docs[doc["doc_id"]] = doc
+            sorted_unique_docs = {doc.doc_id: doc for doc in sorted_docs}
             sorted_docs = list(sorted_unique_docs.values())
-        return sorted_docs[:k]
+
+        return sorted_docs[::-1][:k]
 
     def write_to_tsv_file(self, writer, query: str, k: int = 1000) -> None:
         """Writes the results of ranking to a tsv file in the format:
@@ -139,9 +128,9 @@ class Ranking:
                 [
                     self.query_id,
                     query,
-                    doc["doc_id"],
-                    doc["content"],
-                    doc["score"],
+                    doc.doc_id,
+                    doc.content,
+                    doc.score,
                 ]
             )
 
@@ -165,9 +154,7 @@ class Ranking:
         for rank, doc in enumerate(self.fetch_topk_docs(k, unique=True)):
             # Leave out passageID from the docID.
             doc_id = (
-                doc["doc_id"].split("-")[0]
-                if remove_passage_id
-                else doc["doc_id"]
+                doc.doc_id.split("-")[0] if remove_passage_id else doc.doc_id
             )
             if doc_id in doc_ids:  # Ignore duplicates
                 continue
@@ -179,7 +166,7 @@ class Ranking:
                         "Q0",
                         doc_id,
                         str(rank + 1),
-                        str(doc["score"]),
+                        str(doc.score),
                         run_id,
                     ]
                 )
@@ -212,7 +199,9 @@ class Ranking:
                 content = ploader.get(doc_id=doc_id) if ploader else None
                 if q_id not in rankings:
                     rankings[q_id] = Ranking(query_id=q_id)
-                rankings[q_id].add_doc(doc_id, float(score), content)
+                rankings[q_id].add_doc(
+                    ScoredDocument(doc_id, content, float(score))
+                )
         return rankings
 
     @staticmethod
@@ -237,7 +226,7 @@ class Ranking:
                 q_id, question, doc_id, passage = line[:4]
                 if q_id not in rankings:
                     rankings[q_id] = Ranking(query_id=q_id)
-                rankings[q_id].add_doc(doc_id, 0, passage)
+                rankings[q_id].add_doc(ScoredDocument(doc_id, passage, 0))
                 if q_id not in queries:
                     queries[q_id] = Query(q_id, question)
         return queries, rankings
