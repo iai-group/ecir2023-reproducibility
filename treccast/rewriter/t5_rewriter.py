@@ -14,7 +14,7 @@ from treccast.rewriter.rewriter import Rewriter
 
 # The path to the fine-tuned model to be loaded and used for rewriting.
 _MODEL_DIR = (
-    "data/fine_tuning/rewriter/qrecc/T5_QReCC_st_WaterlooClarke-train/"
+    "data/fine_tuning/rewriter/qrecc/T5_QReCC_WaterlooClarke-full/"
     + "best_model"
 )
 # Year for which the rewrites should be generated.
