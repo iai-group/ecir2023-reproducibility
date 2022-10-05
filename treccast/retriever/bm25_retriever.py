@@ -51,6 +51,7 @@ class BM25Retriever(Retriever):
         return SparseQuery(
             query.query_id,
             query.question,
+            query.turn_leaf_id,
             weighted_terms=tokens,
             weighted_match_phrases=query.weighted_match_phrases,
         )

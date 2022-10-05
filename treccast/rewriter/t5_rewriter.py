@@ -231,11 +231,12 @@ class T5Rewriter(Rewriter):
             return SparseQuery(
                 query.query_id,
                 max(rewrites, key=rewrites.get),
+                turn_leaf_id=query.turn_leaf_id,
                 weighted_match_queries=rewrites,
             )
 
         rewrite = self._generate_rewrite(input_ids)
-        return Query(query.query_id, rewrite)
+        return Query(query.query_id, rewrite, query.turn_leaf_id)
 
 
 def rewrite_queries_with_fine_tuned_model(
@@ -249,6 +250,7 @@ def rewrite_queries_with_fine_tuned_model(
     separator: str,
     sparse: bool,
     num_beams: int,
+    mixed_initiative: bool = False,
 ):
     """Rewrites queries using a fine-tuned T5 model.
 
@@ -266,6 +268,9 @@ def rewrite_queries_with_fine_tuned_model(
         use_answer_rewrite: If true, the document content is the rewritten
           answer, otherwise its full passage(s). Defaults to False.
         separator: Special token to separate input sequences.
+        sparse: If true performs sparse query rewrite.
+        num_beams: Number of beams to use in beam search.
+        mixed_initiative: If true, loads mixed-initiative topics.
     """
     rewriter = T5Rewriter(
         model_name=model_dir,
@@ -275,14 +280,28 @@ def rewrite_queries_with_fine_tuned_model(
         sparse=sparse,
     )
     contexts = Topic.load_contexts_from_file(
-        year, QueryRewrite.AUTOMATIC, use_answer_rewrite
+        year,
+        QueryRewrite.MIXED_INITIATIVE
+        if mixed_initiative
+        else QueryRewrite.AUTOMATIC,
+        use_answer_rewrite,
     )
-    queries = Topic.load_queries_from_file(year)
+    queries = Topic.load_queries_from_file(
+        year, QueryRewrite.MIXED_INITIATIVE if mixed_initiative else None
+    )
 
     with open(output_dir, "w") as rewrites_out:
         tsv_writer = csv.writer(rewrites_out, delimiter="\t")
         tsv_writer.writerow(
-            ["conversation_id", "turn_id", "id", "query", "original", "sparse"]
+            [
+                "conversation_id",
+                "turn_id",
+                "id",
+                "query",
+                "original",
+                "sparse",
+                "turn_leaf_id",
+            ]
         )
         rewrites = []
         for query, context in zip(queries, contexts):
@@ -307,6 +326,7 @@ def rewrite_queries_with_fine_tuned_model(
                     json.dumps(rewrite.weighted_match_queries)
                     if isinstance(rewrite, SparseQuery)
                     else "",
+                    query.turn_leaf_id,
                 ]
             )
 
@@ -381,6 +401,13 @@ def parse_cmdline_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--mixed_initiative",
+        action="store_const",
+        const=True,
+        help="If true, loads mixed-initiative topics.",
+    )
+
+    parser.add_argument(
         "--sparse",
         action="store_const",
         const=True,
@@ -428,6 +455,7 @@ def main(args):
         separator=args.separator,
         sparse=args.sparse,
         num_beams=args.num_beams,
+        mixed_initiative=args.mixed_initiative,
     )
 
 

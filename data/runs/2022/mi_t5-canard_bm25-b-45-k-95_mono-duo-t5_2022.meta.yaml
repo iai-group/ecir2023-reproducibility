@@ -1,0 +1,24 @@
+es:
+    b: '0.45'
+    host_name: localhost:9206
+    k1: '0.95'
+    index_name: ms_marco_v2_kilt_wapo_new
+    field: catch_all
+output_name: mi_t5-canard_bm25-b-45-k-95_mono-duo-t5_2022
+reranker: t5
+rewrite: yes
+rewrite_path: data/rewrites/2022/17_T5_CANARD_mi.tsv
+year: '2022'
+k: 1000
+num_prev_turns: 0
+query_rewrite: mixed_initiative
+first_pass_file:
+prf:
+    type:
+    num_documents: 10
+    num_terms: 10
+duot5: yes
+duot5_topk: 50
+bert:
+    base_model: bert-base-uncased
+    reranker_path:

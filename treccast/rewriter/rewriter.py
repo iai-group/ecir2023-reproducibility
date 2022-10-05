@@ -48,7 +48,7 @@ class CachedRewriter(Rewriter):
         Returns:
             A new query with the same query_id containing a rewrite.
         """
-        return self._rewrites.get(query.query_id)
+        return self._rewrites.get(f"{query.query_id}|{query.turn_leaf_id}")
 
     def _get_rewrites(self, filepath: str) -> None:
         """Loads rewrites from a file and stores them into a dictionary.
@@ -68,9 +68,12 @@ class CachedRewriter(Rewriter):
                     query = SparseQuery(
                         row["id"],
                         row["query"],
+                        row.get("turn_leaf_id"),
                         weighted_match_queries=json.loads(row.get("sparse")),
                     )
                 else:
-                    query = Query(row["id"], row["query"])
+                    query = Query(
+                        row["id"], row["query"], row.get("turn_leaf_id")
+                    )
 
-                self._rewrites[row["id"]] = query
+                self._rewrites[f'{row["id"]}|{row.get("turn_leaf_id")}'] = query

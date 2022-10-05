@@ -92,6 +92,7 @@ class RM3(PRF):
         return SparseQuery(
             query.query_id,
             query.question,
+            query.turn_leaf_id,
             self.interpolate_terms(query_terms, rm3_terms),
         )
 

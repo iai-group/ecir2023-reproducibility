@@ -6,10 +6,13 @@ from typing import Dict, List, Tuple
 
 @dataclass
 class Query:
-    """Representation of a query. It contains query ID and question."""
+    """Representation of a query.
+
+    It contains query ID, question, and the last turn id if available."""
 
     query_id: str
     question: str
+    turn_leaf_id: str = None
 
     def get_topic_id(self) -> str:
         """Returns topic id under assumption that query ID consists of topic ID

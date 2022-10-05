@@ -104,6 +104,7 @@ def test_main(
         year=default_config["year"].get(),
         k=1000,
         ranking_cache=None,
+        mixed_initiative=False,
     )
 
 
@@ -175,10 +176,18 @@ def test_run_write_to_trec_file(
     # Tests writing to TREC file was called twice.
     assert write_trec.call_args_list == [
         mock.call(
-            mock.ANY, k=2, remove_passage_id=year == "2021", run_id="BM25"
+            mock.ANY,
+            k=2,
+            remove_passage_id=year == "2021",
+            run_id="BM25",
+            leaf_id=None,
         ),
         mock.call(
-            mock.ANY, k=2, remove_passage_id=year == "2021", run_id="BM25"
+            mock.ANY,
+            k=2,
+            remove_passage_id=year == "2021",
+            run_id="BM25",
+            leaf_id=None,
         ),
     ]
 

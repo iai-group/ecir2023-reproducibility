@@ -74,6 +74,7 @@ def main(config: confuse.Configuration):
         year=config["year"].get(),
         k=k,
         ranking_cache=ranking_cache,
+        mixed_initiative=query_rewrite == QueryRewrite.MIXED_INITIATIVE,
     )
 
 
@@ -89,6 +90,7 @@ def run(
     year: str = "2022",
     k: int = 1000,
     ranking_cache: CachedRanking = None,
+    mixed_initiative: bool = False,
 ) -> None:
     """Iterates over queries to perform rewriting, retrieval, and re-ranking.
 
@@ -113,6 +115,8 @@ def run(
         k: number of documents to save for each turn. Defaults to 1000
         ranking_cache: Class that adds rankings from previous turns to the
           current candidate pool.
+        mixed_initiative: Specifies whether it's a mixed-initiative run.
+          Defaults to False.
     """
     retrieved_query_ids = []
     with open(f"data/runs/{year}/{output_name}.trec", "w") as trec_out, open(
@@ -125,8 +129,8 @@ def run(
         for query in queries:
             # TODO: Replace print with logging.
             # See: https://github.com/iai-group/trec-cast-2021/issues/37
-            print(query.query_id)
-            if query.query_id in retrieved_query_ids:
+            leaf_id = query.turn_leaf_id
+            if query.query_id in retrieved_query_ids and not mixed_initiative:
                 print("Retrieval with this query has been already performed.")
                 continue
 
@@ -162,6 +166,7 @@ def run(
                 run_id="BM25",
                 k=k,
                 remove_passage_id=(year == "2021"),
+                leaf_id=leaf_id,
             )
 
             retrieved_query_ids.append(query.query_id)
@@ -305,7 +310,7 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     rewrite_group = parser.add_argument_group("Rewrite")
     rewrite_group.add_argument(
         "--query_rewrite",
-        choices=["automatic", "manual"],
+        choices=["automatic", "manual", "mixed_initiative"],
         help=(
             "Uses query rewrite of chosen type if specified. Defaults to None."
         ),
@@ -321,7 +326,6 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
         "--rewrite_path",
         help="Specifies the path for rewritten queries. Defaults to None.",
     )
-
     rewrite_group.add_argument(
         "--rewrite_sparse",
         action="store_const",

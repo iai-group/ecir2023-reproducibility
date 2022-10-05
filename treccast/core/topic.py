@@ -17,6 +17,7 @@ from treccast.core.util.passage_loader import PassageLoader
 class QueryRewrite(Enum):
     AUTOMATIC = 1
     MANUAL = 2
+    MIXED_INITIATIVE = 3
 
 
 @dataclass
@@ -26,6 +27,7 @@ class Turn:
     result_turn_dependence: int
     query_turn_dependence: list
     raw_utterance: str
+    mi_expanded_utterance: str = None
     automatic_rewritten_utterance: str = None
     manual_rewritten_utterance: str = None
     passage_id: str = None
@@ -34,6 +36,7 @@ class Turn:
     passage: str = None
     canonical_passage: str = None
     provenance_passages: List[str] = None
+    turn_leaf_id: str = None
 
     def __post_init__(self):
         if self.passage_id is not None:
@@ -61,6 +64,8 @@ class Turn:
             utterance = self.automatic_rewritten_utterance
         elif query_rewrite == QueryRewrite.MANUAL:
             utterance = self.manual_rewritten_utterance
+        elif query_rewrite == QueryRewrite.MIXED_INITIATIVE:
+            utterance = self.mi_expanded_utterance
 
         if not utterance:
             raise ValueError(
@@ -150,7 +155,11 @@ class Topic:
             Query object.
         """
         utterance = self.get_turn(turn_id).get_utterance(query_rewrite)
-        return Query(self.get_query_id(turn_id), utterance)
+        return Query(
+            self.get_query_id(turn_id),
+            utterance,
+            self.get_turn(turn_id).turn_leaf_id,
+        )
 
     def get_queries(self, query_rewrite: QueryRewrite = None) -> List[Query]:
         """Returns a list of queries corresponding to each of the turns,
@@ -241,11 +250,12 @@ class Topic:
         if year == "2019_train":
             filepath += "train_topics"
         else:
-            variant = (
-                "automatic"
-                if query_rewrite == QueryRewrite.AUTOMATIC
-                else "manual"
-            )
+            if query_rewrite == QueryRewrite.AUTOMATIC:
+                variant = "automatic"
+            elif query_rewrite == QueryRewrite.MIXED_INITIATIVE:
+                variant = "mi"
+            else:
+                variant = "manual"
             filepath += f"{year}_{variant}_evaluation_topics"
         extend = "_extended" if use_extended else ""
         filepath += f"_v1.0{extend}.json"
@@ -307,6 +317,9 @@ class Topic:
                     manual_rewritten_utterance=raw_turn.get(
                         "manual_rewritten_utterance"
                     ),
+                    mi_expanded_utterance=raw_turn.get("mi_expanded_utterance")
+                    if raw_turn.get("mi_expanded_utterance")
+                    else None,
                     passage_id=raw_turn.get("passage_id"),
                     response=raw_turn.get("response"),
                     # 2022 topics file sometimes specifies only doc_id, with
@@ -323,6 +336,7 @@ class Topic:
                     passage=raw_turn.get("passage"),
                     canonical_passage=raw_turn.get("canonical_passage"),
                     provenance_passages=raw_turn.get("provenance_passages"),
+                    turn_leaf_id=raw_turn.get("turn_leaf_id"),
                 )
                 for raw_turn in raw_topic.get("turn")
             ]
@@ -490,7 +504,11 @@ if __name__ == "__main__":
         "2022": "ms_marco_v2_kilt_wapo_new",
     }
     for year, index_name in opts.items():
-        for query_rewrite in [QueryRewrite.AUTOMATIC, QueryRewrite.MANUAL]:
+        for query_rewrite in [
+            QueryRewrite.AUTOMATIC,
+            QueryRewrite.MANUAL,
+            QueryRewrite.MIXED_INITIATIVE,
+        ]:
             extend_with_canonical_passages(
                 args.hostname, index_name, year, query_rewrite
             )
