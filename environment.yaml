@@ -29,3 +29,4 @@ dependencies:
     - simpletransformers==0.61.13
     - pyserini
     - python-terrier
+    - trectools

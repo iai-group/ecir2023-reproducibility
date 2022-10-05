@@ -37,6 +37,9 @@ jobs:
         activate-environment: treccast
         environment-file: environment.yaml
         use-only-tar-bz2: true
+    - name: Install ANCE-PyTerrier
+      run: |
+        pip install --upgrade git+https://github.com/WerLaj/pyterrier_ance.git
     - name: Lint with flake8
       run: |
         flake8 .

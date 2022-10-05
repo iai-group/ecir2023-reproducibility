@@ -2,18 +2,21 @@
 
 import argparse
 import csv
-from typing import List
+from typing import List, Tuple, Union
 
 import confuse
+import pyterrier as pt
 
 from treccast.core.base import Query
 from treccast.core.collection import ElasticSearchIndex
 from treccast.core.ranking import CachedRanking
 from treccast.core.topic import QueryRewrite, Topic
+from treccast.core.util.reciprocal_rank_fusion import ReciprocalRankFusion
 from treccast.expander.prf import PRF, RM3, PrfType
 from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.t5_reranker import DuoT5Reranker, T5Reranker
+from treccast.retriever.ance_dense_retriever import ANCEDenseRetriever
 from treccast.retriever.bm25_retriever import BM25Retriever
 from treccast.retriever.retriever import CachedRetriever, Retriever
 from treccast.rewriter.rewriter import CachedRewriter, Rewriter
@@ -41,7 +44,13 @@ def main(config: confuse.Configuration):
             config["rewrite_path"].get(), config["rewrite_sparse"].get(False)
         )
 
+    dense_retriever = None
+    rrf = None
     retriever = _get_retriever(config)
+    if isinstance(retriever, tuple):
+        dense_retriever = retriever[1]
+        retriever = retriever[0]
+        rrf = ReciprocalRankFusion(ploader=dense_retriever._passage_loader)
 
     expander = _get_expander(config, retriever)
 
@@ -74,6 +83,8 @@ def main(config: confuse.Configuration):
         year=config["year"].get(),
         k=k,
         ranking_cache=ranking_cache,
+        dense_retriever=dense_retriever,
+        rrf=rrf,
         mixed_initiative=query_rewrite == QueryRewrite.MIXED_INITIATIVE,
     )
 
@@ -90,6 +101,8 @@ def run(
     year: str = "2022",
     k: int = 1000,
     ranking_cache: CachedRanking = None,
+    dense_retriever: Retriever = None,
+    rrf: ReciprocalRankFusion = None,
     mixed_initiative: bool = False,
 ) -> None:
     """Iterates over queries to perform rewriting, retrieval, and re-ranking.
@@ -115,6 +128,9 @@ def run(
         k: number of documents to save for each turn. Defaults to 1000
         ranking_cache: Class that adds rankings from previous turns to the
           current candidate pool.
+        dense_retriever: Dense retriever to use. Defaults to None.
+        rrf: Reciprocal Rank Fusion object for fusing rankings. Defaults to
+          None.
         mixed_initiative: Specifies whether it's a mixed-initiative run.
           Defaults to False.
     """
@@ -138,11 +154,28 @@ def run(
             if rewriter:
                 query = rewriter.rewrite_query(query)
 
+            rewritten_query = query
+
             if expander:
                 query = expander.get_expanded_query(query)
 
             # Retrieval
-            if isinstance(retriever, CachedRetriever):
+            if dense_retriever is not None:
+                # Sparse-dense retrieval
+                sparse_ranking = retriever.retrieve(query, num_results=k)
+                dense_ranking = dense_retriever.retrieve(
+                    rewritten_query, num_results=k
+                )
+                ranking = rrf.reciprocal_rank_fusion(
+                    [
+                        (
+                            output_name.split("/")[-1] + "_sparse",
+                            sparse_ranking,
+                        ),
+                        (output_name.split("/")[-1] + "_dense", dense_ranking),
+                    ]
+                )
+            elif isinstance(retriever, CachedRetriever):
                 query, ranking = retriever.retrieve(query, num_results=k)
             else:
                 ranking = retriever.retrieve(query, num_results=k)
@@ -185,7 +218,9 @@ def _get_rewriter(path: str, sparse: bool) -> Rewriter:
     return CachedRewriter(path, sparse)
 
 
-def _get_retriever(config: confuse.Configuration) -> Retriever:
+def _get_retriever(
+    config: confuse.Configuration,
+) -> Union[Retriever, Tuple[Retriever, Retriever]]:
     """Returns (first-pass) retriever instance.
 
     Returns CachedRetriever (i.e., loads rankings from file) if first_pass_file
@@ -207,12 +242,30 @@ def _get_retriever(config: confuse.Configuration) -> Retriever:
         hostname=config["es"]["host_name"].get(),
         timeout=120,
     )
-    return BM25Retriever(
+
+    bm25_retriever = BM25Retriever(
         esi,
         field=config["es"]["field"].get(),
         k1=config["es"]["k1"].get(),
         b=config["es"]["b"].get(),
     )
+
+    if config["ance"].get(bool):
+        print("*** ANCE dense retrieval ***")
+        if not pt.started():
+            pt.init()
+        print(config["ance_index"].get())
+        ance_retriever = ANCEDenseRetriever(
+            index_path=config["ance_index"].get(),
+            year=config["year"].get(),
+            reset_index=False,
+            es_index_name=config["es"]["index_name"].get(),
+            es_host_name=config["es"]["host_name"].get(),
+            k=config["k"].get(),
+        )
+        return bm25_retriever, ance_retriever
+
+    return bm25_retriever
 
 
 def _get_expander(config: confuse.Configuration, retriever: Retriever) -> PRF:
@@ -365,6 +418,18 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
         "--es.b",
         dest="es.b",
         help="Elasticsearch BM25 b parameter. Defaults to 0.75.",
+    )
+    retrieval_group.add_argument(
+        "--ance",
+        action="store_const",
+        const=True,
+        help="ANCE dense retrieval.",
+    )
+    retrieval_group.add_argument(
+        "--ance_index",
+        dest="ance_index",
+        type=str,
+        help="Path to the ANCE dense retrieval index.",
     )
 
     # Reranking specific config

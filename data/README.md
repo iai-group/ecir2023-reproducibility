@@ -61,19 +61,29 @@ So far available only on `gorina39`:
 
 ### 2020
 
-Available both on `gustav1` and `gorina39`:
+Elasticsearch index available both on `gustav1` and `gorina39`:
   * `ms_marco_trec_car` => Basic inverted index without any preprocessing.
   * `ms_marco_trec_car_clean` => Inverted index with stopword removal and KStemming.
 
+ANCE index available on `gustav1` => `$DATA/dense_retrieval/ance/2020/`:
+  - MS MARCO (passages) collection provided by [ir_dataset](https://ir-datasets.com/msmarco-passage.html#msmarco-passage)
+  - TREC CAR paragraph collection v2.0 provided by [ir_dataset](https://ir-datasets.com/car.html#car/v2.0)
+
 ### 2021
 
-Available both on `gustav1` and `gorina39`:
+Elasticsearch index available both on `gustav1` and `gorina39`:
   * `ms_marco_kilt_wapo_clean` => Inverted index with stopword removal and KStemming.
     - document ID: `[MARCO|KILT|WAPO]_document_id-passage_index`
     - fields: 
       - title: Document title.
       - body: Passage text.
       - catch_all: Concatenation of title and body.
+
+ANCE index available on `gustav1` => `$DATA/dense_retrieval/ance/2021/`:
+  - our own generator for MS MARCO (documents) 
+  - our own generator for KILT collection 
+  - our own generator for WaPo 2020 collection
+All generators are using the 2021 pre-processed collections (in TREC Web format) provided by the organizers => `$COLLECTIONS/trec-cast` 
 
 ### 2022
 

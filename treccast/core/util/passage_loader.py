@@ -3,7 +3,15 @@
 
 from typing import List
 
+import logging
+import elasticsearch
 from treccast.core.collection import ElasticSearchIndex
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] %(levelname)-12s %(message)s",
+    handlers=[logging.StreamHandler()],
+)
 
 
 class PassageLoader(object):
@@ -34,9 +42,13 @@ class PassageLoader(object):
             The content of the indexed passage.
         """
         if doc_id not in self._cache:
-            self._cache[doc_id] = self._collection.es.get(self._index, doc_id)[
-                "_source"
-            ][self._field]
+            try:
+                self._cache[doc_id] = self._collection.es.get(
+                    self._index, doc_id
+                )["_source"][self._field]
+            except elasticsearch.exceptions.NotFoundError:
+                logging.info("%s not found in the index", doc_id)
+                return None
         return self._cache[doc_id]
 
     def mget(self, doc_ids: List[str]) -> List[str]:

@@ -104,6 +104,8 @@ def test_main(
         year=default_config["year"].get(),
         k=1000,
         ranking_cache=None,
+        dense_retriever=None,
+        rrf=None,
         mixed_initiative=False,
     )
 

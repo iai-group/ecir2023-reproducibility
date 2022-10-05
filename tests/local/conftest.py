@@ -5,7 +5,7 @@ from unittest import mock
 
 import pytest
 
-TO_MOCK = ["elasticsearch", "torch", "transformers"]
+TO_MOCK = ["elasticsearch", "torch", "transformers", "pyterrier_ance"]
 
 
 def import_mock(

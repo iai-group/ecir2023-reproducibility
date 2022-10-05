@@ -37,5 +37,9 @@ bert:
  base_model: "bert-base-uncased"
  reranker_path: null
 
+# ANCE dense retrieval
+rewrite_sparse: no
+ance: no
+
 
 
