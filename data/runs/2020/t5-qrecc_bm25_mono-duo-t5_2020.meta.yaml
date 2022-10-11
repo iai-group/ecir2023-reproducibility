@@ -1,12 +1,15 @@
+config_file: data/runs/2020/t5-qrecc_bm25_mono-duo-t5_2020.meta.yaml
+duot5: yes
 es:
     host_name: localhost:9204
     index_name: ms_marco_trec_car_clean
     field: body
     k1: 1.2
     b: 0.75
-output_name: first_pass_retrieval/t5_canard_bm25_2020
+output_name: t5-qrecc_bm25_mono-duo-t5_2020
+reranker: t5
 rewrite: yes
-rewrite_path: data/rewrites/2020/13_T5_CANARD.tsv
+rewrite_path: data/rewrites/2020/12_T5_QReCC.tsv
 year: '2020'
 k: 1000
 num_prev_turns: 0
@@ -14,13 +17,11 @@ query_rewrite:
 first_pass_file:
 prf:
     type:
-    num_documents: 10
-    num_terms: 10
-duot5: no
+    num_documents: 17
+    num_terms: 26
 duot5_topk: 50
-reranker:
 bert:
     base_model: bert-base-uncased
     reranker_path:
-rewrite_sparse: no
 ance: no
+rewrite_sparse: no

@@ -1,0 +1,28 @@
+config_file: data/runs/2021/ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_mono-t5_2021.meta.yaml
+duot5: no
+es:
+    b: '0.45'
+    host_name: localhost:9206
+    k1: '0.95'
+    index_name: ms_marco_kilt_wapo_clean
+    field: catch_all
+output_name: ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_mono-t5_2021
+reranker: t5
+rewrite: yes
+rewrite_path: data/rewrites/2021/12_T5_QReCC.tsv
+year: '2021'
+k: 1000
+num_prev_turns: 0
+query_rewrite:
+first_pass_file:
+prf:
+    type: RM3
+    num_documents: 17
+    num_terms: 26
+duot5_topk: 50
+bert:
+    base_model: bert-base-uncased
+    reranker_path:
+ance: yes
+ance_index: data/retrieval/ance/trecweb_ms_marco_kilt_wapo_ance
+rewrite_sparse: no

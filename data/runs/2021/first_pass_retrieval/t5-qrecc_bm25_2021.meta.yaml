@@ -1,17 +1,17 @@
-config_file: data/runs/2021/first_pass_retrieval/automatic_bm25_2021.meta.yaml
+config_file: data/runs/2021/first_pass_retrieval/t5-qrecc_bm25_2021.meta.yaml
 es:
     host_name: localhost:9204
     index_name: ms_marco_kilt_wapo_clean
     field: catch_all
     k1: 1.2
     b: 0.75
-output_name: first_pass_retrieval/automatic_bm25_2021
-query_rewrite: automatic
+output_name: first_pass_retrieval/t5-qrecc_bm25_2021
+rewrite: yes
+rewrite_path: data/rewrites/2021/12_T5_QReCC.tsv
 year: '2021'
 k: 1000
 num_prev_turns: 0
-rewrite: no
-rewrite_path:
+query_rewrite:
 first_pass_file:
 prf:
     type:
