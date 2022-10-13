@@ -3,10 +3,7 @@
 from abc import ABC
 from typing import Any, Dict
 
-import h5py
 from elasticsearch.client import Elasticsearch
-from h5py._hl.dataset import Dataset
-from h5py._hl.files import File
 
 
 class Collection(ABC):
@@ -129,38 +126,3 @@ class ElasticSearchIndex(Collection):
         """
 
         return {"analysis": {}}
-
-
-class EmbeddingCollection(Collection):
-    def __init__(self, filepath: str) -> None:
-        """Initializes a collection of text embeddings.
-
-        Args:
-            filepath: File path to embeddings.
-        """
-        super().__init__()
-        self._embeddings = self.load_embeddings(filepath)
-
-    @property
-    def embeddings(self) -> Dataset:
-        """Dataset of embedding vectors."""
-        return self._embeddings["embeddings"]
-
-    @property
-    def passage_ids(self) -> Dataset:
-        """Dataset of passage ids."""
-        return self._embeddings["passage_ids"]
-
-    def load_embeddings(self, filepath: str) -> File:
-        """Loads text embeddings.
-
-        Args:
-            filepath: File path to embeddings.
-
-        Returns:
-            File with embeddings and passage ids datasets.
-        """
-        if not filepath.endswith(".hdf5"):
-            raise ValueError("File type not supported. Supported type: .hdf5")
-
-        return h5py.File(filepath, "r")
