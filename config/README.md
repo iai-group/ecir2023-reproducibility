@@ -39,7 +39,7 @@ prf:
 # retrieve passages from elasticsearch index
 first_pass_file: null
 es:
- host_name: "gustav1.ux.uis.no:9204"
+ host_name: "localhost:9204"
  k1: 1.2
  b: 0.75
  index_name: "ms_marco_kilt_wapo_clean"
@@ -47,9 +47,22 @@ es:
 
 
 # Re-ranking parameters
-# Choose option between bert|t5
+# Choose option (t5)
 reranker: null
-bert:
- base_model: "bert-base-uncased"
- reranker_path: null
-```
+
+# Reranking with duoT5
+# Change to True to use pairwise duoT5 reranker and specify the top k documents
+# for reranking. 
+duot5: False
+duot5_topk: 50
+
+# ANCE dense retrieval
+# Change to yes and specify the path to ANN index.
+ance: no
+ance_index: 
+
+# Rewriter for re-ranking
+# Specify the path to the rewrites that you want to use for re-ranking stage if
+# they should be different from the ones used for first-pass retrieval.
+reranker_rewrite_path:
+

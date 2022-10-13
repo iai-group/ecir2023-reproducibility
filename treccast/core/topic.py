@@ -17,7 +17,6 @@ from treccast.core.util.passage_loader import PassageLoader
 class QueryRewrite(Enum):
     AUTOMATIC = 1
     MANUAL = 2
-    MIXED_INITIATIVE = 3
 
 
 @dataclass
@@ -27,7 +26,6 @@ class Turn:
     result_turn_dependence: int
     query_turn_dependence: list
     raw_utterance: str
-    mi_expanded_utterance: str = None
     automatic_rewritten_utterance: str = None
     manual_rewritten_utterance: str = None
     passage_id: str = None
@@ -36,7 +34,6 @@ class Turn:
     passage: str = None
     canonical_passage: str = None
     provenance_passages: List[str] = None
-    turn_leaf_id: str = None
 
     def __post_init__(self):
         if self.passage_id is not None:
@@ -64,8 +61,6 @@ class Turn:
             utterance = self.automatic_rewritten_utterance
         elif query_rewrite == QueryRewrite.MANUAL:
             utterance = self.manual_rewritten_utterance
-        elif query_rewrite == QueryRewrite.MIXED_INITIATIVE:
-            utterance = self.mi_expanded_utterance
 
         if not utterance:
             raise ValueError(
@@ -158,7 +153,6 @@ class Topic:
         return Query(
             self.get_query_id(turn_id),
             utterance,
-            self.get_turn(turn_id).turn_leaf_id,
         )
 
     def get_queries(self, query_rewrite: QueryRewrite = None) -> List[Query]:
@@ -185,7 +179,7 @@ class Topic:
         """Gets a list of contexts for each turn.
 
         Args:
-            year: Year (2019_train, 2019, 2020, 2021, or 2022).
+            year: Year (2020 or 2021).
             query_rewrite (optional): Query rewrite variant to include in
               context (auto/manual). Defaults to None (i.e., raw).
             use_answer_rewrite (optional): If false, uses full canonical passage
@@ -197,36 +191,19 @@ class Topic:
             responses included.
         """
         queries = self.get_queries(query_rewrite)[:-1]
-        if year == "2022":
-            canonical_responses = [
-                turn.get_provenance_content(use_answer_rewrite)
-                for turn in self.turns
-            ][:-1]
-        else:
-            canonical_responses = [
-                turn.get_passage_content(use_answer_rewrite)
-                for turn in self.turns
-            ][:-1]
+        canonical_responses = [
+            turn.get_passage_content(use_answer_rewrite)
+            for turn in self.turns
+        ][:-1]
         contexts = [None]
         for query, canonical_response in zip(queries, canonical_responses):
             context = Context()
             context.history = (
                 contexts[-1].history.copy() if len(contexts) > 1 else []
             )
-            if year == "2022":
-                context.history.append(
-                    (
-                        query,
-                        [
-                            Document(None, passage)
-                            for passage in canonical_response
-                        ],
-                    )
-                )
-            else:
-                context.history.append(
-                    (query, [Document(None, canonical_response)])
-                )
+            context.history.append(
+                (query, [Document(None, canonical_response)])
+            )
             contexts.append(context)
         return contexts
 
@@ -238,7 +215,7 @@ class Topic:
         rewriting applied.
 
         Args:
-            year: Year (2019_train, 2019, 2020, or 2021).
+            year: Year (2020, or 2021).
             query_rewrite (optional): Query rewrite variant to load
               (auto/manual). Defaults to None (i.e., raw).
             use_extended (optional): If true, uses extended topic file version.
@@ -247,16 +224,12 @@ class Topic:
             Topic file path (relative to repo root).
         """
         filepath = f"data/topics/{year}/"
-        if year == "2019_train":
-            filepath += "train_topics"
+        if query_rewrite == QueryRewrite.AUTOMATIC:
+            variant = "automatic"
+
         else:
-            if query_rewrite == QueryRewrite.AUTOMATIC:
-                variant = "automatic"
-            elif query_rewrite == QueryRewrite.MIXED_INITIATIVE:
-                variant = "mi"
-            else:
-                variant = "manual"
-            filepath += f"{year}_{variant}_evaluation_topics"
+            variant = "manual"
+        filepath += f"{year}_{variant}_evaluation_topics"
         extend = "_extended" if use_extended else ""
         filepath += f"_v1.0{extend}.json"
 
@@ -317,14 +290,8 @@ class Topic:
                     manual_rewritten_utterance=raw_turn.get(
                         "manual_rewritten_utterance"
                     ),
-                    mi_expanded_utterance=raw_turn.get("mi_expanded_utterance")
-                    if raw_turn.get("mi_expanded_utterance")
-                    else None,
                     passage_id=raw_turn.get("passage_id"),
                     response=raw_turn.get("response"),
-                    # 2022 topics file sometimes specifies only doc_id, with
-                    # no passage_id indicatior. In such cases, we are taking
-                    # the first passage of the document as a provenance.
                     provenance=[
                         provenance + "-1"
                         if "-" not in provenance and len(provenance) > 0
@@ -336,7 +303,6 @@ class Topic:
                     passage=raw_turn.get("passage"),
                     canonical_passage=raw_turn.get("canonical_passage"),
                     provenance_passages=raw_turn.get("provenance_passages"),
-                    turn_leaf_id=raw_turn.get("turn_leaf_id"),
                 )
                 for raw_turn in raw_topic.get("turn")
             ]
@@ -386,12 +352,7 @@ class Topic:
         return [
             (
                 topic.get_query(turn.turn_id, query_rewrite),
-                Document(
-                    turn.canonical_result_id,
-                    turn.get_passage_content(use_answer_rewrite),
-                )
-                if year != "2022"
-                else [
+                [
                     Document(
                         provenance_id,
                         provenance_content,
@@ -478,16 +439,9 @@ def extend_with_canonical_passages(
         Topic.load_topics_from_file(year, query_rewrite, use_extended=False)
     ):
         for turn, raw_turn in zip(topic.turns, raw_topics[i]["turn"]):
-            if year == "2022":
-                if turn.provenance is not None:
-                    raw_turn["provenance_passages"] = [
-                        passage_loader.get(provenance_id)
-                        for provenance_id in turn.provenance
-                    ]
-            else:
-                raw_turn["canonical_passage"] = passage_loader.get(
-                    turn.canonical_result_id
-                )
+            raw_turn["canonical_passage"] = passage_loader.get(
+                turn.canonical_result_id
+            )
 
     # save extended topics
     with open(
@@ -501,13 +455,11 @@ if __name__ == "__main__":
     opts = {
         "2020": "ms_marco_trec_car_clean",
         "2021": "ms_marco_kilt_wapo_clean",
-        "2022": "ms_marco_v2_kilt_wapo_new",
     }
     for year, index_name in opts.items():
         for query_rewrite in [
             QueryRewrite.AUTOMATIC,
             QueryRewrite.MANUAL,
-            QueryRewrite.MIXED_INITIATIVE,
         ]:
             extend_with_canonical_passages(
                 args.hostname, index_name, year, query_rewrite

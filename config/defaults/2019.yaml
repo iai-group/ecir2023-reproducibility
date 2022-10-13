@@ -1,3 +1,0 @@
-es:
-  index_name: "ms_marco_wapo_v2_trec_car"
-  field: "body"

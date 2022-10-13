@@ -25,9 +25,7 @@ def test_load_dataset(
     st_rewriter_finetuning: SimpleTransformersRewriterFinetuning,
 ):
     assert (
-        st_rewriter_finetuning._dataset[
-            "train"
-        ].column_names.sort()
+        st_rewriter_finetuning._dataset["train"].column_names.sort()
         == [
             "Context",
             "Question",

@@ -1,9 +1,8 @@
 """Abstract query rewriting interface."""
 import csv
-import json
 from abc import ABC, abstractmethod
 
-from treccast.core.base import Context, Query, SparseQuery
+from treccast.core.base import Context, Query
 
 
 class Rewriter(ABC):
@@ -26,15 +25,12 @@ class Rewriter(ABC):
 
 
 class CachedRewriter(Rewriter):
-    def __init__(self, filepath: str, sparse: bool = False) -> None:
+    def __init__(self, filepath: str) -> None:
         """Simple "rewriter". Loads rewrites from a file.
 
         Args:
             filepath: Filepath containing rewrites.
-            sparse (optional): If True use sparse query rewrites. Defaults to
-              False.
         """
-        self.sparse = sparse
         self._get_rewrites(filepath)
 
     def rewrite_query(self, query: Query, context: Context = None) -> Query:
@@ -48,14 +44,13 @@ class CachedRewriter(Rewriter):
         Returns:
             A new query with the same query_id containing a rewrite.
         """
-        return self._rewrites.get(f"{query.query_id}|{query.turn_leaf_id}")
+        return self._rewrites.get(query.query_id)
 
     def _get_rewrites(self, filepath: str) -> None:
         """Loads rewrites from a file and stores them into a dictionary.
 
         The rewrite file should be a TSV file with the following fields:
-        Topic ID, Turn ID, Query ID, Rewrite, Original query, and optionally
-        sparse rewrite.
+        Topic ID, Turn ID, Query ID, Rewrite, and Original query.
 
         Args:
             filepath: Path to the file containing rewrites.
@@ -64,16 +59,6 @@ class CachedRewriter(Rewriter):
         with open(filepath) as csvfile:
             reader = csv.DictReader(csvfile, delimiter="\t")
             for row in reader:
-                if self.sparse and row.get("sparse"):
-                    query = SparseQuery(
-                        row["id"],
-                        row["query"],
-                        row.get("turn_leaf_id"),
-                        weighted_match_queries=json.loads(row.get("sparse")),
-                    )
-                else:
-                    query = Query(
-                        row["id"], row["query"], row.get("turn_leaf_id")
-                    )
+                query = Query(row["id"], row["query"])
 
-                self._rewrites[f'{row["id"]}|{row.get("turn_leaf_id")}'] = query
+                self._rewrites[row["id"]] = query

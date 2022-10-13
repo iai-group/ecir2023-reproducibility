@@ -20,9 +20,5 @@ prf:
     num_documents: 17
     num_terms: 26
 duot5_topk: 50
-bert:
-    base_model: bert-base-uncased
-    reranker_path:
 ance: yes
 ance_index: data/retrieval/ance/trecweb_ms_marco_kilt_wapo_ance
-rewrite_sparse: no

@@ -3,22 +3,18 @@ year: 2021
 k: 1000
 num_prev_turns: 0
 
-
 # Output path
 output_name: raw_1k
-
 
 # Rewrite defaults
 query_rewrite: null
 rewrite: False
-rewrite_sparse: False
 rewrite_path: null
-
 
 # Retrieval defaults
 first_pass_file: null
 es:
- host_name: "gustav1.ux.uis.no:9204"
+ host_name: "localhost:9204"
  k1: 1.2
  b: 0.75
 
@@ -33,13 +29,11 @@ duot5_topk: 50
 
 # Re-ranking parameters
 reranker: null
-bert:
- base_model: "bert-base-uncased"
- reranker_path: null
 
 # ANCE dense retrieval
-rewrite_sparse: no
 ance: no
+ance_index:
 
-
+# Rewriter for re-ranking
+reranker_rewrite_path:
 

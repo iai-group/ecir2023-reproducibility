@@ -1,9 +1,8 @@
 import pytest
-
-from treccast.rewriter.rewriter import CachedRewriter
 from treccast.core.base import Query
+from treccast.rewriter.rewriter import CachedRewriter
 
-REWRITES = "data/rewrites/2020/11_Human.tsv"
+REWRITES = "data/rewrites/2020/12_T5_QReCC.tsv"
 
 
 @pytest.mark.parametrize(
@@ -22,7 +21,7 @@ REWRITES = "data/rewrites/2020/11_Human.tsv"
         (
             "103_10",
             "Why did the band break up?",
-            "Why did the Grateful Dead break up?",
+            "Why did the Dead break up?",
         ),
     ],
 )

@@ -136,7 +136,6 @@ dmypy.json
 data/local
 data/models
 data/first_pass
-data/runs
 
 # MacOS
 .DS_Store

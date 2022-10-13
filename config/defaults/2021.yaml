@@ -1,3 +1,5 @@
 es:
   index_name: "ms_marco_kilt_wapo_clean"
   field: "catch_all"
+
+ance_index: "data/retrieval/ance/trecweb_ms_marco_kilt_wapo_ance"

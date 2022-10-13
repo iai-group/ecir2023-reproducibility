@@ -70,7 +70,6 @@ class NeuralReranker(Reranker, ABC):
 
             # Note: logit[0] corresponds to the document not being relevant and
             # logit[1] corresponds to the document being relevant.
-            # This is the same for both BERT and T5 rerankers.
             reranking.add_docs(
                 [
                     ScoredDocument(doc_id, doc, logit[1])

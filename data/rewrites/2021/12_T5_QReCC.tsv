@@ -1,4 +1,4 @@
-conversation_id	turn_id	id	query	original	sparse
+conversation_id	turn_id	id	query	original
 106	1	106_1	I just had a breast biopsy for cancer. What are the most common types?	I just had a breast biopsy for cancer. What are the most common types?	
 106	2	106_2	Once breast cancer breaks out, how likely is it to spread?	Once it breaks out, how likely is it to spread?	
 106	3	106_3	How deadly is LCIS?	How deadly is it?	

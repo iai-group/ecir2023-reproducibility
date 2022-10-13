@@ -2,13 +2,12 @@
 
 import argparse
 import csv
-import json
-from typing import Dict, Union
+from typing import Union
 
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from treccast.core import NEURAL_MODEL_CACHE_DIR
-from treccast.core.base import Context, Query, SparseQuery
+from treccast.core.base import Context, Query
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.rewriter.rewriter import Rewriter
 
@@ -37,8 +36,6 @@ _SEPARATOR = "<sep>"
 _NUM_BEAMS = 10
 # Stop beam search when num_beams have completed.
 _EARLY_STOPPING = True
-# Use sparse rewriting
-_SPARSE = False
 
 
 class T5Rewriter(Rewriter):
@@ -49,7 +46,6 @@ class T5Rewriter(Rewriter):
         max_length: int = 64,
         num_beams: int = _NUM_BEAMS,
         early_stopping: bool = _EARLY_STOPPING,
-        sparse: bool = _SPARSE,
     ) -> None:
         """Instantiate T5 rewriter.
 
@@ -62,8 +58,6 @@ class T5Rewriter(Rewriter):
             num_beams (optional): How many beams to explore. Defaults to 10.
             early_stopping (optional): Whether to stop when num_beams is
               reached. Defaults to True.
-            sparse (optional): If true performs sparse query rewrite. Defaults
-              to False.
         """
         self._device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu"
@@ -73,7 +67,6 @@ class T5Rewriter(Rewriter):
         self._max_length = max_length
         self._num_beams = num_beams
         self._early_stopping = early_stopping
-        self.sparse = sparse
 
         self._tokenizer = T5Tokenizer.from_pretrained(
             model_name, cache_dir=NEURAL_MODEL_CACHE_DIR
@@ -112,50 +105,12 @@ class T5Rewriter(Rewriter):
 
         return rewrite
 
-    def _generate_sparse_rewrite(
-        self, input_ids: torch.Tensor
-    ) -> Dict[str, float]:
-        """Generates top-k rewrites and their probabilities where k is
-        self._num_beams.
-
-        Args:
-            input_ids: A sequence of tokens.
-
-        Returns:
-            Rewrites and their probabilities.
-        """
-        # Generate output
-        output = self._model.generate(
-            input_ids.to(self._device, non_blocking=True),
-            max_length=self._max_length,
-            num_beams=self._num_beams,
-            early_stopping=self._early_stopping,
-            output_scores=True,
-            return_dict_in_generate=True,
-            num_return_sequences=self._num_beams,
-        )
-
-        # Decode output and return sequences
-        scores = torch.exp(output.sequences_scores).tolist()
-        factor = sum(scores)
-        rewrites = {
-            self._tokenizer.decode(
-                seq,
-                clean_up_tokenization_spaces=True,
-                skip_special_tokens=True,
-            ): score
-            / factor
-            for seq, score in zip(output.sequences, scores)
-        }
-
-        return rewrites
-
     def rewrite_query(
         self,
         query: Query,
         context: Context = None,
         use_canonical_response: bool = _USE_CANONICAL_RESPONSE,
-    ) -> Union[Query, SparseQuery]:
+    ) -> Union[Query]:
         """Rewrites query to a new contextualized query given context.
 
         Based on the training regime of the "castorini/t5-base-canard" model, as
@@ -226,17 +181,8 @@ class T5Rewriter(Rewriter):
             input_text, return_tensors="pt", add_special_tokens=True
         ).to(self._device)
 
-        if self.sparse:
-            rewrites = self._generate_sparse_rewrite(input_ids)
-            return SparseQuery(
-                query.query_id,
-                max(rewrites, key=rewrites.get),
-                turn_leaf_id=query.turn_leaf_id,
-                weighted_match_queries=rewrites,
-            )
-
         rewrite = self._generate_rewrite(input_ids)
-        return Query(query.query_id, rewrite, query.turn_leaf_id)
+        return Query(query.query_id, rewrite)
 
 
 def rewrite_queries_with_fine_tuned_model(
@@ -248,9 +194,7 @@ def rewrite_queries_with_fine_tuned_model(
     use_responses: bool,
     use_answer_rewrite: bool,
     separator: str,
-    sparse: bool,
     num_beams: int,
-    mixed_initiative: bool = False,
 ):
     """Rewrites queries using a fine-tuned T5 model.
 
@@ -268,27 +212,20 @@ def rewrite_queries_with_fine_tuned_model(
         use_answer_rewrite: If true, the document content is the rewritten
           answer, otherwise its full passage(s). Defaults to False.
         separator: Special token to separate input sequences.
-        sparse: If true performs sparse query rewrite.
         num_beams: Number of beams to use in beam search.
-        mixed_initiative: If true, loads mixed-initiative topics.
     """
     rewriter = T5Rewriter(
         model_name=model_dir,
         separator=separator,
         max_length=max_length,
         num_beams=num_beams,
-        sparse=sparse,
     )
     contexts = Topic.load_contexts_from_file(
         year,
-        QueryRewrite.MIXED_INITIATIVE
-        if mixed_initiative
-        else QueryRewrite.AUTOMATIC,
+        QueryRewrite.AUTOMATIC,
         use_answer_rewrite,
     )
-    queries = Topic.load_queries_from_file(
-        year, QueryRewrite.MIXED_INITIATIVE if mixed_initiative else None
-    )
+    queries = Topic.load_queries_from_file(year)
 
     with open(output_dir, "w") as rewrites_out:
         tsv_writer = csv.writer(rewrites_out, delimiter="\t")
@@ -299,8 +236,6 @@ def rewrite_queries_with_fine_tuned_model(
                 "id",
                 "query",
                 "original",
-                "sparse",
-                "turn_leaf_id",
             ]
         )
         rewrites = []
@@ -323,10 +258,6 @@ def rewrite_queries_with_fine_tuned_model(
                     query.query_id,
                     rewrite.question,
                     query.question,
-                    json.dumps(rewrite.weighted_match_queries)
-                    if isinstance(rewrite, SparseQuery)
-                    else "",
-                    query.turn_leaf_id,
                 ]
             )
 
@@ -351,7 +282,7 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         "--year",
         type=str,
         default=_YEAR,
-        choices=["2020", "2021", "2022"],
+        choices=["2020", "2021"],
         help="Year for which the rewrites should be generated.",
     )
     parser.add_argument(
@@ -399,20 +330,6 @@ def parse_cmdline_arguments() -> argparse.Namespace:
         default=_SEPARATOR,
         help="Special token to separate input sequences.",
     )
-
-    parser.add_argument(
-        "--mixed_initiative",
-        action="store_const",
-        const=True,
-        help="If true, loads mixed-initiative topics.",
-    )
-
-    parser.add_argument(
-        "--sparse",
-        action="store_const",
-        const=True,
-        help="If true, generates sparse rewrites. Defaults to False.",
-    )
     parser.add_argument(
         "--num_beams",
         type=int,
@@ -453,9 +370,7 @@ def main(args):
         use_responses=args.use_canonical_response,
         use_answer_rewrite=args.use_answer_rewrite,
         separator=args.separator,
-        sparse=args.sparse,
         num_beams=args.num_beams,
-        mixed_initiative=args.mixed_initiative,
     )
 
 

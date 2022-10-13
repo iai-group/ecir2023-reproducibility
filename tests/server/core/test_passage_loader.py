@@ -5,7 +5,7 @@ from treccast.core.util.passage_loader import PassageLoader
 
 def test_passage_loading():
     ploader = PassageLoader(
-        hostname="gustav1.ux.uis.no:9204", index="ms_marco_trec_car_clean"
+        hostname="localhost:9204", index="ms_marco_trec_car_clean"
     )
     temp_doc_id = "CAR_3add84966af079ed84e8b2fc412ad1dc27800127"
     temp_passage = (

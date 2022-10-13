@@ -92,7 +92,6 @@ class RM3(PRF):
         return SparseQuery(
             query.query_id,
             query.question,
-            query.turn_leaf_id,
             self.interpolate_terms(query_terms, rm3_terms),
         )
 
@@ -118,7 +117,7 @@ class RM3(PRF):
         for doc in top_ranked_documents:
             tv: Dict[str, Any] = self.retriever._collection.es.termvectors(
                 index=self.retriever._collection.index_name,
-                id=doc["doc_id"],
+                id=doc.doc_id,
                 fields=self.retriever._field,
                 field_statistics=False,
                 offsets=False,
@@ -129,7 +128,7 @@ class RM3(PRF):
             doc_length = sum(stats["term_freq"] for stats in tv.values())
             for term, payload in tv.items():
                 fbWeights[term] += (
-                    payload["term_freq"] / doc_length * doc["score"]
+                    payload["term_freq"] / doc_length * doc.score
                 )
 
         sorted_query_terms = sorted(

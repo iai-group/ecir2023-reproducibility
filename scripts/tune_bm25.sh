@@ -1,6 +1,6 @@
 #!/bin/bash
 
-year=2019
+year=2020
 
 for b in $(seq 0.3 0.1 0.9)
 do

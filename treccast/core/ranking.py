@@ -140,7 +140,6 @@ class Ranking:
         run_id: str = "Undefined",
         k: int = 1000,
         remove_passage_id: bool = False,
-        leaf_id: str = None,
     ) -> None:
         """Writes the top-k documents into an output TREC runfile.
 
@@ -150,7 +149,6 @@ class Ranking:
             k (optional): Number of documents to output. Defaults to 1000.
             remove_passage_id (optional): Removes passageID from the documentID
               (separated by "-"). Defaults to False.
-            leaf_id: Id of the last turn in the topic subtree.
         """
         doc_ids = set()
         for rank, doc in enumerate(self.fetch_topk_docs(k, unique=True)):
@@ -165,7 +163,7 @@ class Ranking:
                 " ".join(
                     [
                         self._query_id,
-                        "Q0" if leaf_id is None else leaf_id,
+                        "Q0",
                         doc_id,
                         str(rank + 1),
                         str(doc.score),

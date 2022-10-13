@@ -10,12 +10,6 @@ from treccast.core.topic import Context, Document, QueryRewrite, Topic
     ("year", "query_rewrite", "use_extended", "file_path"),
     [
         (
-            "2019",
-            QueryRewrite.MANUAL,
-            False,
-            "data/topics/2019/2019_manual_evaluation_topics_v1.0.json",
-        ),
-        (
             "2020",
             QueryRewrite.MANUAL,
             True,
@@ -26,13 +20,6 @@ from treccast.core.topic import Context, Document, QueryRewrite, Topic
             QueryRewrite.AUTOMATIC,
             True,
             "data/topics/2021/2021_automatic_evaluation_topics_v1.0_extended"
-            ".json",
-        ),
-        (
-            "2022",
-            QueryRewrite.AUTOMATIC,
-            True,
-            "data/topics/2022/2022_automatic_evaluation_topics_v1.0_extended"
             ".json",
         ),
     ],
@@ -132,34 +119,4 @@ def test_get_context(year, query_rewrite):
     context_3 = Context()
     context_3.history = context_2.history
     context_3.history.append((query_2, [Document(None, canonical_response_2)]))
-    assert contexts[2] == context_3
-
-
-@pytest.mark.parametrize(
-    "query_rewrite", [None, QueryRewrite.MANUAL, QueryRewrite.AUTOMATIC]
-)
-def test_get_context_2022(query_rewrite):
-    topic = Topic.load_topics_from_file("2022", query_rewrite)[0]
-    query_1 = topic.get_query("1-1", query_rewrite)
-    canonical_responses = topic.turns[0].provenance_passages
-    query_2 = topic.get_query("1-3", query_rewrite)
-    canonical_responses_2 = topic.turns[1].provenance_passages
-    contexts = topic.get_contexts("2022", query_rewrite)
-    assert contexts[0] is None
-    context_2 = Context()
-    context_2.history = [
-        (
-            query_1,
-            [Document(None, response) for response in canonical_responses],
-        )
-    ]
-    assert contexts[1] == context_2
-    context_3 = Context()
-    context_3.history = context_2.history
-    context_3.history.append(
-        (
-            query_2,
-            [Document(None, response) for response in canonical_responses_2],
-        )
-    )
     assert contexts[2] == context_3

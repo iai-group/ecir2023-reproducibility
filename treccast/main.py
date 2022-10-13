@@ -9,11 +9,10 @@ import pyterrier as pt
 
 from treccast.core.base import Query
 from treccast.core.collection import ElasticSearchIndex
-from treccast.core.ranking import CachedRanking
+from treccast.core.ranking import CachedRanking, Ranking
 from treccast.core.topic import QueryRewrite, Topic
 from treccast.core.util.reciprocal_rank_fusion import ReciprocalRankFusion
 from treccast.expander.prf import PRF, RM3, PrfType
-from treccast.reranker.bert_reranker import BERTReranker
 from treccast.reranker.reranker import Reranker
 from treccast.reranker.t5_reranker import DuoT5Reranker, T5Reranker
 from treccast.retriever.ance_dense_retriever import ANCEDenseRetriever
@@ -39,10 +38,13 @@ def main(config: confuse.Configuration):
     queries = Topic.load_queries_from_file(config["year"].get(), query_rewrite)
 
     rewriter = None
+    reranker_rewriter = None
     if config["rewrite"].get(bool):
-        rewriter = _get_rewriter(
-            config["rewrite_path"].get(), config["rewrite_sparse"].get(False)
-        )
+        rewriter = _get_rewriter(config["rewrite_path"].get())
+        if config["reranker_rewrite_path"].get() is not None:
+            reranker_rewriter = _get_rewriter(
+                config["reranker_rewrite_path"].get()
+            )
 
     dense_retriever = None
     rrf = None
@@ -76,6 +78,7 @@ def main(config: confuse.Configuration):
         output_name=config["output_name"].get(),
         retriever=retriever,
         rewriter=rewriter,
+        reranker_rewriter=reranker_rewriter,
         expander=expander,
         reranker=reranker,
         second_reranker=second_reranker,
@@ -85,7 +88,6 @@ def main(config: confuse.Configuration):
         ranking_cache=ranking_cache,
         dense_retriever=dense_retriever,
         rrf=rrf,
-        mixed_initiative=query_rewrite == QueryRewrite.MIXED_INITIATIVE,
     )
 
 
@@ -94,16 +96,16 @@ def run(
     output_name: str,
     retriever: Retriever,
     rewriter: Rewriter = None,
+    reranker_rewriter: Rewriter = None,
     expander: PRF = None,
     reranker: Reranker = None,
     second_reranker: Reranker = None,
     second_reranker_top_k: int = 50,
-    year: str = "2022",
+    year: str = "2021",
     k: int = 1000,
     ranking_cache: CachedRanking = None,
     dense_retriever: Retriever = None,
     rrf: ReciprocalRankFusion = None,
-    mixed_initiative: bool = False,
 ) -> None:
     """Iterates over queries to perform rewriting, retrieval, and re-ranking.
 
@@ -118,6 +120,8 @@ def run(
         output_path: Path to output TREC runfile.
         retriever: First-pass retrieval model.
         rewriter: Rewriter to use. Defaults to None
+        reranker_rewriter: Rewriter to use for reranker (if different than the
+          rewrites used for first-pass retrieval). Defaults to None.
         expander: Class to use for query expansion. Defaults to None.
         reranker: Reranker model. Defaults to None.
         second_reranker: The second reranker model to be applied after first
@@ -131,8 +135,6 @@ def run(
         dense_retriever: Dense retriever to use. Defaults to None.
         rrf: Reciprocal Rank Fusion object for fusing rankings. Defaults to
           None.
-        mixed_initiative: Specifies whether it's a mixed-initiative run.
-          Defaults to False.
     """
     retrieved_query_ids = []
     with open(f"data/runs/{year}/{output_name}.trec", "w") as trec_out, open(
@@ -145,10 +147,7 @@ def run(
         for query in queries:
             # TODO: Replace print with logging.
             # See: https://github.com/iai-group/trec-cast-2021/issues/37
-            leaf_id = query.turn_leaf_id
-            if query.query_id in retrieved_query_ids and not mixed_initiative:
-                print("Retrieval with this query has been already performed.")
-                continue
+            original_query = query
 
             # Custom rewriter
             if rewriter:
@@ -160,37 +159,27 @@ def run(
                 query = expander.get_expanded_query(query)
 
             # Retrieval
-            if dense_retriever is not None:
-                # Sparse-dense retrieval
-                sparse_ranking = retriever.retrieve(query, num_results=k)
-                dense_ranking = dense_retriever.retrieve(
-                    rewritten_query, num_results=k
-                )
-                ranking = rrf.reciprocal_rank_fusion(
-                    [
-                        (
-                            output_name.split("/")[-1] + "_sparse",
-                            sparse_ranking,
-                        ),
-                        (output_name.split("/")[-1] + "_dense", dense_ranking),
-                    ]
-                )
-            elif isinstance(retriever, CachedRetriever):
-                query, ranking = retriever.retrieve(query, num_results=k)
-            else:
-                ranking = retriever.retrieve(query, num_results=k)
-            if ranking_cache:
-                ranking = ranking_cache.add_previous_turns(
-                    query.get_topic_id(), ranking
-                )
+            ranking = run_retrieval(
+                sparse_query=query,
+                dense_query=rewritten_query,
+                k=k,
+                output_name=output_name,
+                retriever=retriever,
+                dense_retriever=dense_retriever,
+                rrf=rrf,
+                ranking_cache=ranking_cache,
+            )
 
             # Re-ranking
-            if reranker:
-                ranking = reranker.rerank(query, ranking)
-                if second_reranker is not None:
-                    ranking = second_reranker.rerank(
-                        query, ranking, second_reranker_top_k
-                    )
+            ranking = run_reranking(
+                query=query,
+                original_query=original_query,
+                reranker_rewriter=reranker_rewriter,
+                reranker=reranker,
+                second_reranker=second_reranker,
+                second_reranker_top_k=second_reranker_top_k,
+                ranking=ranking,
+            )
 
             # Save results
             ranking.write_to_tsv_file(tsv_writer, query.question, k=k)
@@ -199,23 +188,110 @@ def run(
                 run_id="BM25",
                 k=k,
                 remove_passage_id=(year == "2021"),
-                leaf_id=leaf_id,
             )
 
             retrieved_query_ids.append(query.query_id)
 
 
-def _get_rewriter(path: str, sparse: bool) -> Rewriter:
+def run_retrieval(
+    sparse_query: Query,
+    dense_query: Query,
+    k: int,
+    output_name: str,
+    retriever: Retriever,
+    dense_retriever: Retriever,
+    rrf: ReciprocalRankFusion,
+    ranking_cache: CachedRanking,
+) -> Ranking:
+    """Runs retrieval component for a given query.
+
+    Args:
+        sparse_query: Query for sparse retriever.
+        dense_query: Query for dense retriever.
+        k: number of documents to save for each turn. Defaults to 1000
+        output_name: Path to output TREC runfile.
+        retriever: First-pass retrieval model.
+        dense_retriever: Dense retriever to use. Defaults to None.
+        rrf: Reciprocal Rank Fusion object for fusing rankings. Defaults to
+          None.
+        ranking_cache: Class that adds rankings from previous turns to the
+          current candidate pool.
+
+    Returns:
+        Ranking returned by the first-pass retrieval.
+    """
+    if dense_retriever is not None:
+        # Sparse-dense retrieval
+        sparse_ranking = retriever.retrieve(sparse_query, num_results=k)
+        dense_ranking = dense_retriever.retrieve(dense_query, num_results=k)
+        ranking = rrf.reciprocal_rank_fusion(
+            [
+                (
+                    output_name.split("/")[-1] + "_sparse",
+                    sparse_ranking,
+                ),
+                (output_name.split("/")[-1] + "_dense", dense_ranking),
+            ]
+        )
+    elif isinstance(retriever, CachedRetriever):
+        sparse_query, ranking = retriever.retrieve(sparse_query, num_results=k)
+    else:
+        ranking = retriever.retrieve(sparse_query, num_results=k)
+    if ranking_cache:
+        ranking = ranking_cache.add_previous_turns(
+            sparse_query.get_topic_id(), ranking
+        )
+    return ranking
+
+
+def run_reranking(
+    query: Query,
+    original_query: Query,
+    reranker_rewriter: Rewriter,
+    reranker: Reranker,
+    second_reranker: Reranker,
+    second_reranker_top_k: int,
+    ranking: Ranking,
+) -> Ranking:
+    """Runs re-ranking component for a given query.
+
+    Args:
+        query: Rewritten query used in first-pass retrieval.
+        original_query: Original, raw query.
+        reranker_rewriter: Rewriter to use for reranker (if different than the
+          rewrites used for first-pass retrieval). Defaults to None.
+        reranker: Reranker model. Defaults to None.
+        second_reranker: The second reranker model to be applied after first
+          reranking step in reranker.
+        second_reranker_top_k: Number of top documents in the ranking to be
+          reranked by the second reranker.
+        ranking: Ranking returned in first-pass retrieval.
+
+    Returns:
+        Reranked ranking.
+    """
+    rewritten_query = query
+    if reranker:
+        if reranker_rewriter:
+            rewritten_query = reranker_rewriter.rewrite_query(original_query)
+        ranking = reranker.rerank(rewritten_query, ranking)
+        if second_reranker is not None:
+            ranking = second_reranker.rerank(
+                rewritten_query, ranking, second_reranker_top_k
+            )
+    return ranking
+
+
+def _get_rewriter(path: str) -> Rewriter:
     """Returns rewriter instance that generates rewritten questions.
 
     Args:
         path: Filepath containing rewrites.
-        sparse: If true loads sparse query rewrites.
 
     Returns:
         Rewriter class containing rewrites.
     """
-    return CachedRewriter(path, sparse)
+    return CachedRewriter(path)
 
 
 def _get_retriever(
@@ -290,7 +366,7 @@ def _get_expander(config: confuse.Configuration, retriever: Retriever) -> PRF:
 def _get_reranker(config: confuse.Configuration) -> Reranker:
     """Returns re-ranker instance.
 
-    Currently supports BERT and T5 re-rankers.
+    Currently supports T5 re-rankers.
 
     Args:
         config: Configuration for the run.
@@ -302,15 +378,10 @@ def _get_reranker(config: confuse.Configuration) -> Reranker:
         The constructed class for re-ranking.
     """
     reranker = config["reranker"].get()
-    if reranker == "bert":
-        return BERTReranker(
-            base_model=config["bert"]["base_model"].get(),
-            model_path=config["bert"]["reranker_path"].get(),
-        )
-    elif reranker == "t5":
+    if reranker == "t5":
         return T5Reranker()
     elif reranker:
-        raise ValueError('Unsupported re-ranker. Use "bert" or "t5".')
+        raise ValueError('Unsupported re-ranker. Use "t5".')
 
 
 def parse_args(args: List[str] = None) -> argparse.Namespace:
@@ -336,8 +407,8 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     parser.add_argument(
         "-y",
         "--year",
-        choices=["2019", "2020", "2021", "2022"],
-        help='Year for which to run the program. Defaults to "2022".',
+        choices=["2020", "2021"],
+        help='Year for which to run the program. Defaults to "2021".',
     )
     parser.add_argument(
         "-k",
@@ -363,7 +434,7 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     rewrite_group = parser.add_argument_group("Rewrite")
     rewrite_group.add_argument(
         "--query_rewrite",
-        choices=["automatic", "manual", "mixed_initiative"],
+        choices=["automatic", "manual"],
         help=(
             "Uses query rewrite of chosen type if specified. Defaults to None."
         ),
@@ -380,10 +451,10 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
         help="Specifies the path for rewritten queries. Defaults to None.",
     )
     rewrite_group.add_argument(
-        "--rewrite_sparse",
-        action="store_const",
-        const=True,
-        help="Specifies the path for rewritten queries. Defaults to False.",
+        "--reranker_rewrite_path",
+        help="Specifies the path for rewritten queries to be used for reranker"
+        "(if different than the rewrites used for first-pass retrieval).\n"
+        "Defaults to None.",
     )
 
     # First-pass retrieval specific config
@@ -395,7 +466,7 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     retrieval_group.add_argument(
         "--es.host_name",
         dest="es.host_name",
-        help='Elasticsearch host name. Defaults to "gustav1.ux.uis.no:9204".',
+        help='Elasticsearch host name. Defaults to "localhost:9204".',
     )
     retrieval_group.add_argument(
         "--es.index_name",
@@ -435,12 +506,12 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
     # Reranking specific config
     reranker_group = parser.add_argument_group(
         "Reranking",
-        "Reranking can be performed either using bert or T5 model. By default "
-        "the reranking module is not used.",
+        "Reranking can be performed either using T5 model. By default the "
+        "reranking module is not used.",
     )
     reranker_group.add_argument(
         "--reranker",
-        choices=["bert", "t5"],
+        choices=["t5"],
         help="Performs re-ranking if specified. Defaults to None.",
     )
     reranker_group.add_argument(
@@ -459,19 +530,6 @@ def parse_args(args: List[str] = None) -> argparse.Namespace:
         help=(
             "Number of top documents in the ranking to be reranked by duoT5. "
             "Defaults to 50."
-        ),
-    )
-    reranker_group.add_argument(
-        "--bert.base_model",
-        dest="bert.base_model",
-        help='Base bert model to use. Defaults to "bert-base-uncased".',
-    )
-    reranker_group.add_argument(
-        "--bert.reranker_path",
-        dest="bert.reranker_path",
-        help=(
-            "Uses fine-tuned models from the specified path. Currently "
-            'applicable only to "bert" re-ranker. Defaults to None.'
         ),
     )
     return parser.parse_args(args)

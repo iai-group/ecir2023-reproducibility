@@ -1,59 +1,17 @@
-# Reranker - fine-tuning
-
-## Generating fine-tuning data
-
-All the preprocessed data collections used for fine-tuning and the models are stored in `$DATA` folder on gustav1 (`$DATA` refers to `gustav1:/data/scratch/trec-cast/data`).
-
-### TREC-CAsT 2019-2020 data
-
-  * TBD.
-  * `$DATA/fine_tuning/trec-cast/Y1Y2_manual_qrels.tsv`.
-  * `$DATA/fine_tuning/trec-cast/Y1Y2_manual_or_raw_qrels.tsv`.
-
-### Wizard of Wikipedia data
-
-  * Download the data from http://parl.ai/downloads/wizard_of_wikipedia/wizard_of_wikipedia.tgz.
-  * Extract it under `data/fine_tuning/wizard_of_wikipedia/`.
-  * Then run `python -m treccast.core.util.finetuning.wiz_of_wiki_parse.py`.
-  * It should generate files `data/fine_tuning/wizard_of_wikipedia/wow_finetune_[train|val|test].tsv`.
-  * You can skip the above steps and use the generated files that are stored under `$DATA/fine_tuning/wizard_of_wikipedia/`.
-
-## Fine-tuning the reranking models
-
-  * Modify the script in [scripts/finetune/finetune_bert.sh](../../scripts/finetune/finetune_bert.sh) to change parameters:
-    - `--lr` for learning rate.
-    - `--dropout` for droupout rate.
-    - `--val_metric` Validation metric type to be used for early termination.
-      - `val_RetrievalNormalizedDCG` for NDCG.
-      - `val_RetrievalMRR` for MRR.
-      - `val_RetrievalMAP` for MAP.
-    - `--val_patience` for number of epochs to wait before early stopping.
-    - `--use_wow` to use WoW data.
-  * Run the [scripts/finetune/finetune_bert.sh](../../scripts/finetune/finetune_bert.sh) script (Note: this should be run on a GPU server, like gorina6).
-  * The best checkpoint according to the specified `--val_metric` should be stored under the model lightning version folder (can be modified using `--save_dir`) for example, `data/models/fine_tuned_models/lightning_logs/version_107/checkpoints/epoch=0-step=1329.ckpt`.
-
-## Generate run file using the fine-tuned model
-
-  * Modify the config file to specify `finetuned_checkpoint_path` as the checkpoint from previous step.
-    - For pre fine-tuned models on gustav1 check [data/models/](../models).
-  * Set the `reranker` as `bert_finetuned`.
-  * Set the other parameters according to your requriements.
-  * Run `python -m treccast.main -C config/bert_finetune.yaml` (Note: this should be run on gustav1).
-
 # Rewriter - fine-tuning
 
 ## Generating fine-tuning data
 
-All the preprocessed data collections used for fine-tuning and the models are stored in `$DATA` folder on gustav1 (`$DATA` refers to `gustav1:/data/scratch/trec-cast/data`).
+All the preprocessed data collections used for fine-tuning and the models are linked in the [general README.md file](../README.md).
 
 ### QReCC
 
-  * The dataset is located under `$DATA/fine-tuning/qrecc`.
+  * The dataset can be downloaded from `https://github.com/apple/ml-qrecc`.
   * It is split into two files: `train.json` and `test.json`.
 
 ### CANARD 
 
-  * The dataset is located under `$DATA/fine-tuning/canard`.
+  * The dataset can be downloaded form `https://sites.google.com/view/qanta/projects/canard`.
   * It is split into three files: `train.json`, `dev.json` and `test.json`.
 
 ## Fine-tuning the rewriter models
@@ -66,8 +24,8 @@ All the preprocessed data collections used for fine-tuning and the models are st
   * Exemplary configuration for qrecc with default arguments:
 `CUDA_VISIBLE_DEVICES=0 python -m treccast.rewriter.simpletransformers_rewriter_finetuning`
   * Fine-tuned models are stored under `$DATA/models/fine_tuned_models/rewriter/qrecc/`:
-    - `T5_QReCC_WaterlooClarke-full` - T5 fine-tuned with the QReCC training dataset, using original test partition of the QReCC dataset as a validation set (implementation based on Simple Transformers).
-    - `T5_QReCC_WaterlooClarke-train` - T5 fine-tuned on QReCC collection split to train/validation/test partitions (implementation based on Simple Transformers).
+    - `T5_QReCC_st_WaterlooClarke-full` - T5 fine-tuned with the QReCC training dataset, using original test partition of the QReCC dataset as a validation set (implementation based on Simple Transformers).
+    - `T5_QReCC_st_WaterlooClarke-train` - T5 fine-tuned on QReCC collection split to train/validation/test partitions (implementation based on Simple Transformers).
 
 ## Generate file with queries rewritten with fine-tuned model
 

@@ -1,3 +1,5 @@
 es:
   index_name: "ms_marco_trec_car_clean"
   field: "body"
+
+ance_index: "data/retrieval/ance/ms_marco_trec_car_ance"

@@ -97,6 +97,7 @@ def test_main(
         output_name="test",
         retriever=mock_retriever(),
         rewriter=None,
+        reranker_rewriter=None,
         expander=None,
         reranker=None,
         second_reranker=None,
@@ -106,7 +107,6 @@ def test_main(
         ranking_cache=None,
         dense_retriever=None,
         rrf=None,
-        mixed_initiative=False,
     )
 
 
@@ -182,14 +182,12 @@ def test_run_write_to_trec_file(
             k=2,
             remove_passage_id=year == "2021",
             run_id="BM25",
-            leaf_id=None,
         ),
         mock.call(
             mock.ANY,
             k=2,
             remove_passage_id=year == "2021",
             run_id="BM25",
-            leaf_id=None,
         ),
     ]
 

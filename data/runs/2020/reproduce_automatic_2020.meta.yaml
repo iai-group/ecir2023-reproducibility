@@ -14,6 +14,3 @@ num_prev_turns: 0
 rewrite: no
 rewrite_path:
 first_pass_file:
-bert:
-    base_model: bert-base-uncased
-    reranker_path:

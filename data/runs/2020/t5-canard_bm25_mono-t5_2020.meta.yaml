@@ -20,8 +20,4 @@ prf:
     num_documents: 17
     num_terms: 26
 duot5_topk: 50
-bert:
-    base_model: bert-base-uncased
-    reranker_path:
 ance: no
-rewrite_sparse: no
