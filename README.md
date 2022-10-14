@@ -1,4 +1,4 @@
-# TREC CAsT 2021
+# Reproducibility Study on TREC CAsT
 
 ![CI build](https://github.com/iai-group/trec-cast-2021/actions/workflows/python-package-conda.yaml/badge.svg)
 [![codecov](https://codecov.io/gh/iai-group/trec-cast/branch/main/graph/badge.svg?token=4EZNRUV7B7)](https://codecov.io/gh/iai-group/trec-cast)
@@ -34,11 +34,6 @@ To install our converational search system and all its dependencies make sure yo
   - Download [ANCE model checkpoint](https://webdatamltrainingdiag842.blob.core.windows.net/semistructstore/OpenSource/Passage_ANCE_FirstP_Checkpoint.zip) and place it under [/data/retrieval/ance/](/data/retrieval/ance/)
 
 
-## Models
-
-You can use the provided code to train your own models or you can use the provided model checkopoints to repeat our experiments. The models can be downloaded from Google Drive. More information about commands used for models fine-tuning can be found [here](data/fine_tuning/README.md)
-
-
 ## Indices
 
 To create the ElasticSearch indices:
@@ -49,6 +44,11 @@ To create the ElasticSearch indices:
 To create ANN indiced used in ANCE dense retrieval:
   - Download the collections using the links provided [here](data/README.md) and place them in [data/collections/](data/collections/)
   - Run the scripts ...
+
+
+## Models
+
+You can use the provided code to train your own models or you can use the provided model checkopoints to repeat our experiments. The models can be downloaded from Google Drive. More information about commands used for models fine-tuning can be found [here](data/fine_tuning/README.md)
 
 
 ## Running conversational search system
