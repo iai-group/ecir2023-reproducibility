@@ -67,3 +67,9 @@ python -m treccast.main -h
 ```
 
 The configuration files used for the runs presented in the paper can be found [here](data/runs/2020/) for 2020 and [here](data/runs/2021/) for 2021.
+
+
+## Acknowledgments
+
+We thank [IAI research group](https://iai.group/) for the codebase this work builds on. We thank WaterlooClarke group at School of Computer Science, University of Waterloo, Canada for their support in our efforts to reproduce [their approach](https://trec.nist.gov/pubs/trec28/papers/WaterlooClarke.C.pdf) presented at TREC CAsT'21.
+
