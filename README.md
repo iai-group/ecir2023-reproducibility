@@ -1,4 +1,4 @@
-# TREC CAsT 2021
+# Reproducibility Study on TREC CAsT
 
 ![CI build](https://github.com/iai-group/trec-cast-2021/actions/workflows/python-package-conda.yaml/badge.svg)
 [![codecov](https://codecov.io/gh/iai-group/trec-cast/branch/main/graph/badge.svg?token=4EZNRUV7B7)](https://codecov.io/gh/iai-group/trec-cast)
@@ -34,11 +34,6 @@ To install our converational search system and all its dependencies make sure yo
   - Download [ANCE model checkpoint](https://webdatamltrainingdiag842.blob.core.windows.net/semistructstore/OpenSource/Passage_ANCE_FirstP_Checkpoint.zip) and place it under [/data/retrieval/ance/](/data/retrieval/ance/)
 
 
-## Models
-
-You can use the provided code to train your own models or you can use the provided model checkopoints to repeat our experiments. The models can be downloaded from Google Drive. More information about commands used for models fine-tuning can be found [here](data/fine_tuning/README.md)
-
-
 ## Indices
 
 To create the ElasticSearch indices:
@@ -49,6 +44,11 @@ To create the ElasticSearch indices:
 To create ANN indiced used in ANCE dense retrieval:
   - Download the collections using the links provided [here](data/README.md) and place them in [data/collections/](data/collections/)
   - Run the scripts ...
+
+
+## Models
+
+You can use the provided code to train your own models or you can use the provided model checkopoints to repeat our experiments. The models can be downloaded from Google Drive. More information about commands used for models fine-tuning can be found [here](data/fine_tuning/README.md)
 
 
 ## Running conversational search system
@@ -67,3 +67,9 @@ python -m treccast.main -h
 ```
 
 The configuration files used for the runs presented in the paper can be found [here](data/runs/2020/) for 2020 and [here](data/runs/2021/) for 2021.
+
+
+## Acknowledgments
+
+We thank [IAI research group](https://iai.group/) for the codebase this work builds on. We thank WaterlooClarke group at School of Computer Science, University of Waterloo, Canada for their support in our efforts to reproduce [their approach](https://trec.nist.gov/pubs/trec28/papers/WaterlooClarke.C.pdf) presented at TREC CAsT'21.
+
