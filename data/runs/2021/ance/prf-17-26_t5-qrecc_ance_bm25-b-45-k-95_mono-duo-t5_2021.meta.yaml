@@ -10,6 +10,7 @@ output_name: ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_mono-duo-t5_2021
 reranker: t5
 rewrite: yes
 rewrite_path: data/rewrites/2021/12_T5_QReCC.tsv
+reranker_rewrite_path:
 year: '2021'
 k: 1000
 num_prev_turns: 0

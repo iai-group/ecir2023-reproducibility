@@ -10,6 +10,7 @@ output_name: ance/prf-17-26_t5-canard_ance_bm25-b-45-k-95_mono-duo-t5_2021
 reranker: t5
 rewrite: yes
 rewrite_path: data/rewrites/2021/13_T5_CANARD.tsv
+reranker_rewrite_path:
 year: '2021'
 k: 1000
 num_prev_turns: 0
@@ -22,4 +23,3 @@ prf:
 duot5_topk: 50
 ance: yes
 ance_index: data/retrieval/ance/trecweb_ms_marco_kilt_wapo_ance
-reranker_rewrite_path:
