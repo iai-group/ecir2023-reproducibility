@@ -1,9 +1,5 @@
 # Reproducibility Study on TREC CAsT
 
-![CI build](https://github.com/iai-group/trec-cast-2021/actions/workflows/python-package-conda.yaml/badge.svg)
-[![codecov](https://codecov.io/gh/iai-group/trec-cast/branch/main/graph/badge.svg?token=4EZNRUV7B7)](https://codecov.io/gh/iai-group/trec-cast)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-
 This repository contains the code associated with **Conversational Search in TREC CAsT Setting -
 Reproducibility of Best Performing Solutions** paper submitted to ECIR'23. It implements a baseline conversational search system and reproduces the state of the art approach presented at TREC CAsT'21.
 
@@ -71,5 +67,5 @@ The configuration files used for the runs presented in the paper can be found [h
 
 ## Acknowledgments
 
-We thank [IAI research group](https://iai.group/) for the codebase this work builds on. We thank WaterlooClarke group at School of Computer Science, University of Waterloo, Canada for their support in our efforts to reproduce [their approach](https://trec.nist.gov/pubs/trec28/papers/WaterlooClarke.C.pdf) presented at TREC CAsT'21.
+We thank IAI research group for the codebase this work builds on. We thank WaterlooClarke group at School of Computer Science, University of Waterloo, Canada for their support in our efforts to reproduce [their approach](https://trec.nist.gov/pubs/trec28/papers/WaterlooClarke.C.pdf) presented at TREC CAsT'21.
 
