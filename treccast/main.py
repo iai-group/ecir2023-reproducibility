@@ -145,8 +145,6 @@ def run(
             ["query_id", "query", "passage_id", "passage", "label"]
         )
         for query in queries:
-            # TODO: Replace print with logging.
-            # See: https://github.com/iai-group/trec-cast-2021/issues/37
             original_query = query
 
             # Custom rewriter

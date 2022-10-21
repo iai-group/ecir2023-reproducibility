@@ -107,8 +107,6 @@ class Indexer(DataGeneratorMixin, ElasticSearchIndex):
         # Stop words need to be downloaded if they are not already.
         nltk.download("stopwords")
 
-        # TODO make tests for index using this analyzer
-        # https://github.com/iai-group/trec-cast-2021/issues/70
         return {
             "analysis": {
                 "analyzer": {

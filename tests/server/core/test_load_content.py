@@ -4,7 +4,6 @@ These tests expect Elasticsearch on localhost:9204, as well as default files in
 locations specified by keyword argument default values or otherwise hardcoded.
 """
 
-# TODO https://github.com/iai-group/trec-cast-2021/issues/214
 from treccast.core.util.passage_loader import PassageLoader
 
 

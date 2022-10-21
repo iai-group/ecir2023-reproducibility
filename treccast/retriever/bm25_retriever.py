@@ -68,9 +68,6 @@ class BM25Retriever(Retriever):
         Returns:
             Document ranking.
         """
-        # TODO Improve logging.
-        # See https://github.com/iai-group/trec-cast-2021/issues/37
-
         if isinstance(query, SparseQuery):
             query = self.simplify_query(query)
             es_query = self.bool_query(
