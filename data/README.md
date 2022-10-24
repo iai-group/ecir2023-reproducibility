@@ -3,8 +3,8 @@
 *General rule*: small files (<1 MB) on git, large files on server (with their documentation under git!). 
 
 *Specifically*: 
-  * On git: topic files, qrels, config files, compressed runfiles, compressed first-pass rankings, and rewrites.
-  * On server: datasets, indices, and fine-tuned models.
+  * On git: topic files, qrels, config files, compressed runfiles, and rewrites.
+  * On server: indices, first-pass rankings, and fine-tuned models.
     - `$DATA` refers to [this](todo -> add lin to gustav1) folder on the server.
 
 ## Datasets
