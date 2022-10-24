@@ -66,7 +66,7 @@ The configuration files used for the runs presented in the paper can be found [h
 
 ## Reproducing results from the paper
 
-In order to reproduce the results reported in the paper, run conversational search system using the config files linked in the tables below. The results in row **WaterlooClarke@TREC'21 (runfile)** were generated using the official runfile provided by the organizers. We remove from it the passage IDs and deduplicated the rankings using [this script](treccast/core/util/ranking_deduplication.py).
+In order to reproduce the results reported in the paper, run conversational search system using the config files linked in the tables below. The results in row **WaterlooClarke@TREC'21 (runfile)** were generated using the official [runfile](data/runs/2021/input.clarke-cc) provided by the organizers. We remove from it the passage IDs and deduplicated the rankings using [this script](treccast/core/util/ranking_deduplication.py). The the deduplicated runfile is available [here](data/runs/2021/input.clarke-cc_deduplicated).
 
 ### Reproducibility experiments on the TREC CAsT’21 dataset
 
