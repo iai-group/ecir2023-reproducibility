@@ -2,7 +2,7 @@ config_file: data/runs/2021/ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_t5-canar
 duot5: yes
 es:
     b: '0.45'
-    host_name: localhost:9214
+    host_name: localhost:9204
     k1: '0.95'
     index_name: ms_marco_kilt_wapo_clean
     field: catch_all

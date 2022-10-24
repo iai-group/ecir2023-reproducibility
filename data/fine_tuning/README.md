@@ -20,17 +20,17 @@ All the preprocessed data collections used for fine-tuning and the models are li
     - `base_model_name` - the name of the base model to be used for fine-tuning, defaults to `t5`.
     - `model_type` - specific model type to be used for fine-tuning, defaults to `t5-base`.
     - `dataset` - the path to the dataset to be used for fine-tuning, defaults to `data/fine_tuning/rewriter/qrecc/`.
-    - `model_dir` - the output directory for the fine-tuned model, defaults to `data/fine_tuning/rewriter/qrecc/T5-QReCC_st/`.
+    - `model_dir` - the output directory for the fine-tuned model, defaults to `data/fine_tuning/rewriter/qrecc/T5_QReCC_WaterlooClarke-full/`.
   * Exemplary configuration for qrecc with default arguments:
 `CUDA_VISIBLE_DEVICES=0 python -m treccast.rewriter.simpletransformers_rewriter_finetuning`
-  * Fine-tuned models are stored under `$DATA/models/fine_tuned_models/rewriter/qrecc/`:
-    - `T5_QReCC_st_WaterlooClarke-full` - T5 fine-tuned with the QReCC training dataset, using original test partition of the QReCC dataset as a validation set (implementation based on Simple Transformers).
-    - `T5_QReCC_st_WaterlooClarke-train` - T5 fine-tuned on QReCC collection split to train/validation/test partitions (implementation based on Simple Transformers).
+  * Fine-tuned models are stored under `$DATA/models/rewriter/qrecc/`:
+    - `T5_QReCC_WaterlooClarke-full` - T5 fine-tuned with the QReCC training dataset, using original test partition of the QReCC dataset as a validation set (implementation based on Simple Transformers).
+    - `T5_QReCC_WaterlooClarke-train` - T5 fine-tuned on QReCC collection split to train/validation/test partitions (implementation based on Simple Transformers).
 
 ## Generate file with queries rewritten with fine-tuned model
 
   * Run [treccast/rewriter/t5_rewriter.py](../../treccast/rewriter/t5_rewriter.py) file with chosen arguments:
-    - `model_name` - the path to the fine-tuned model to be loaded and used for rewriting, defaults to `data/fine_tuning/rewriter/qrecc/T5-QReCC`.
+    - `model_name` - the path to the fine-tuned model to be loaded and used for rewriting, defaults to `data/fine_tuning/rewriter/qrecc/T5_QReCC_WaterlooClarke-full`.
     - `year` - year for which the rewrites should be generated, defaults to `2020`.
     - `max_length` - max sequence length for the model, defaults to `128`.
     - `output_dir` - the path to the output directory for generated query rewrites `data/rewrites/2020/12_T5_QReCC.tsv`.

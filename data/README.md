@@ -1,11 +1,11 @@
 # Data
 
-*General rule*: small files (<1 MB) on git, large files on Google Drive (with their documentation under git!). 
+*General rule*: small files (<1 MB) on git, large files on server (with their documentation under git!). 
 
 *Specifically*: 
-  * On git: topic files, qrels, config files, and annotation files (rewrites, answer types, topic turn detection, etc.).
-  * On Google Drive: datasets, indices, and runfiles.
-    - `$DATA` refers to [this](todo -> add lin to Google Drive) folder on Google Drive
+  * On git: topic files, qrels, config files, compressed runfiles, compressed first-pass rankings, and rewrites.
+  * On server: datasets, indices, and fine-tuned models.
+    - `$DATA` refers to [this](todo -> add lin to gustav1) folder on the server.
 
 ## Datasets
 
@@ -32,17 +32,16 @@ Elasticsearch servers in use is `localhost:9204`.
 
 ### 2020
 
-Elasticsearch indices used in experiments => available on `$DATA/dense_retrieval/ance/2020/`:
-  * `ms_marco_trec_car` => Basic inverted index without any preprocessing.
+Elasticsearch index used in experiments => available on `$DATA/es_indices/2020/`:
   * `ms_marco_trec_car_clean` => Inverted index with stopword removal and KStemming.
 
-ANCE index used in experiments => available on `$DATA/dense_retrieval/ance/2020/`:
+ANCE index used in experiments => available on `$DATA/retrieval/ance/2020/`:
   - MS MARCO (passages) collection provided by [ir_dataset](https://ir-datasets.com/msmarco-passage.html#msmarco-passage)
   - TREC CAR paragraph collection v2.0 provided by [ir_dataset](https://ir-datasets.com/car.html#car/v2.0)
 
 ### 2021
 
-Elasticsearch index used in experiments:
+Elasticsearch index used in experiments => available on `$DATA/es_indices/2021/`:
   * `ms_marco_kilt_wapo_clean` => Inverted index with stopword removal and KStemming.
     - document ID: `[MARCO|KILT|WAPO]_document_id-passage_index`
     - fields: 
@@ -50,7 +49,7 @@ Elasticsearch index used in experiments:
       - body: Passage text.
       - catch_all: Concatenation of title and body.
 
-ANCE index used in experiments => available on `$DATA/dense_retrieval/ance/2021/`:
+ANCE index used in experiments => available on `$DATA/retrieval/ance/2021/`:
   - our own generator for MS MARCO (documents) 
   - our own generator for KILT collection 
   - our own generator for WaPo 2020 collection
@@ -77,10 +76,10 @@ All generators are using the 2021 pre-processed collections (in TREC Web format)
 
 ## Fine-tuning data and models
  
-  * Generated data for fine-tuning under `$DATA/fine_tuning` => documentation available [here](fine_tuning/README.md)  
+  * Generated data for fine-tuning under `data/fine_tuning` => documentation available [here](fine_tuning/README.md)  
   * Trained models under `$DATA/models`
 
 ## Runs
 
-  * First-pass retrieval results under `$DATA/first_pass/{year}`, further documented [here](first_pass/README.md)   
-  * Runfiles under `$DATA/runs/{year}`, further documented for [2020](runs/2020/README.md) and [2021](runs/2021/README.md)
+  * First-pass retrieval results under `data/first_pass/{year}`, further documented [here](first_pass/README.md)   
+  * Runfiles under `data/runs/{year}`, further documented for [2020](runs/2020/README.md) and [2021](runs/2021/README.md)

@@ -21,3 +21,5 @@ prf:
     num_terms: 26
 duot5_topk: 50
 ance: no
+ance_index: data/retrieval/ance/trecweb_ms_marco_kilt_wapo_ance
+reranker_rewrite_path:

@@ -1,15 +1,15 @@
-config_file: data/runs/2021/t5-qrecc_bm25_mono-t5_2021.meta.yaml
+config_file: data/runs/2021/t5-canard-org_bm25_mono-t5_2021.meta.yaml
 duot5: no
 es:
     host_name: localhost:9204
     index_name: ms_marco_kilt_wapo_clean
     field: catch_all
-    k1: 1.2
-    b: 0.75
-output_name: t5-qrecc_bm25_mono-t5_2021
+    k1: 4.46
+    b: 0.82
+output_name: t5-canard-org_bm25_mono-t5_2021
 reranker: t5
 rewrite: yes
-rewrite_path: data/rewrites/2021/12_T5_QReCC.tsv
+rewrite_path: data/rewrites/2021/13_T5_CANARD_org.tsv
 year: '2021'
 k: 1000
 num_prev_turns: 0
