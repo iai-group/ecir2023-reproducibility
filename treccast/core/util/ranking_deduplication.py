@@ -1,4 +1,5 @@
-""" Converts passage level ranking into document level ranking and de-duplicates the documents in the ranking. """
+""" Converts passage level ranking into document level ranking and de-duplicates
+the documents in the ranking. """
 
 import csv
 
@@ -31,6 +32,7 @@ def de_duplicate_ranking(runfile_path):
                     )
                     + "\n"
                 )
+
 
 if __name__ == "__main__":
     de_duplicate_ranking("data/runs/2021/input.clarke-cc")

@@ -66,11 +66,11 @@ The configuration files used for the runs presented in the paper can be found [h
 
 ## Reproducing results from the paper
 
-In order to reproduce the results reported in the paper, run conversational search system using the config files linked in the tables below. The results in row**WaterlooClarke@TREC'21 (runfile)** were generated using the official runfile provided by the organizers. We remove from it the passage IDs and deduplicated the ranking using [this](treccast/core/util/ranking_deduplication.py) script.
+In order to reproduce the results reported in the paper, run conversational search system using the config files linked in the tables below. The results in row **WaterlooClarke@TREC'21 (runfile)** were generated using the official runfile provided by the organizers. We remove from it the passage IDs and deduplicated the rankings using [this script](treccast/core/util/ranking_deduplication.py).
 
 ### Reproducibility experiments on the TREC CAsT’21 dataset
 
-| Approach  | R@500 | MAP | MRR | NDCG  | NDCG@3 |
+| Approach  | R@500 | MAP@500 | MRR | NDCG  | NDCG@3 |
 |----------------------------------------------------------|----------------|-----------------|--------|--------|--------|
 | [Raw + BM25 + monoT5](data/runs/2021/raw_bm25_mono-t5_2021.meta.yaml)  | 0.3467  | 0.1216 | 0.2875 | 0.2606 | 0.2051 |
 | [TREC-Auto + BM25 + monoT5](data/runs/2021/automatic_bm25_mono-t5_2021.meta.yaml)| 0.6292  | 0.2686 | 0.5582 | 0.4848 | 0.3999 |
@@ -84,7 +84,7 @@ In order to reproduce the results reported in the paper, run conversational sear
 
 ### Variants of a two-stage retrieval pipeline on TREC CAsT’20
 
-| Approach  | R@500 | MAP | MRR | NDCG  | NDCG@3 |
+| Approach  | R@1000 | MAP@1000 | MRR | NDCG  | NDCG@3 |
 |----------------------------------------------------------|----------------|-----------------|--------|--------|--------|
 | [T5\_CANARD + BM25 + monoT5](data/runs/2020/t5-canard_bm25_mono-t5_2020.meta.yaml)              | 0.5276              | 0.2191           | 0.5457          | 0.4353          | 0.3789          |
 | [T5\_QReCC + BM25 + monoT5](data/runs/2020/t5-qrecc_bm25_mono-t5_2020.meta.yaml)               | 0.5100              | 0.2056           | 0.5106          | 0.4065          | 0.3618          |
@@ -95,7 +95,7 @@ In order to reproduce the results reported in the paper, run conversational sear
 
 ### Variants of a two-stage retrieval pipeline on TREC CAsT’21
 
-| Approach  | R@500 | MAP | MRR | NDCG  | NDCG@3 |
+| Approach  | R@500 | MAP@500 | MRR | NDCG  | NDCG@3 |
 |----------------------------------------------------------|----------------|-----------------|--------|--------|--------|
 | [T5\_CANARD + BM25 + monoT5](data/runs/2021/t5-canard_bm25_mono-t5_2021.meta.yaml)              | 0.6472              | 0.2628           | 0.5354          | 0.4885          | 0.3968          |
 | [T5\_QReCC + BM25 + monoT5](data/runs/2021/t5-qrecc_bm25_mono-t5_2021.meta.yaml)               | 0.6018              | 0.2530           | 0.5369          | 0.4670          | 0.3933          |
@@ -106,7 +106,7 @@ In order to reproduce the results reported in the paper, run conversational sear
 
 ### Performance of query rewriting approaches with different variants of two-stage pipeline on the TREC CAsT’20 
 
-| Approach  | R@500 | MAP | MRR | NDCG  | NDCG@3 |
+| Approach  | R@1000 | MAP@1000 | MRR | NDCG  | NDCG@3 |
 |----------------------------------------------------------|----------------|-----------------|--------|--------|--------|
 | [T5\_QReCC + T5\_QReCC](data/runs/2020/ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_mono-duo-t5_2020.meta.yaml)     | 0.6608              | 0.2451                | 0.5355          | 0.4840          | 0.4052          | 0.3846          |
 | [T5\_QReCC + T5\_CANARD](data/runs/2020/ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_t5-canard_mono-duo-t5_2020.meta.yaml)    | 0.6608              | 0.2432                | 0.5437          | 0.4842          | **0.4086** | 0.3846          |
@@ -115,7 +115,7 @@ In order to reproduce the results reported in the paper, run conversational sear
 
 ### Performance of query rewriting approaches with different variants of two-stage pipeline on the TREC CAsT’21
 
-| Approach  | R@500 | MAP | MRR | NDCG  | NDCG@3 |
+| Approach  | R@500 | MAP@500 | MRR | NDCG  | NDCG@3 |
 |----------------------------------------------------------|----------------|-----------------|--------|--------|--------|
 | [T5\_QReCC + T5\_QReCC](data/runs/2020/ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_mono-duo-t5_2020.meta.yaml)     | 0.6915              | 0.2864                | 0.5712          | 0.5205          | 0.4151          | 0.4103          |
 | [T5\_QReCC + T5\_CANARD](data/runs/2020/ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_t5-canard_mono-duo-t5_2020.meta.yaml)    | 0.6879              | **0.2940**       | 0.5697          | 0.5264          | **0.4176** | 0.4149          |

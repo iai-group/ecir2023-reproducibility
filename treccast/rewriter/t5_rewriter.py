@@ -2,7 +2,7 @@
 
 import argparse
 import csv
-from typing import List, Union
+from typing import Union
 
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
@@ -184,7 +184,9 @@ class T5Rewriter(Rewriter):
                     canonical_response += " ".join(
                         doc.content for doc in context.history[-3][1]
                     )
-            input_text += [self.separator] + self._tokenizer.tokenize(canonical_response)
+            input_text += [self.separator] + self._tokenizer.tokenize(
+                canonical_response
+            )
         input_text += [self.separator] + self._tokenizer.tokenize(
             query.question
         )
