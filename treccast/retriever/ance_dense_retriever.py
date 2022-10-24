@@ -6,7 +6,6 @@ import os
 import shutil
 from itertools import chain
 
-import pandas as pd
 import pyterrier as pt
 import pyterrier_ance
 from treccast.core.base import Query, ScoredDocument
@@ -259,7 +258,6 @@ def main(args):
     query = Query(
         "81_1", "How do you know when your garage door opener is going bad?"
     )
-    topic = pd.DataFrame({"qid": "1", "query": query.question}, index=[0])
     ranking = ance.retrieve(query, 1000)
     for rank, doc in enumerate(ranking.fetch_topk_docs(50), start=1):
         print(f"{rank}: {doc.score}, {doc.doc_id}, {doc.content}")
