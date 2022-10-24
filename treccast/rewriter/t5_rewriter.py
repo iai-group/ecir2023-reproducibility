@@ -2,7 +2,7 @@
 
 import argparse
 import csv
-from typing import Union
+from typing import List, Union
 
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
@@ -25,9 +25,9 @@ _OUTPUT_DIR = "data/rewrites/2021/12_T5_QReCC.tsv"
 # Specifies whether previously rewritten queries should be used in the context
 # for rewriting current query.
 _USE_PREVIOUS_REWRITTEN_UTTERANCE = True
-# Specifies whether the last canonical response should be used in the context
+# Specifies how many last canonical responses should be used in the context
 # for rewriting current query.
-_USE_CANONICAL_RESPONSE = True
+_USE_CANONICAL_RESPONSES = 1
 # Whether to use provided answer rewrites or full passage texts in context.
 _USE_ANSWER_REWRITE = False
 # Special token to separate input sequences.
@@ -109,7 +109,7 @@ class T5Rewriter(Rewriter):
         self,
         query: Query,
         context: Context = None,
-        use_canonical_response: bool = _USE_CANONICAL_RESPONSE,
+        use_canonical_response: int = _USE_CANONICAL_RESPONSES,
     ) -> Union[Query]:
         """Rewrites query to a new contextualized query given context.
 
@@ -149,7 +149,7 @@ class T5Rewriter(Rewriter):
         input_text = self._tokenizer.tokenize(
             self.separator.join(history_questions)
         )
-        if use_canonical_response:
+        if use_canonical_response == 1:
             canonical_response = " ".join(
                 doc.content for doc in context.history[-1][1]
             )
@@ -172,6 +172,19 @@ class T5Rewriter(Rewriter):
                     :(-split_position)
                 ]
             input_text += [self.separator] + split_canonical_response
+        elif use_canonical_response == 3:
+            canonical_response = " ".join(
+                doc.content for doc in context.history[-1][1]
+            )
+            if len(context.history) > 1:
+                canonical_response += " ".join(
+                    doc.content for doc in context.history[-2][1]
+                )
+                if len(context.history) > 2:
+                    canonical_response += " ".join(
+                        doc.content for doc in context.history[-3][1]
+                    )
+            input_text += [self.separator] + self._tokenizer.tokenize(canonical_response)
         input_text += [self.separator] + self._tokenizer.tokenize(
             query.question
         )
@@ -193,6 +206,7 @@ def rewrite_queries_with_fine_tuned_model(
     use_previous_rewritten_utterance: bool,
     use_responses: bool,
     use_answer_rewrite: bool,
+    use_canonical_response: int,
     separator: str,
     num_beams: int,
 ):
@@ -241,10 +255,11 @@ def rewrite_queries_with_fine_tuned_model(
         rewrites = []
         for query, context in zip(queries, contexts):
             if use_previous_rewritten_utterance and context is not None:
-                context.history = [
-                    (rewrites[-(len(context.history) - idx)], history[1])
-                    for idx, history in enumerate(context.history)
-                ]
+                if use_canonical_response == 1:
+                    context.history = [
+                        (rewrites[-(len(context.history) - idx)], history[1])
+                        for idx, history in enumerate(context.history)
+                    ]
             rewrite = rewriter.rewrite_query(
                 query=query,
                 context=context,
@@ -308,8 +323,8 @@ def parse_cmdline_arguments() -> argparse.Namespace:
     )
     parser.add_argument(
         "--use_canonical_response",
-        type=bool,
-        default=_USE_CANONICAL_RESPONSE,
+        type=int,
+        default=_USE_CANONICAL_RESPONSES,
         help=(
             "Specifies whether the last canonical response should be used in "
             "the context for rewriting current query."
@@ -371,6 +386,7 @@ def main(args):
         use_answer_rewrite=args.use_answer_rewrite,
         separator=args.separator,
         num_beams=args.num_beams,
+        use_canonical_response=args.use_canonical_response,
     )
 
 

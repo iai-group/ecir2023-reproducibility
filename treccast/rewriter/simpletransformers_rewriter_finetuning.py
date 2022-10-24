@@ -24,7 +24,7 @@ _VALIDATION_PORTION = 0.1
 _SEPARATOR = "<sep>"
 # The default location for the fine-tuned model.
 _MODEL_LOCATION = (
-    "data/fine_tuning/rewriter/qrecc/T5_QReCC_st_WaterlooClarke-train/"
+    "data/fine_tuning/rewriter/qrecc/T5_QReCC_WaterlooClarke-train/"
 )
 # Location of the best fine-tuned model.
 _BEST_MODEL_LOCATION = "best_model/"
