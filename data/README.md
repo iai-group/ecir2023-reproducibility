@@ -11,19 +11,20 @@
 
 ### 2020
 
-  * [MS MARCO Passage Ranking collection](https://github.com/microsoft/MSMARCO-Passage-Ranking) => `collection.tar.gz` (988M)  
-  * [TREC CAR paragraph collection v2.0](http://trec-car.cs.unh.edu/datareleases/) => `paragraphCorpus.v2.0.tar.gz` (6.9G)
+  * [MS MARCO Passage Ranking collection](https://github.com/microsoft/MSMARCO-Passage-Ranking) => `$DATA/collections/collection.tar.gz` (988M)  
+  * [TREC CAR paragraph collection v2.0](http://trec-car.cs.unh.edu/datareleases/)
+    - preprocessed TREC CAR paragraph collection => `$DATA/collections/dedup.articles-paragraphs.cbor` (6.9G)
 
 ### 2021
 
   * Raw collections
-    - [KILT Wikipedia](https://github.com/facebookresearch/KILT/) => `kilt_knowledgesource.json` (35G)
-    - [MS MARCO (Documents)](https://github.com/microsoft/MSMARCO-Document-Ranking) => `msmarco-doc/msmarco-docs.tsv.gz` (7.9G)
-    - [Washington Post 2020](https://trec.nist.gov/data/wapost/) => `WashingtonPost.v4.tar.gz` (2.4G)
+    - [KILT Wikipedia](https://github.com/facebookresearch/KILT/)
+    - [MS MARCO (Documents)](https://github.com/microsoft/MSMARCO-Document-Ranking)
+    - [Washington Post 2020](https://trec.nist.gov/data/wapost/)
   * Pre-processed collections (in TREC Web format) provided by the organizers
-    - KILT `kilt_knowledgesource.trecweb` (18G)
-    - MS MARCO `msmarco-docs.trecweb` (21G)
-    - WaPo `TREC_Washington_Post_collection.v4.trecweb` (3.4G)
+    - KILT `$DATA/collections/kilt_knowledgesource.trecweb` (18G)
+    - MS MARCO `$DATA/collections/msmarco-docs.trecweb` (21G)
+    - WaPo `$DATA/collections/TREC_Washington_Post_collection.v4.trecweb` (3.4G)
 
 ## Indices
 

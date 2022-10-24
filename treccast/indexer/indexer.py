@@ -22,12 +22,12 @@ from treccast.core.collection import ElasticSearchIndex
 from treccast.core.util.data_generator import DataGeneratorMixin
 
 DEFAULT_MS_MARCO_PASSAGE_DATASET = (
-    "/data/collections/msmarco-passage/collection.tar.gz"
+    "/data/collections/collection.tar.gz"
 )
 DEFAULT_TREC_CAR_PARAGRAPH_DATASET = (
-    "/data/collections/trec-car/paragraphCorpus/dedup.articles-paragraphs.cbor"
+    "/data/collections/dedup.articles-paragraphs.cbor"
 )
-DEFAULT_INDEX_NAME = "ms_marco_trec_car"
+DEFAULT_INDEX_NAME = "ms_marco_trec_car_clean"
 DEFAULT_HOST_NAME = "localhost:9204"
 _ACTION = "indexing"
 

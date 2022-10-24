@@ -1,5 +1,6 @@
 """ANCE dense retrieval."""
 
+import argparse
 import logging
 import os
 import shutil
@@ -21,6 +22,8 @@ _DEFAULT_LOCATION_OF_ANCE_INDEX = (
     "data/retrieval/ance/trecweb_ms_marco_kilt_wapo_ance"
 )
 
+_DEFAULT_LOCATION_OF_COLLECTIONS = "/data/collections/"
+
 os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-11-openjdk-amd64"
 
 logging.basicConfig(
@@ -39,7 +42,7 @@ class ANCEDenseRetriever(Retriever):
         es_host_name: str = "localhost:9204",
         es_index_name: str = "ms_marco_kilt_wapo_clean",
         k: int = 1000,
-        collections: str = "/data/collections/trec-cast",
+        collections: str = _DEFAULT_LOCATION_OF_COLLECTIONS,
     ) -> None:
         """Initializes ANCE dense retrieval model.
 
@@ -137,7 +140,7 @@ class ANCEDenseRetriever(Retriever):
                     ScoredDocument(
                         doc_id=row["docno"],
                         score=row["score"],
-                        doc_content=content,
+                        content=content,
                     )
                 )
         return ranking
@@ -163,7 +166,74 @@ class ANCEDenseRetriever(Retriever):
             yield {"docno": docno, "text": text}
 
 
-if __name__ == "__main__":
+def parse_cmdline_arguments() -> argparse.Namespace:
+    """Defines accepted arguments and returns the parsed values.
+
+    Returns:
+        Object with a property for each argument.
+    """
+    parser = argparse.ArgumentParser(prog="ance_dense_retriever.py")
+    parser.add_argument(
+        "--index_path",
+        type=str,
+        default=_DEFAULT_LOCATION_OF_ANCE_INDEX,
+        help=(
+            "Path to the ANCE index. Defaults to"
+            "data/retrieval/ance/trecweb_ms_marco_kilt_wapo_ance."
+        ),
+    )
+    parser.add_argument(
+        "--year",
+        type=str,
+        default="2021",
+        choices=["2020", "2021"],
+        help="Year for which the rewrites should be generated.",
+    )
+    parser.add_argument(
+        "--reset_index",
+        action="store_true",
+        help=(
+            "If true, resets the index that is in the given location. Defaults"
+            "to False.",
+        )
+    )
+    parser.add_argument(
+        "--es_host_name",
+        default="localhost:9204",
+        dest="es_host_name",
+        help=(
+            "Name of host and port number for passage loader. Defaults to"
+            "localhost:9204."
+        )
+    )
+    parser.add_argument(
+        "--es_index_name",
+        dest="es_index_name",
+        default="ms_marco_kilt_wapo_clean",
+        help=(
+            "Name of index for passage loader. Defaults to"
+            "ms_marco_kilt_wapo_clean"
+        ),
+    )
+    parser.add_argument(
+        "-k",
+        default=1000,
+        help=(
+            "Specifies the number of documents to retrieve at each stage. "
+            "Defaults to 1000."
+        ),
+    )
+    parser.add_argument(
+        "--collections",
+        default=_DEFAULT_LOCATION_OF_COLLECTIONS,
+        dest="collections",
+        help="Path to the directory containing trecweb files.",
+    )
+
+    return parser.parse_args()
+
+
+def main(args):
     # Example usage.
     #
     # Before running the script:
@@ -176,7 +246,15 @@ if __name__ == "__main__":
     if not pt.started():
         pt.init()
 
-    ance = ANCEDenseRetriever()
+    ance = ANCEDenseRetriever(
+        index_path=args.index_name,
+        year=args.year,
+        reset_index=args.reset_index,
+        es_host_name=args.es_host_name,
+        es_index_name=args.es_index_name,
+        k=args.k,
+        collections=args.collections,
+    )
 
     query = Query(
         "81_1", "How do you know when your garage door opener is going bad?"
@@ -185,3 +263,8 @@ if __name__ == "__main__":
     ranking = ance.retrieve(query, 1000)
     for rank, doc in enumerate(ranking.fetch_topk_docs(50), start=1):
         print(f"{rank}: {doc.score}, {doc.doc_id}, {doc.content}")
+
+
+if __name__ == "__main__":
+    args = parse_cmdline_arguments()
+    main(args)

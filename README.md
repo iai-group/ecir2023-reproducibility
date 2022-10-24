@@ -38,7 +38,7 @@ To create the ElasticSearch indices:
 
 To create ANN indiced used in ANCE dense retrieval:
   - Download the collections using the links provided [here](data/README.md) and place them in [data/collections/](data/collections/)
-  - Run the scripts ...
+  - Run the [2020 script](scripts/ance/2020.sh) and/or [2021 script](scripts/ance/2021.sh) (make sure that the paths to the downloaded collections are correct in the scripts and in the [indexer](treccast/retriever/ance_dense_retriever.py))
 
 
 ## Models
