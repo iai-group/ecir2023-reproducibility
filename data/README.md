@@ -4,7 +4,7 @@
 
 *Specifically*: 
   * On git: topic files, qrels, config files, compressed runfiles, and rewrites.
-  * On server: indices, first-pass rankings, and fine-tuned models.
+  * On server: collections, indices, first-pass rankings, and fine-tuned models.
     - `$DATA` refers to [this](todo -> add lin to gustav1) folder on the server.
 
 ## Datasets
@@ -13,7 +13,6 @@
 
   * [MS MARCO Passage Ranking collection](https://github.com/microsoft/MSMARCO-Passage-Ranking) => `collection.tar.gz` (988M)  
   * [TREC CAR paragraph collection v2.0](http://trec-car.cs.unh.edu/datareleases/) => `paragraphCorpus.v2.0.tar.gz` (6.9G)
-  * `2020/2020_topic_shift_labels.tsv` - Manually labeled queries from 2020, where `1` indicates a topic shift from the previous turn.
 
 ### 2021
 
