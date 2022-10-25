@@ -5,7 +5,7 @@
 *Specifically*: 
   * On git: topic files, qrels, config files, compressed runfiles, and rewrites.
   * On server: collections, indices, first-pass rankings, and fine-tuned models.
-    - `$DATA` refers to [this](todo -> add lin to gustav1) folder on the server.
+    - `$DATA` refers to the shared folder on the server. The access can be granted upon request.
 
 ## Datasets
 
