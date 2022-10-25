@@ -72,7 +72,7 @@ All generators are using the 2021 pre-processed collections (in TREC Web format)
 
 ## Rewrites
 
-  * Rewrites under `rewrites/{year}`, further documented [here](rewrites/README.md)  
+  * Rewrites under `data/rewrites/{year}`, further documented [here](rewrites/README.md)  
 
 ## Fine-tuning data and models
  
@@ -81,5 +81,6 @@ All generators are using the 2021 pre-processed collections (in TREC Web format)
 
 ## Runs
 
-  * First-pass retrieval results under `data/first_pass/{year}`, further documented [here](first_pass/README.md)   
+  * Sparse first-pass retrieval results under `$DATA/first_pass_rankings/{year}`, further documented [here](first_pass/README.md)
+  * Sparse, dense and fused results under `$DATA/reciprocal_rank_fusion/`, further documented [here](reciprocal_rank_fusion/README.md)
   * Runfiles under `data/runs/{year}`, further documented for [2020](runs/2020/README.md) and [2021](runs/2021/README.md)
