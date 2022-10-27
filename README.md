@@ -79,7 +79,7 @@ In order to reproduce the results reported in the paper, run conversational sear
 | [BaselineOrganizers-BM25](data/runs/2021/t5-canard_bm25-b-446-k-82_mono-t5_2021.meta.yaml)  | 0.5894  | 0.2546 | 0.5405 | 0.4672 | 0.3966 |
 | [BaselineOrganizers](data/runs/2021/t5-canard_bm25_mono-t5_2021.meta.yaml) | 0.6472  | 0.2628 | 0.5354 | 0.4885 | 0.3968 |
 | WaterlooClarke@TREC'21 (in TREC CAsT'21 overview)  | 0.869 | 0.362  | 0.684  | 0.640  | 0.514  |
-| [WaterlooClarke@TREC'21 (runfile)](data/runs/2021/input.clarke-cc_deduplicated)| 0.8613  | 0.3497 | 0.6626 | 0.6240 | 0.4950 |
+| WaterlooClarke@TREC'21 (runfile)| 0.8613  | 0.3497 | 0.6626 | 0.6240 | 0.4950 |
 | [WaterlooClarke reproduced by us](data/runs/2021/ance/prf-17-26_t5-qrecc_ance_bm25-b-45-k-95_mono-duo-t5_2021.meta.yaml)  | 0.6915  | 0.2864 | 0.5712 | 0.5176 | 0.4151 |
 
 ### Variants of a two-stage retrieval pipeline on TREC CAsT’20
