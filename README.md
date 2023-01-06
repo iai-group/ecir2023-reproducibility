@@ -127,5 +127,5 @@ In order to reproduce the results reported in the paper, run conversational sear
 
 ## Acknowledgments
 
-We thank IAI research group for the codebase this work builds on. We thank WaterlooClarke group at School of Computer Science, University of Waterloo, Canada for their support in our efforts to reproduce [their approach](https://trec.nist.gov/pubs/trec28/papers/WaterlooClarke.C.pdf) presented at TREC CAsT'21.
+We thank IAI research group for the codebase this work builds on. We thank WaterlooClarke group at School of Computer Science, University of Waterloo, Canada for their support in our efforts to reproduce [their approach](https://trec.nist.gov/pubs/trec28/papers/WaterlooClarke.C.pdf) presented at TREC CAsT'21. We thank TREC organizers for providing us with additional technical details about the Conversational Assitance Track 2021.
 
