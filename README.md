@@ -66,7 +66,7 @@ The configuration files used for the runs presented in the paper can be found [h
 
 ## Reproducing results from the paper
 
-In order to reproduce the results reported in the paper, run conversational search system using the config files linked in the tables below. The results in row **WaterlooClarke@TREC'21 (runfile)** were generated using the official [runfile](https://trec.nist.gov/results/trec30/cast.primary.input.html) provided by the organizers. We remove from it the passage IDs and deduplicated the rankings using [this script](treccast/core/util/ranking_deduplication.py).
+In order to reproduce the results reported in the paper, run conversational search system using the config files linked in the tables below. The results in row **WaterlooClarke@TREC'21 (runfile)** were generated using the official [runfile](https://trec.nist.gov/results/trec30/cast.primary.input.html) provided by the organizers. We remove from it the passage IDs and deduplicated the rankings using [this script](treccast/core/util/ranking_deduplication.py). The results in row **BaselineOrganizers@TREC'21 (runfile)** were generated using the official [runfile](https://github.com/daltonj/treccastweb/blob/master/2021/baselines/document_runs/org_automatic_results_1000.v1.0.run) provided by the organizers. This is the version of the run converted from passage to document ids and deduplicated. The copy of this runfile as of Jan 6th, 2023 can he found [here](data/runs/2021/baseline_organizers_runfile.trec).
 
 ### Reproducibility experiments on the TREC CAsT’21 dataset
 
@@ -75,6 +75,7 @@ In order to reproduce the results reported in the paper, run conversational sear
 | [Raw + BM25 + monoT5](data/runs/2021/raw_bm25_mono-t5_2021.meta.yaml)  | 0.3467  | 0.1216 | 0.2875 | 0.2606 | 0.2051 |
 | [TREC-Auto + BM25 + monoT5](data/runs/2021/automatic_bm25_mono-t5_2021.meta.yaml)| 0.6292  | 0.2686 | 0.5582 | 0.4848 | 0.3999 |
 | BaselineOrganizers@TREC'21 (in TREC CAsT'21 overview) | 0.636 | 0.291  | 0.607  | 0.504  | 0.436  |
+| BaselineOrganizers@TREC'21 (runfile) | 0.6228 | 0.2818 | 0.5966 | 0.4934 | 0.4242 |
 | [BaselineOrganizers-QR-BM25](data/runs/2021/t5-canard-org_bm25_mono-t5_2021.meta.yaml) | 0.5632  | 0.2268 | 0.4947 | 0.4317 | 0.3457 |
 | [BaselineOrganizers-BM25](data/runs/2021/t5-canard_bm25-b-446-k-82_mono-t5_2021.meta.yaml)  | 0.5894  | 0.2546 | 0.5405 | 0.4672 | 0.3966 |
 | [BaselineOrganizers](data/runs/2021/t5-canard_bm25_mono-t5_2021.meta.yaml) | 0.6472  | 0.2628 | 0.5354 | 0.4885 | 0.3968 |
