@@ -5,7 +5,7 @@
 *Specifically*: 
   * On git: topic files, qrels, config files, compressed runfiles, and rewrites.
   * On server: collections, indices, first-pass rankings, and fine-tuned models.
-    - `$DATA` refers to the shared folder on the server. This link is removed to preserve anonymity. The access to the subfolder with preprocessed collections can be granted upon request.
+    - `$DATA` refers to the [shared folder](https://gustav1.ux.uis.no/downloads/ecir2023-reproducibility/) on the server. The access to the subfolder with preprocessed collections can be granted upon request.
 
 ## Datasets
 
