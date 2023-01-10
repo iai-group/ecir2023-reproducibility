@@ -43,7 +43,7 @@ To create ANN indiced used in ANCE dense retrieval:
 
 ## Models
 
-You can use the provided code to train your own models or you can use the provided model checkopoints to repeat our experiments. The models can be downloaded from shared server folder. More information about commands used for models fine-tuning can be found [here](data/fine_tuning/README.md)
+You can use the provided code to train your own models or you can use the provided model checkopoints to repeat our experiments. The models can be downloaded from [shared server folder](https://gustav1.ux.uis.no/downloads/ecir2023-reproducibility/). More information about commands used for models fine-tuning can be found [here](data/fine_tuning/README.md)
 
 
 ## Running conversational search system
