@@ -1,8 +1,8 @@
 # Reproducibility Study on TREC CAsT
 
-This repository provides resources developed within the following article:
+This repository provides resources developed within the following article [PDF](https://arxiv.org/abs/2301.10493):
 
-> W. Lajewska and K. Balog. From Baseline to Top Performer: A Reproducibility Study of Approaches at the TREC 2021 Conversational Assistance Track, In European Conference on Information Retrieval, ECIR'23, 2023. 
+> W. Lajewska and K. Balog. **From Baseline to Top Performer: A Reproducibility Study of Approaches at the TREC 2021 Conversational Assistance Track**. In: Advances in Information Retrieval, 45th European Conference on Information Retrieval (ECIR'23). Springer. Dublin, Ireland. April 2023. [10.1007/978-3-031-28241-6_12](https://doi.org/10.1007/978-3-031-28241-6_12) 
 
 ## Summary
 
@@ -138,7 +138,29 @@ Evaluation results are computed using the official [trec_eval](https://github.co
 | [T5\_CANARD + T5\_CANARD](data/runs/2021/ance/prf-17-26_t5-canard_ance_bm25-b-45-k-95_mono-duo-t5_2021.meta.yaml)   | **0.7306**     | 0.2916                | 0.5573          | 0.5330          | 0.4061          | 0.4089          |
 
 
-
 ## Acknowledgments
 
 We thank IAI research group for the codebase this work builds on. This research was supported by the Norwegian Research Center for AI Innovation, NorwAI (Research Council of Norway, project number 309834). We thank the members of the WaterlooClarke group (School of Computer Science, University of Waterloo, Canada), Xinyi Yan and  Charlie Clarke for supporting our efforts to reproduce [their TREC CAsT’21 submission](https://trec.nist.gov/pubs/trec28/papers/WaterlooClarke). We also thank the TREC CAsT organizers for their efforts in coordinating the track and for providing us with additional technical details regarding their baseline.
+
+
+## Citation
+
+If you use the resources presented in this repository, please cite:
+
+```
+@inproceedings{Lajewska:2023:ECIR,
+  author =    {Weronika Łajewska and Krisztian Balog},
+  title =     {From Baseline to Top Performer: A Reproducibility Study of Approaches at the TREC 2021 Conversational Assistance Track},
+  booktitle = {European Conference on Information Retrieval},
+  series =    {ECIR '23},
+  pages =     {177--191}
+  year =      {2023},
+  doi =       {10.1007/978-3-031-28241-6_12},
+  publisher = {Springer}
+}
+```
+
+
+## Contact
+
+Should you have any questions, please contact `Weronika Łajewska` at `weronika.lajewska`[AT]uis.no (with [AT] replaced by @).
