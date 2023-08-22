@@ -1,6 +1,6 @@
 # Reproducibility Study on TREC CAsT
 
-This repository provides resources developed within the following article [PDF](https://arxiv.org/abs/2301.10493):
+This repository provides resources developed within the following article [[PDF](https://arxiv.org/abs/2301.10493)]:
 
 > W. Lajewska and K. Balog. **From Baseline to Top Performer: A Reproducibility Study of Approaches at the TREC 2021 Conversational Assistance Track**. In: Advances in Information Retrieval, 45th European Conference on Information Retrieval (ECIR'23). Springer. Dublin, Ireland. April 2023. [10.1007/978-3-031-28241-6_12](https://doi.org/10.1007/978-3-031-28241-6_12) 
 
